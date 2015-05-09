@@ -1,0 +1,4 @@
+templates:
+  - query-defined-elsewhere
+  - query-with-params:
+      param1: 1

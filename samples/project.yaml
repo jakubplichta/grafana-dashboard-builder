@@ -1,0 +1,122 @@
+---
+- name: Example project
+  project:
+    dashboard-prefix: MyApp
+    metric-prefix: metric.prefix
+    component:
+      - frontend
+      - backend
+    env:
+      - testing:
+          nodes: [node1, node2]
+      - production:
+          nodes: node3
+    dashboards:
+      - overview
+      - '{component}-connections'
+      - '{component}-{env}-{nodes}-system-details'
+
+- default-dashboard: &default-dashboard
+    time_options: [1h, 6h, 12h, 24h, 2d, 7d, 14d, 30d]
+    refresh_intervals: [5m, 15m, 30m, 1h]
+    time:
+      from: now-2d
+      to: now
+
+- name: overview
+  dashboard:
+    title: '{dashboard-prefix} Overview'
+    <<: *default-dashboard
+    rows:
+      - row:
+          title: '{dashboard-prefix}-row'
+          panels:
+            - graph:
+                span: 3
+                title: Frontend
+                target: 'aliasByMetric({metric-prefix}.frontend.*)'
+            - graph:
+                span: 3
+                title: Backend
+                target: 'aliasByMetric({metric-prefix}.backend.*)'
+
+- name: '{component}-connections'
+  dashboard:
+    title: '{dashboard-prefix} {component} connections'
+    time_options: [1h]
+    refresh_intervals: [5m]
+    templates:
+      - query:
+          query: '{metric-prefix}.{component}.$application'
+    time:
+      from: now-12h
+      to: now
+    rows:
+      - row:
+          title: '{dashboard-prefix}-row'
+          panels:
+            - graph:
+                span: 3
+                title: Connections
+                target: 'aliasByMetric({metric-prefix}.{component}.$application.*)'
+
+- name: '{component}-{env}-{nodes}-system-details'
+  dashboard:
+    title: '{dashboard-prefix} System Details of {component} {env} {nodes}'
+    time_options: [1h]
+    refresh_intervals: [5m]
+    templates:
+      - template:
+          metric-prefix: '{metric-prefix}'
+          component: '{component}'
+    time:
+      from: now-12h
+      to: now
+    rows:
+      - first-row:
+          component: '{component}'
+          env: '{env}'
+          nodes: '{nodes}'
+          metric-prefix: '{metric-prefix}'
+
+- name: first-row
+  rows:
+    - row:
+        title: '{component} {env} {nodes}'
+        panels:
+          - connections:
+              metric-prefix: '{metric-prefix}'
+              component: '{component}'
+          - memory:
+              metric-prefix: '{metric-prefix}'
+              component: '{component}'
+    - second-row
+
+- name: second-row
+  rows:
+    - row:
+        title: Placeholder row
+        height: 100px
+
+- name: connections
+  panels:
+    - graph:
+        target: 'aliasByMetric({metric-prefix}.{component}.$application.connections.*)'
+        span: 3
+        grid:
+          leftMax: 100
+          rightMax: 10
+          leftMin: 0
+          rightMin: -10
+
+- name: memory
+  panels:
+    - graph:
+        target: 'aliasByMetric({metric-prefix}.{component}.$application.load.*)'
+        y_formats: [bytes, short]
+        span: 4
+
+- name: template
+  templates:
+    - query:
+        query: '{metric-prefix}.{component}.$application'

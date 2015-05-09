@@ -1,0 +1,4 @@
+rows:
+  - row-defined-elsewhere
+  - row-with-params:
+      param1: 1

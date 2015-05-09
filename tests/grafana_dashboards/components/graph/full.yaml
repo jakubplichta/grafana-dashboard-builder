@@ -1,0 +1,10 @@
+graph:
+  span: 3
+  title: 'test title'
+  target: target
+  grid:
+    leftMin: 1
+    leftMax: 2
+    rightMin: 3
+    rightMax: 4
+  y_formats: [bytes, short]

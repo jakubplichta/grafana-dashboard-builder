@@ -1,0 +1,4 @@
+panels:
+  - graph-defined-elsewhere
+  - graph-with-params:
+      param1: 1

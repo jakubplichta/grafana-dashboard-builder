@@ -1,0 +1,24 @@
+[
+  {
+    "name": "var1",
+    "query": "part1.*",
+    "refresh": true,
+    "refresh_on_load": true,
+    "type": "query"
+  },
+  {
+    "name": "var2",
+    "query": "part1.$var1.part2.*",
+    "refresh": false,
+    "refresh_on_load": false,
+    "type": "query"
+  },
+  {
+    "name": "var3",
+    "query": "part1.$var1.part2.$var2.*",
+    "refresh": false,
+    "refresh_on_load": false,
+    "type": "query"
+  }
+]
+

@@ -1,0 +1,24 @@
+{
+  "title": "name",
+  "nav": [
+    {
+      "type": "timepicker",
+      "refresh_intervals": [
+        "5m"
+      ],
+      "time_options": [
+        "1h"
+      ]
+    }
+  ],
+  "templating": {
+    "enable": true,
+    "list": [
+      "mocked"
+    ]
+  },
+  "time": {
+    "from": "now-12h",
+    "to": "now"
+  }
+}

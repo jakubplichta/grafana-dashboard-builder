@@ -1,0 +1,20 @@
+{
+  "span": 3,
+  "targets": [
+    {
+      "target": "target"
+    }
+  ],
+  "title": "test title",
+  "type": "graph",
+  "grid": {
+    "leftMax": 2,
+    "leftMin": 1,
+    "rightMax": 4,
+    "rightMin": 3
+  },
+  "y_formats": [
+    "bytes",
+    "short"
+  ]
+}
