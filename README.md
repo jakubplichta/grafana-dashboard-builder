@@ -13,7 +13,15 @@ templates filled with different configuration.
 
 ## Installation
 
-TBD
+To install:
+
+```
+sudo pip install grafana-dashboard-builder
+```
+or
+```
+sudo python setup.py install
+```
 
 ## Usage
 
