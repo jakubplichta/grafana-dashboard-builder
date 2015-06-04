@@ -26,6 +26,9 @@
 - name: overview
   dashboard:
     title: '{dashboard-prefix} Overview'
+    tags:
+      - tag1
+      - tag2
     <<: *default-dashboard
     rows:
       - row:

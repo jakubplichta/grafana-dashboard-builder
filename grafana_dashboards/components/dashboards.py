@@ -35,6 +35,8 @@ class Dashboard(JsonGenerator):
                 'from': data['time']['from'],
                 'to': data['time']['to']
             }
+        if 'tags' in data:
+            json_data['tags'] = data.get('tags')
         if 'time_options' in data:
             nav['time_options'] = data.get('time_options', [])
         if 'refresh_intervals' in data:
