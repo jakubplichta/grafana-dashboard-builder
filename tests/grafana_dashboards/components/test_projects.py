@@ -46,7 +46,9 @@ def test_project():
                             'dict-value': '10'
                         }
                     }
-                ]
+                ],
+                'wrapped': '{single}',
+                'double-wrapped': '{wrapped}'
             }
         }
         mocked_component = mock.Mock()
@@ -63,7 +65,7 @@ def test_project():
         assert contexts is not None
         assert len(contexts) == 4
         for context in contexts:
-            to_expand = '{single}-{list}-{dict}-{dict-value}-{missing}'
+            to_expand = '{single}-{list}-{dict}-{dict-value}-{missing}-{wrapped}-{double-wrapped}'
             expanded = context.expand_placeholders(to_expand)
             assert expanded != to_expand
             assert '{single}' not in expanded
@@ -71,3 +73,5 @@ def test_project():
             assert '{dict}' not in expanded
             assert '{dict-value}' not in expanded
             assert '{missing}' in expanded
+            assert '{wrapped}' not in expanded
+            assert '{double-wrapped}' not in expanded
