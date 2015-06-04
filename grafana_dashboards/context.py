@@ -35,7 +35,7 @@ class Context(object):
             formatter = string.Formatter()
             (result, to_expand) = (formatter.vformat(to_expand, (), self._context), to_expand)
             while result != to_expand:
-                (result, to_expand) = (formatter.vformat(to_expand, (), self._context), result)
+                (result, to_expand) = (formatter.vformat(result, (), self._context), result)
             return result
         elif isinstance(to_expand, list):
             return [self.expand_placeholders(value) for value in to_expand]
