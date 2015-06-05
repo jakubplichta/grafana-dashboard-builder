@@ -1,5 +1,7 @@
 # grafana-dashboard-builder
 
+![build status](https://travis-ci.org/jakubplichta/grafana-dashboard-builder.svg?branch=master)
+
 ## Introduction
 
 _grafana-dashboard-builder_ is an open-source tool for easier creation of [Grafana](http://grafana.org/) dashboards.
