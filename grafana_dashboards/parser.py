@@ -19,8 +19,6 @@ from grafana_dashboards.components.base import ComponentRegistry
 from grafana_dashboards.components.projects import Project
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
-
-
 class DefinitionParser(object):
     def __init__(self):
         super(DefinitionParser, self).__init__()
