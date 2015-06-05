@@ -26,16 +26,12 @@ logger = logging.getLogger(__name__)
 
 _first_cap_re = re.compile('(.)([A-Z][a-z]+)')
 _all_cap_re = re.compile('([a-z0-9])([A-Z])')
-
-
 def get_component_type(clazz):
     """
 
     :type clazz: type
     """
     return _all_cap_re.sub(r'\1-\2', _first_cap_re.sub(r'\1-\2', clazz.__name__)).lower()
-
-
 def get_generators():
     return _get_subclasses(JsonGenerator)
 
