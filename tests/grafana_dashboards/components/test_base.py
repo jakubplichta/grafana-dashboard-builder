@@ -16,8 +16,8 @@
 import pytest
 
 from grafana_dashboards.components.base import ComponentRegistry, ComponentBase
-from grafana_dashboards.errors import UnregisteredComponentError, MissingComponentNameError, DuplicateKeyError, \
-    WrongComponentAttributeCountError
+from grafana_dashboards.errors import (UnregisteredComponentError, MissingComponentNameError, DuplicateKeyError,
+                                       WrongComponentAttributeCountError)
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
