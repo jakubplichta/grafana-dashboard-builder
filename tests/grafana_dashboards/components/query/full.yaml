@@ -1,2 +1,8 @@
 query:
   query: part1.$var1.part2.$var2.$var3
+  var1:
+    metric: '*x*'
+    current: o1
+    options:
+      - o1
+      - o2
