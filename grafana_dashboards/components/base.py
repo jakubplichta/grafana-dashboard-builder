@@ -155,13 +155,17 @@ class JsonListGenerator(JsonGenerator):
         result_list = []
         for items in data:
             if isinstance(items, str):
+                # this is component without context
                 result_list += self.registry.get_component(type(self), items).gen_json()
             else:
+                # TODO add check for dictionary
                 for (item_type, item_data) in items.iteritems():
                     if item_type not in self.component_item_types:
+                        # this is named component with context
                         for context in Context.create_context(item_data, get_placeholders(item_type)):
                             result_list += self.registry.get_component(type(self), item_type).gen_json(context)
                     else:
+                        # this is inplace defined component
                         item = self.registry.create_component(item_type, {item_type: item_data}).gen_json()
                         if isinstance(item, list):
                             result_list += item
