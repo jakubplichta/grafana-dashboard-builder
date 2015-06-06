@@ -1,6 +1,4 @@
 row:
   title: 'test title'
   height: 100px
-  panels:
-    - graph:
-        target: target
+  panels: []

@@ -35,5 +35,5 @@ class Row(RowsItemBase):
             'panels': []
         }
         if get_component_type(Panels) in self.data:
-            row_json['panels'] = Panels(self.data, self.registry).gen_json()
+            row_json['panels'] = self.registry.create_component(Panels, self.data).gen_json()
         return row_json

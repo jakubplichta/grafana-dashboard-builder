@@ -52,7 +52,7 @@ def load_test_fixtures():
 def test_component(component, config, expected):
     with mock.patch('grafana_dashboards.components.base.ComponentRegistry') as registry:
         gen = mock.Mock()
-        gen.gen_json = mock.Mock(return_value='mocked')
+        gen.gen_json = mock.Mock(return_value=['mocked'])
         registry.create_component = mock.Mock(return_value=gen)
         gen = mock.Mock()
         gen.gen_json = mock.Mock(return_value=['mocked1', 'mocked2'])
