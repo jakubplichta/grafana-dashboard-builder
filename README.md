@@ -1,6 +1,6 @@
 # grafana-dashboard-builder
 
-![build status](https://travis-ci.org/jakubplichta/grafana-dashboard-builder.svg?branch=master)
+![build status](https://travis-ci.org/jakubplichta/grafana-dashboard-builder.svg?branch=master) [![Coverage Status](https://coveralls.io/repos/jakubplichta/grafana-dashboard-builder/badge.svg)](https://coveralls.io/r/jakubplichta/grafana-dashboard-builder)
 
 ## Introduction
 
