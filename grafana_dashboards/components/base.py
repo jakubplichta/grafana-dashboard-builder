@@ -14,10 +14,10 @@
 # limitations under the License.
 import logging
 import re
+import string
 
 from grafana_dashboards.context import Context
-from grafana_dashboards.errors import MissingComponentNameError, DuplicateKeyError, UnregisteredComponentError, \
-    WrongComponentAttributeCountError
+from grafana_dashboards import errors
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
@@ -51,6 +51,10 @@ def _get_subclasses(clazz):
             if sub not in (ComponentBase, JsonGenerator, JsonListGenerator)]
 
 
+def get_placeholders(component_name):
+    return [v[1] for v in string.Formatter().parse(component_name) if v[1]]
+
+
 class ComponentRegistry(object):
     def __init__(self):
         super(ComponentRegistry, self).__init__()
@@ -65,7 +69,7 @@ class ComponentRegistry(object):
         if isinstance(component_type, str):
             component_type = self._types.get(component_type)
         if self._components.get(component_type) is None:
-            raise UnregisteredComponentError("No component of type '%s' found!" % component_type)
+            raise errors.UnregisteredComponentError("No component of type '%s' found!" % component_type)
         return component_type
 
     def add(self, component):
@@ -73,6 +77,14 @@ class ComponentRegistry(object):
 
         :type component: dict
         """
+        if len(component) > 2:
+            raise errors.WrongComponentAttributeCountError(
+                'Component must have exactly 2 attributes - name and component type with data.'
+                'This contains %s attributes' % len(component.keys()))
+        component_name = component.get('name')
+        if component_name is None:
+            logger.info("Component '%s' does not have 'name' attribute, skipping", component.keys())
+            return
         component_type = None
         for key in component.keys():
             if key == 'name':
@@ -81,22 +93,13 @@ class ComponentRegistry(object):
             break
         try:
             clazz = self._class_for_type(component_type)
-        except UnregisteredComponentError:
+        except errors.UnregisteredComponentError:
             logger.info("Missing implementation class for component '%s', skipping", component_type)
             return
-        if len(component) != 2:
-            raise WrongComponentAttributeCountError(
-                'Component must have exactly 2 attributes - name and component type with data %s' % len(
-                    component.keys()))
-        component_name = component.get('name')
-        if component_name is None:
-            logger.info("Component '%s' does not have 'name' attribute", component_name)
-            raise MissingComponentNameError(
-                "Component '%s' must contain 'name' attribute. Component data: %s" % (component_name, component))
         logger.debug("Adding component '%s' with name '%s'", component_type, component_name)
         components = self._get_component(clazz)
         if component_name in components:
-            raise DuplicateKeyError(
+            raise errors.DuplicateKeyError(
                 "Key '%s' is already defined for component %s" % (component_name, component_type))
         components[component_name] = self.create_component(clazz, component)
 
@@ -106,7 +109,7 @@ class ComponentRegistry(object):
     def _get_component(self, item):
         component = self._components.get(item)
         if component is None:
-            raise UnregisteredComponentError("No component of type '%s' found!" % item)
+            raise errors.UnregisteredComponentError("No component of type '%s' found!" % item)
         return component
 
     def create_component(self, component_type, data):
@@ -115,7 +118,7 @@ class ComponentRegistry(object):
     def get_component(self, component_type, name):
         component = self._get_component(component_type).get(name)
         if component is None:
-            raise UnregisteredComponentError("No component '%s' with name '%s' found!" % (component_type, name))
+            raise errors.UnregisteredComponentError("No component '%s' with name '%s' found!" % (component_type, name))
         return component
 
 
@@ -150,12 +153,17 @@ class JsonListGenerator(JsonGenerator):
         result_list = []
         for items in data:
             if isinstance(items, str):
+                # this is component without context
                 result_list += self.registry.get_component(type(self), items).gen_json()
             else:
+                # TODO add check for dictionary
                 for (item_type, item_data) in items.iteritems():
                     if item_type not in self.component_item_types:
-                        result_list += self.registry.get_component(type(self), item_type).gen_json(Context(item_data))
+                        # this is named component with context
+                        for context in Context.create_context(item_data, get_placeholders(item_type)):
+                            result_list += self.registry.get_component(type(self), item_type).gen_json(context)
                     else:
+                        # this is inplace defined component
                         item = self.registry.create_component(item_type, {item_type: item_data}).gen_json()
                         if isinstance(item, list):
                             result_list += item

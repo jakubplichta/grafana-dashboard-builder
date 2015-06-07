@@ -2,3 +2,7 @@ templates:
   - query-defined-elsewhere
   - query-with-params:
       param1: 1
+  - query-with-{placeholder}:
+      placeholder:
+        - 1
+        - 2

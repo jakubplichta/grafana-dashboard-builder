@@ -16,8 +16,7 @@
 import pytest
 
 from grafana_dashboards.components.base import ComponentRegistry, ComponentBase
-from grafana_dashboards.errors import (UnregisteredComponentError, MissingComponentNameError, DuplicateKeyError,
-                                       WrongComponentAttributeCountError)
+from grafana_dashboards import errors
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
@@ -26,26 +25,54 @@ class TestBase(ComponentBase):
     pass
 
 
-def test_registry():
+def test_registry_unregistered_component():
     registry = ComponentRegistry()
 
-    with pytest.raises(UnregisteredComponentError):
-        registry.add({'name': 'name', 'non-existent': {}})
+    registry.add({'name': 'name', 'non-existent': {}})
+    with pytest.raises(errors.UnregisteredComponentError):
         registry.get_component('non-existent', 'name')
 
-    registry.add({})
-    with pytest.raises(WrongComponentAttributeCountError):
-        registry.add({'test-base': {}})
 
-    with pytest.raises(WrongComponentAttributeCountError):
+def test_registry_add_ignored():
+    registry = ComponentRegistry()
+
+    registry.add({})
+
+
+def test_registry_add_component_with_too_few_fields():
+    registry = ComponentRegistry()
+
+    registry.add({'test-base': {}})
+    with pytest.raises(errors.UnregisteredComponentError):
+        registry.get_component('test-base', None)
+
+
+def test_registry_add_component_with_too_many_fields():
+    registry = ComponentRegistry()
+
+    with pytest.raises(errors.WrongComponentAttributeCountError):
         registry.add({'test-base': {}, 'other': '', 'yet-another': ''})
 
-    with pytest.raises(MissingComponentNameError):
-        registry.add({'test-base': {}, 'other': ''})
+
+def test_registry_add_component_without_name():
+    registry = ComponentRegistry()
+
+    registry.add({'test-base': {}, 'other': ''})
+    with pytest.raises(errors.UnregisteredComponentError):
+        registry.get_component('test-base', None)
+
+
+def test_registry_add_component():
+    registry = ComponentRegistry()
 
     registry.add({'name': 'name', 'test-base': {}})
     assert registry.get_component(TestBase, 'name') is not None
     assert registry[TestBase] is not None
 
-    with pytest.raises(DuplicateKeyError):
+
+def test_registry_add_component_duplicate_key():
+    registry = ComponentRegistry()
+
+    registry.add({'name': 'name', 'test-base': {}})
+    with pytest.raises(errors.DuplicateKeyError):
         registry.add({'name': 'name', 'test-base': {}})

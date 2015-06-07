@@ -94,12 +94,21 @@
               metric-prefix: '{metric-prefix}'
               component: '{component}'
     - second-row
+    - '{param}-row':
+        param:
+          - value1
+          - value2
 
 - name: second-row
   rows:
     - row:
         title: Placeholder row
         height: 100px
+
+- name: '{param}-row'
+  rows:
+    - row:
+        title: '{param} row'
 
 - name: connections
   panels:

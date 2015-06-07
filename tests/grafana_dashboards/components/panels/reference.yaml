@@ -2,3 +2,7 @@ panels:
   - graph-defined-elsewhere
   - graph-with-params:
       param1: 1
+  - graph-with-{placeholder}:
+      placeholder:
+        - 1
+        - 2
