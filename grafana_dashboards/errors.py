@@ -28,9 +28,5 @@ class WrongComponentAttributeCountError(DashboardBuilderException):
     pass
 
 
-class MissingComponentNameError(DashboardBuilderException):
-    pass
-
-
 class UnregisteredComponentError(DashboardBuilderException):
     pass
