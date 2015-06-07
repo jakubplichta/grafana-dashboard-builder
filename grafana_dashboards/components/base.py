@@ -14,6 +14,7 @@
 # limitations under the License.
 import logging
 import re
+import string
 
 from grafana_dashboards.context import Context
 from grafana_dashboards.errors import MissingComponentNameError, DuplicateKeyError, UnregisteredComponentError, \
@@ -49,6 +50,10 @@ def _get_subclasses(clazz):
     return [sub for sub in
             direct_subclasses + [sub_class for direct in direct_subclasses for sub_class in _get_subclasses(direct)]
             if sub not in (ComponentBase, JsonGenerator, JsonListGenerator)]
+
+
+def get_placeholders(component_name):
+    return [v[1] for v in string.Formatter().parse(component_name) if v[1]]
 
 
 class ComponentRegistry(object):
@@ -154,7 +159,8 @@ class JsonListGenerator(JsonGenerator):
             else:
                 for (item_type, item_data) in items.iteritems():
                     if item_type not in self.component_item_types:
-                        result_list += self.registry.get_component(type(self), item_type).gen_json(Context(item_data))
+                        for context in Context.create_context(item_data, get_placeholders(item_type)):
+                            result_list += self.registry.get_component(type(self), item_type).gen_json(context)
                     else:
                         item = self.registry.create_component(item_type, {item_type: item_data}).gen_json()
                         if isinstance(item, list):

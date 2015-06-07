@@ -12,9 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import string
-
-from grafana_dashboards.components.base import ComponentBase
+from grafana_dashboards.components.base import ComponentBase, get_placeholders
 from grafana_dashboards.components.dashboards import Dashboard
 from grafana_dashboards.context import Context
 
@@ -25,7 +23,7 @@ class Project(ComponentBase):
     def __init__(self, data, registry):
         super(Project, self).__init__(data, registry)
         self._placeholders = [placeholder for dashboard in self._get_dashboard_names()
-                              for placeholder in Project._get_placeholders(dashboard)]
+                              for placeholder in get_placeholders(dashboard)]
 
     def _get_dashboard_names(self):
         return self.data.get('dashboards', [])
@@ -33,10 +31,6 @@ class Project(ComponentBase):
     def get_dashboards(self):
         return [self.registry.get_component(Dashboard, dashboard_name) for dashboard_name in
                 self._get_dashboard_names()]
-
-    @staticmethod
-    def _get_placeholders(s):
-        return [v[1] for v in string.Formatter().parse(s) if v[1]]
 
     def get_contexts(self):
         return Context.create_context(self.data, self._placeholders)
