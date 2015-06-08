@@ -15,6 +15,7 @@
 
 import json
 import os
+import errno
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
@@ -41,6 +42,12 @@ class DashboardBuilder(object):
         for context in project.get_contexts():
             for dashboard in project.get_dashboards():
                 json_obj = dashboard.gen_json(context)
-                dashboard_path = os.path.join(self.output_folder, context.expand_placeholders(dashboard.name) + '.json')
+                dirname = os.path.join(self.output_folder, project.name)
+                try:
+                    os.makedirs(dirname)
+                except OSError as e:
+                    if e.errno != errno.EEXIST:
+                        raise
+                dashboard_path = os.path.join(dirname, context.expand_placeholders(dashboard.name) + '.json')
                 with file(dashboard_path, 'w') as f:
                     json.dump(json_obj, f, sort_keys=True, indent=2, separators=(',', ': '))
