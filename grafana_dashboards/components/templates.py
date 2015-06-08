@@ -35,13 +35,27 @@ class Query(TemplatesItemBase):
         for query_part in self.data['query'].split('.'):
             if query_part.startswith('$'):
                 is_first = False if queries else True
+                query = query_part[1:]
+                metric = '*'
                 template_json = {
                     'type': 'query',
                     'refresh_on_load': is_first,
-                    'name': query_part[1:],
-                    'query': '.'.join(processed_parts + ['*']),
+                    'name': query,
                     'refresh': is_first
                 }
+                if query in self.data:
+                    query_config = self.data[query]
+                    metric = query_config.get('metric', metric)
+                    if 'current' in query_config:
+                        current = query_config['current']
+                        template_json['current'] = {
+                            'text': current,
+                            'value': current
+                        }
+                    if 'options' in query_config:
+                        template_json['options'] = [{'text': option, 'value': option} for option in
+                                                    (query_config['options'])]
+                template_json['query'] = '.'.join(processed_parts + [metric])
                 queries.append(template_json)
             processed_parts.append(query_part)
         return queries

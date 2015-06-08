@@ -7,5 +7,4 @@ dashboard:
   time:
     from: now-12h
     to: now
-  rows:
-    - row:
+  rows: []

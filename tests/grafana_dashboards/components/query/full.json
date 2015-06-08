@@ -1,10 +1,24 @@
 [
   {
     "name": "var1",
-    "query": "part1.*",
+    "query": "part1.*x*",
     "refresh": true,
     "refresh_on_load": true,
-    "type": "query"
+    "type": "query",
+    "current": {
+      "text": "o1",
+      "value": "o1"
+    },
+    "options": [
+      {
+        "text": "o1",
+        "value": "o1"
+      },
+      {
+        "text": "o2",
+        "value": "o2"
+      }
+    ]
   },
   {
     "name": "var2",

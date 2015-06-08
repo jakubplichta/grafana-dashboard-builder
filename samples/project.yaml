@@ -132,3 +132,9 @@
   templates:
     - query:
         query: '{metric-prefix}.{component}.$application'
+        application:
+          metric: '*core*'
+          current: first
+          options:
+            - first
+            - last
