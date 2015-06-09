@@ -6,6 +6,7 @@ dashboard:
     - tag2
   time_options: [1h]
   refresh_intervals: [5m]
+  refresh: 5m
   templates:
     - query:
   time:

@@ -41,6 +41,8 @@ class Dashboard(JsonGenerator):
             nav['time_options'] = data.get('time_options', [])
         if 'refresh_intervals' in data:
             nav['refresh_intervals'] = data.get('refresh_intervals', [])
+        if 'refresh' in data:
+            json_data['refresh'] = data.get('refresh')
         if get_component_type(Rows) in data:
             json_data['rows'] = self.registry.create_component(Rows, data).gen_json()
         if get_component_type(Templates) in data:
