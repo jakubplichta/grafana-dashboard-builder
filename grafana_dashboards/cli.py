@@ -17,6 +17,7 @@
 import argparse
 import imp
 import logging
+import os
 
 from grafana_dashboards.builder import DashboardBuilder
 from grafana_dashboards.parser import DefinitionParser
@@ -27,8 +28,10 @@ __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 def main():
     logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', level=logging.DEBUG)
     parser = argparse.ArgumentParser(conflict_handler="resolve")
-    parser.add_argument('-p', '--project', required=True,
-                        help='Location of the file containing project definition.')
+    parser.add_argument('-p', '--path', required=True, nargs='+', type=str,
+                        help='List of path to YAML definition files')
+    parser.add_argument('--project',
+                        help='(deprecated) Location of the file containing project definition.')
     parser.add_argument('-o', '--out',
                         help='Path to output folder')
     parser.add_argument('--plugins', nargs='+', type=str,
@@ -42,7 +45,16 @@ def main():
             except Exception as e:
                 print 'Cannot load plugin %s: %s' % (plugin, str(e))
 
-    projects = DefinitionParser().load_projects(args.project)
+    paths = []
+    if args.project:
+        args.path.append(args.project)
+    for path in args.path:
+        if os.path.isdir(path):
+            for root, dirs, filenames in os.walk(path):
+                paths += [os.path.join(root, filename) for filename in filenames]
+        else:
+            paths.append(path)
+    projects = DefinitionParser().load_projects(paths)
     builder = DashboardBuilder(args.out)
     for project in projects:
         builder.build_dashboards(project)

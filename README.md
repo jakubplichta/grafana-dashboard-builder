@@ -31,13 +31,16 @@ After installation you'll find `grafana_dashboard_builder.py` on your path. Help
 option.
 
 ```
-usage: grafana_dashboard_builder.py [-h] -p PROJECT [-o OUT]
+usage: grafana_dashboard_builder.py [-h] -p PATH [PATH ...]
+                                    [--project PROJECT] [-o OUT]
                                     [--plugins PLUGINS [PLUGINS ...]]
 
 optional arguments:
   -h, --help            show this help message and exit
-  -p PROJECT, --project PROJECT
-                        Location of the file containing project definition.
+  -p PATH [PATH ...], --path PATH [PATH ...]
+                        List of path to YAML definition files
+  --project PROJECT     (deprecated) Location of the file containing project
+                        definition.
   -o OUT, --out OUT     Path to output folder
   --plugins PLUGINS [PLUGINS ...]
                         List of external component plugins to load
@@ -57,6 +60,9 @@ Under component type is wrapped definition of the component.
     component-param1: param-value
     component-param2: other-value
 ```
+
+Components can be defined in multiple source files that are passed through `--path` option. If a path is directory
+it is recursively walked and all files are processed.
 
 ### Components
 

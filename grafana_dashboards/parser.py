@@ -25,11 +25,12 @@ class DefinitionParser(object):
     def __init__(self):
         super(DefinitionParser, self).__init__()
 
-    def load_projects(self, source_file):
+    def load_projects(self, paths):
         registry = ComponentRegistry()
-        with file(source_file, 'r') as fp:
-            for component in self._iter_over_all(yaml.load_all(fp)):
-                registry.add(component)
+        for path in paths:
+            with file(path, 'r') as fp:
+                for component in self._iter_over_all(yaml.load_all(fp)):
+                    registry.add(component)
         return registry[Project]
 
     @staticmethod
