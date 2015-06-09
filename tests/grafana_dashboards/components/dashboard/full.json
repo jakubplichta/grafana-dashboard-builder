@@ -1,5 +1,6 @@
 {
   "title": "title",
+  "refresh": "5m",
   "tags": [
     "tag1",
     "tag2"
