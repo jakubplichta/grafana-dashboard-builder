@@ -1,10 +1,6 @@
 {
   "span": null,
-  "targets": [
-    {
-      "target": "target"
-    }
-  ],
+  "targets": [],
   "title": null,
   "type": "graph"
 }

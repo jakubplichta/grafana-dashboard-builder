@@ -131,7 +131,9 @@
 - name: memory
   panels:
     - graph:
-        target: 'aliasByMetric({metric-prefix}.{component}.$application.load.*)'
+        targets:
+          - 'aliasByMetric({metric-prefix}.{component}.$application.load.*)'
+          - 'aliasByMetric({metric-prefix}.{component}.$application.unload.*)'
         y_formats: [bytes, short]
         span: 4
 

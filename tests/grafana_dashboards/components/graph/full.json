@@ -2,6 +2,12 @@
   "span": 3,
   "targets": [
     {
+      "target": "t1"
+    },
+    {
+      "target": "t2"
+    },
+    {
       "target": "target"
     }
   ],
