@@ -2,6 +2,9 @@ graph:
   span: 3
   title: 'test title'
   target: target
+  targets:
+    - t1
+    - t2
   grid:
     leftMin: 1
     leftMax: 2

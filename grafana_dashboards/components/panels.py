@@ -32,12 +32,11 @@ class Graph(PanelsItemBase):
             'type': 'graph',
             'title': self.data.get('title', None),
             'span': self.data.get('span', None),
-            'targets': [
-                {
-                    'target': self.data['target']
-                }
-            ]
         }
+        targets = self.data.get('targets', [])
+        if 'target' in self.data:
+            targets.append(self.data['target'])
+        panel_json['targets'] = map(lambda v: {'target': v}, targets)
         if 'y_formats' in self.data:
             panel_json['y_formats'] = self.data['y_formats']
         if 'grid' in self.data:
