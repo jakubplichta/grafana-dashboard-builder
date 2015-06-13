@@ -32,6 +32,7 @@ class Row(RowsItemBase):
         row_json = {
             'title': self.data.get('title', ''),
             'height': self.data.get('height', '250px'),
+            'showTitle': self.data.get('showTitle', False),
             'panels': []
         }
         if get_component_type(Panels) in self.data:
