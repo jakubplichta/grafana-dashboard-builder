@@ -48,3 +48,14 @@ class Graph(PanelsItemBase):
                 'rightMin': self.data['grid'].get('rightMin', None)
             }
         return panel_json
+
+
+class Text(PanelsItemBase):
+    def gen_json_from_data(self, data, context):
+        return {
+            'type': 'text',
+            'title': self.data.get('title', None),
+            'span': self.data.get('span', None),
+            'mode': self.data.get('mode', 'text'),
+            'content': self.data.get('content', '')
+        }
