@@ -1,0 +1,7 @@
+{
+  "span": 3,
+  "title": "test title",
+  "mode": "text",
+  "content": "this is\nmultiline\ntext\n",
+  "type": "text"
+}

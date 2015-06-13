@@ -93,6 +93,12 @@
           - memory:
               metric-prefix: '{metric-prefix}'
               component: '{component}'
+          - text:
+              span: 3
+              title: text title
+              mode: text
+              content: example text
+
     - second-row
     - '{param}-row':
         param:
