@@ -104,6 +104,7 @@
     - row:
         title: Placeholder row
         height: 100px
+        showTitle: true
 
 - name: '{param}-row'
   rows:
