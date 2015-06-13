@@ -136,6 +136,16 @@
           - 'aliasByMetric({metric-prefix}.{component}.$application.unload.*)'
         y_formats: [bytes, short]
         span: 4
+        links:
+          - dashboard-link:
+              title: link title
+              dashboard: overview
+              params:
+                - application
+                - param-with-value: param-value
+          - absolute-link:
+              title: link title
+              url: https://github.com
 
 - name: template
   templates:

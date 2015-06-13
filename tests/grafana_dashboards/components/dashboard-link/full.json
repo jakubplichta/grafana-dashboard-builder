@@ -1,0 +1,7 @@
+{
+  "title": "title",
+  "type": "dashboard",
+  "dashboard": "dashboard",
+  "name": "Drilldown dashboard",
+  "params": "var-param1=$param1&var-param2=value2"
+}
