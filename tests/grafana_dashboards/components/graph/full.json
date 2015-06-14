@@ -22,5 +22,8 @@
   "y_formats": [
     "bytes",
     "short"
+  ],
+  "links": [
+    "mocked"
   ]
 }

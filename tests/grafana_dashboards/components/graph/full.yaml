@@ -5,6 +5,9 @@ graph:
   targets:
     - t1
     - t2
+  links:
+    - l1
+    - l2
   grid:
     leftMin: 1
     leftMax: 2
