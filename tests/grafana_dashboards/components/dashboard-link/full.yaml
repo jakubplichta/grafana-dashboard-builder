@@ -1,0 +1,6 @@
+dashboard-link:
+  title: title
+  dashboard: dashboard
+  params:
+    - param1
+    - param2: value2

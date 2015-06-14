@@ -24,6 +24,7 @@ __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 __all__ = [
     'base',
     'dashboards',
+    'links',
     'panels',
     'projects',
     'rows',

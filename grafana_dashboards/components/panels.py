@@ -12,7 +12,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from grafana_dashboards.components.base import JsonListGenerator, JsonGenerator
+from grafana_dashboards.components.base import JsonListGenerator, JsonGenerator, get_component_type
+from grafana_dashboards.components.links import Links
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
@@ -46,6 +47,8 @@ class Graph(PanelsItemBase):
                 'leftMin': self.data['grid'].get('leftMin', None),
                 'rightMin': self.data['grid'].get('rightMin', None)
             }
+        if get_component_type(Links) in self.data:
+            panel_json['links'] = self.registry.create_component(Links, self.data).gen_json()
         return panel_json
 
 
