@@ -14,3 +14,4 @@ graph:
     rightMin: 3
     rightMax: 4
   y_formats: [bytes, short]
+  nullPointMode: 'connected'

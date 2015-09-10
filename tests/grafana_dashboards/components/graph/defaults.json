@@ -2,5 +2,6 @@
   "span": null,
   "targets": [],
   "title": null,
-  "type": "graph"
+  "type": "graph",
+  "nullPointMode": "null"
 }
