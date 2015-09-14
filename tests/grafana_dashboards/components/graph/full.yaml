@@ -19,3 +19,4 @@ graph:
   fill: 4
   aliasColors:
     alias1: '#000000'
+  leftYAxisLabel: axis label

@@ -31,5 +31,6 @@
     "alias1": "#000000"
   },
   "fill": 4,
-  "stack": true
+  "stack": true,
+  "leftYAxisLabel": "axis label"
 }
