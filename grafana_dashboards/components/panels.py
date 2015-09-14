@@ -39,6 +39,12 @@ class Graph(PanelsItemBase):
             targets.append(self.data['target'])
         panel_json['targets'] = map(lambda v: {'target': v}, targets)
         panel_json['nullPointMode'] = self.data.get('nullPointMode', 'null')
+        if 'stack' in self.data:
+            panel_json['stack'] = self.data['stack']
+        if 'fill' in self.data:
+            panel_json['fill'] = self.data['fill']
+        if 'aliasColors' in self.data:
+            panel_json['aliasColors'] = self.data['aliasColors']
         if 'y_formats' in self.data:
             panel_json['y_formats'] = self.data['y_formats']
         if 'grid' in self.data:

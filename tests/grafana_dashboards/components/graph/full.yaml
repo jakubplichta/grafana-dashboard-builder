@@ -15,3 +15,7 @@ graph:
     rightMax: 4
   y_formats: [bytes, short]
   nullPointMode: 'connected'
+  stack: true
+  fill: 4
+  aliasColors:
+    alias1: '#000000'
