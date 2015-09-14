@@ -59,3 +59,23 @@ class Query(TemplatesItemBase):
                 queries.append(template_json)
             processed_parts.append(query_part)
         return queries
+
+
+class Custom(TemplatesItemBase):
+    def gen_json_from_data(self, data, context):
+        template_json = {
+            'type': 'custom',
+            'refresh_on_load': False,
+            'name': self.data['name'],
+            'query': ','.join(self.data['options'])
+        }
+        if 'current' in self.data:
+            current = self.data['current']
+            template_json['current'] = {
+                'text': current,
+                'value': current
+            }
+        if 'options' in self.data:
+            template_json['options'] = [{'text': option, 'value': option} for option in
+                                        (self.data['options'])]
+        return [template_json]

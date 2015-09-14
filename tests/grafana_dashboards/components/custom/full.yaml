@@ -1,0 +1,6 @@
+custom:
+  name: name
+  current: o1
+  options:
+    - o1
+    - o2

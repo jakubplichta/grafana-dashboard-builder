@@ -26,5 +26,11 @@
   "links": [
     "mocked"
   ],
-  "nullPointMode": "connected"
+  "nullPointMode": "connected",
+  "aliasColors": {
+    "alias1": "#000000"
+  },
+  "fill": 4,
+  "stack": true,
+  "leftYAxisLabel": "axis label"
 }
