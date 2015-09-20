@@ -61,7 +61,7 @@ class Query(TemplatesItemBase):
         return queries
 
 
-class Custom(TemplatesItemBase):
+class CustomTemplate(TemplatesItemBase):
     def gen_json_from_data(self, data, context):
         template_json = {
             'type': 'custom',
