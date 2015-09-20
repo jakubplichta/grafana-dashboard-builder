@@ -1,0 +1,28 @@
+{
+  "span": 3,
+  "title": "test title",
+  "type": "singlestat",
+  "valueName": "current",
+  "nullPointMode": "connected",
+  "targets": [
+    {
+      "target": "t1"
+    },
+    {
+      "target": "t2"
+    }
+  ],
+  "links": [
+    "mocked"
+  ],
+  "format": "bytes",
+  "postfix": "postfix",
+  "prefix": "prefix",
+  "nullText": "n/a",
+  "sparkline": {
+    "fillColor": "rgba(1, 2, 3, 4)",
+    "full": true,
+    "lineColor": "rgb(1, 2, 3)",
+    "show": true
+  }
+}
