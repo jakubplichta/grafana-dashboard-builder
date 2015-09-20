@@ -42,6 +42,8 @@
     "min": true,
     "show": false,
     "total": true,
-    "values": true
+    "values": true,
+    "alignAsTable": true,
+    "hideEmpty": true
   }
 }
