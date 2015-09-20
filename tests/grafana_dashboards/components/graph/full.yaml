@@ -18,6 +18,7 @@ graph:
   stack: true
   fill: 4
   bars: true
+  lines: false
   aliasColors:
     alias1: '#000000'
   leftYAxisLabel: axis label
