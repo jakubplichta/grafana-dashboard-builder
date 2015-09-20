@@ -47,6 +47,8 @@ class Graph(PanelsItemBase):
             panel_json['aliasColors'] = self.data['aliasColors']
         if 'leftYAxisLabel' in self.data:
             panel_json['leftYAxisLabel'] = self.data['leftYAxisLabel']
+        if 'bars' in self.data:
+            panel_json['bars'] = self.data['bars']
         if 'y_formats' in self.data:
             panel_json['y_formats'] = self.data['y_formats']
         if 'grid' in self.data:

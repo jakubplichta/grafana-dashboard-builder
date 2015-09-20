@@ -32,5 +32,6 @@
   },
   "fill": 4,
   "stack": true,
+  "bars": true,
   "leftYAxisLabel": "axis label"
 }
