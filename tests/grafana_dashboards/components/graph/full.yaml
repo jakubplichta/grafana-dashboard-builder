@@ -21,3 +21,11 @@ graph:
   aliasColors:
     alias1: '#000000'
   leftYAxisLabel: axis label
+  legend:
+    show: false
+    values: true
+    min: true
+    max: true
+    current: true
+    total: true
+    avg: true

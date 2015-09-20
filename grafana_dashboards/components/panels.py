@@ -58,6 +58,16 @@ class Graph(PanelsItemBase):
                 'leftMin': self.data['grid'].get('leftMin', None),
                 'rightMin': self.data['grid'].get('rightMin', None)
             }
+        if 'legend' in self.data:
+            panel_json['legend'] = {
+                'show': self.data['legend'].get('show', True),
+                'values': self.data['legend'].get('values', False),
+                'min': self.data['legend'].get('min', False),
+                'max': self.data['legend'].get('max', False),
+                'current': self.data['legend'].get('current', False),
+                'total': self.data['legend'].get('total', False),
+                'avg': self.data['legend'].get('avg', False)
+            }
         if get_component_type(Links) in self.data:
             panel_json['links'] = self.registry.create_component(Links, self.data).gen_json()
         return panel_json
