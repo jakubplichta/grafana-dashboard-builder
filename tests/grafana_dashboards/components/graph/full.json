@@ -33,5 +33,14 @@
   "fill": 4,
   "stack": true,
   "bars": true,
-  "leftYAxisLabel": "axis label"
+  "leftYAxisLabel": "axis label",
+  "legend": {
+    "avg": true,
+    "current": true,
+    "max": true,
+    "min": true,
+    "show": false,
+    "total": true,
+    "values": true
+  }
 }
