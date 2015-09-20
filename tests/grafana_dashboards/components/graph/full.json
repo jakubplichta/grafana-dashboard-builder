@@ -33,6 +33,7 @@
   "fill": 4,
   "stack": true,
   "bars": true,
+  "lines": false,
   "leftYAxisLabel": "axis label",
   "legend": {
     "avg": true,
