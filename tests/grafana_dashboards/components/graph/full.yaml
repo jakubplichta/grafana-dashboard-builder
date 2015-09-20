@@ -30,3 +30,5 @@ graph:
     current: true
     total: true
     avg: true
+    alignAsTable: true
+    hideEmpty: true
