@@ -17,6 +17,7 @@ graph:
   nullPointMode: 'connected'
   stack: true
   fill: 4
+  bars: true
   aliasColors:
     alias1: '#000000'
   leftYAxisLabel: axis label
