@@ -63,6 +63,36 @@ class Graph(PanelsItemBase):
         return panel_json
 
 
+class SingleStat(PanelsItemBase):
+    def gen_json_from_data(self, data, context):
+        panel_json = {
+            'type': 'singlestat',
+            'title': self.data.get('title', None),
+            'span': self.data.get('span', None),
+            'targets': map(lambda v: {'target': v}, self.data.get('targets', [])),
+            'nullPointMode': self.data.get('nullPointMode', 'null'),
+            'valueName': self.data.get('valueName', 'current')
+        }
+        if 'prefix' in self.data:
+            panel_json['prefix'] = self.data['prefix']
+        if 'postfix' in self.data:
+            panel_json['postfix'] = self.data['postfix']
+        if 'nullText' in self.data:
+            panel_json['nullText'] = self.data['nullText']
+        if 'format' in self.data:
+            panel_json['format'] = self.data['format']
+        if 'sparkline' in self.data:
+            panel_json['sparkline'] = {
+                'show': True,
+                'full': self.data['sparkline'].get('full', False),
+                'lineColor': self.data['sparkline'].get('lineColor', 'rgb(31, 120, 193)'),
+                'fillColor': self.data['sparkline'].get('fillColor', 'rgba(31, 118, 189, 0.18)')
+            }
+        if get_component_type(Links) in self.data:
+            panel_json['links'] = self.registry.create_component(Links, self.data).gen_json()
+        return panel_json
+
+
 class Text(PanelsItemBase):
     def gen_json_from_data(self, data, context):
         return {

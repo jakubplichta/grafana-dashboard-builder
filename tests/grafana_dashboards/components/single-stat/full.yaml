@@ -1,0 +1,19 @@
+single-stat:
+  span: 3
+  title: 'test title'
+  targets:
+    - t1
+    - t2
+  links:
+    - l1
+    - l2
+  nullPointMode: 'connected'
+  prefix: prefix
+  postfix: postfix
+  nullText: n/a
+  format: bytes
+  sparkline:
+    show: true
+    full: true
+    lineColor: rgb(1, 2, 3)
+    fillColor: rgba(1, 2, 3, 4)
