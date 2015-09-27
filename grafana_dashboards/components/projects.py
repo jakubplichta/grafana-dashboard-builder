@@ -32,5 +32,9 @@ class Project(ComponentBase):
         return [self.registry.get_component(Dashboard, dashboard_name) for dashboard_name in
                 self._get_dashboard_names()]
 
-    def get_contexts(self):
-        return Context.create_context(self.data, self._placeholders)
+    def get_contexts(self, context=None):
+        if context is None:
+            context = {}
+        data = self.data.copy()
+        data.update(context)
+        return Context.create_context(data, self._placeholders)
