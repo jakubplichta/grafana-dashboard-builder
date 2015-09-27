@@ -34,12 +34,12 @@ class DashboardBuilder(object):
         if not os.path.isdir(output_folder):
             raise Exception('out must be a directory')
 
-    def build_dashboards(self, project):
+    def build_dashboards(self, project, context=None):
         """
 
         :type project: grafana_dashboards.components.Project
         """
-        for context in project.get_contexts():
+        for context in project.get_contexts(context):
             for dashboard in project.get_dashboards():
                 json_obj = dashboard.gen_json(context)
                 dirname = os.path.join(self.output_folder, project.name)

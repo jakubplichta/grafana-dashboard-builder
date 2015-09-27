@@ -19,6 +19,8 @@ import imp
 import logging
 import os
 
+import yaml
+
 from grafana_dashboards.builder import DashboardBuilder
 from grafana_dashboards.parser import DefinitionParser
 
@@ -34,6 +36,9 @@ def main():
                         help='(deprecated) Location of the file containing project definition.')
     parser.add_argument('-o', '--out',
                         help='Path to output folder')
+    parser.add_argument('--context', default='{}',
+                        help='YAML structure defining parameters for dashboard definition.'
+                             ' Effectively overrides any parameter defined on project level.')
     parser.add_argument('--plugins', nargs='+', type=str,
                         help='List of external component plugins to load')
     args = parser.parse_args()
@@ -54,10 +59,11 @@ def main():
                 paths += [os.path.join(root, filename) for filename in filenames]
         else:
             paths.append(path)
+    context = yaml.load(args.context)
     projects = DefinitionParser().load_projects(paths)
     builder = DashboardBuilder(args.out)
     for project in projects:
-        builder.build_dashboards(project)
+        builder.build_dashboards(project, context)
 
 
 if __name__ == '__main__':
