@@ -22,6 +22,7 @@ import os
 import yaml
 
 from grafana_dashboards.builder import DashboardBuilder
+from grafana_dashboards.config import Config
 from grafana_dashboards.parser import DefinitionParser
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
@@ -36,11 +37,14 @@ def main():
                         help='(deprecated) Location of the file containing project definition.')
     parser.add_argument('-o', '--out',
                         help='Path to output folder')
+    parser.add_argument('-c', '--config', default='./.grafana/grafana_dashboards.yaml',
+                        help='Configuration file containing fine-tuned setup of builder\'s components.')
     parser.add_argument('--context', default='{}',
                         help='YAML structure defining parameters for dashboard definition.'
                              ' Effectively overrides any parameter defined on project level.')
     parser.add_argument('--plugins', nargs='+', type=str,
                         help='List of external component plugins to load')
+
     args = parser.parse_args()
 
     if args.plugins:
@@ -59,7 +63,11 @@ def main():
                 paths += [os.path.join(root, filename) for filename in filenames]
         else:
             paths.append(path)
-    context = yaml.load(args.context)
+
+    config = Config(args.config)
+    context = config.get_config('context')
+    context.update(yaml.load(args.context))
+
     projects = DefinitionParser().load_projects(paths)
     builder = DashboardBuilder(args.out)
     for project in projects:
