@@ -19,9 +19,17 @@ from grafana_dashboards.config import Config
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
 
-def test_dict():
+def test_existent_config_file():
     config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.yaml')
     config = Config(config_file)
 
     assert config.get_config('context') == {'component': 'frontend'}
+    assert config.get_config('unknown') == {}
+
+
+def test_nonexistent_config_file():
+    config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'no_file.yaml')
+    config = Config(config_file)
+
+    assert config.get_config('context') == {}
     assert config.get_config('unknown') == {}
