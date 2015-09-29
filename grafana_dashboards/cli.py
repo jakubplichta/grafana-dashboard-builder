@@ -21,7 +21,7 @@ import os
 
 import yaml
 
-from grafana_dashboards.builder import DashboardBuilder
+from grafana_dashboards.exporter import ProjectProcessor, FileExporter
 from grafana_dashboards.config import Config
 from grafana_dashboards.parser import DefinitionParser
 
@@ -65,13 +65,16 @@ def main():
             paths.append(path)
 
     config = Config(args.config)
+    config.get_config('file').update(output_folder=args.out)
+
+    dashboard_exporters = [FileExporter(**config.get_config('file'))]
+
     context = config.get_config('context')
     context.update(yaml.load(args.context))
 
     projects = DefinitionParser().load_projects(paths)
-    builder = DashboardBuilder(args.out)
-    for project in projects:
-        builder.build_dashboards(project, context)
+    project_processor = ProjectProcessor(dashboard_exporters)
+    project_processor.process_projects(projects, context)
 
 
 if __name__ == '__main__':
