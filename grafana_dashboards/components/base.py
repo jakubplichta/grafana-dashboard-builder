@@ -13,27 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import logging
-import re
 import string
 
-from grafana_dashboards.context import Context
 from grafana_dashboards import errors
+from grafana_dashboards.common import get_component_type
+from grafana_dashboards.context import Context
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
 
 logger = logging.getLogger(__name__)
-
-_first_cap_re = re.compile('(.)([A-Z][a-z]+)')
-_all_cap_re = re.compile('([a-z0-9])([A-Z])')
-
-
-def get_component_type(clazz):
-    """
-
-    :type clazz: type
-    """
-    return _all_cap_re.sub(r'\1-\2', _first_cap_re.sub(r'\1-\2', clazz.__name__)).lower()
 
 
 def get_generators():
