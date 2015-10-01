@@ -22,6 +22,7 @@ import os
 import yaml
 
 from grafana_dashboards.exporter import ProjectProcessor, FileExporter
+from grafana_dashboards.client.elastic_search import ElasticSearchExporter
 from grafana_dashboards.common import get_component_type
 from grafana_dashboards.config import Config
 from grafana_dashboards.parser import DefinitionParser
@@ -85,7 +86,7 @@ def main():
         exporters.add('file')
         config.get_config('file').update(output_folder=args.out)
 
-    dashboard_exporters = _initialize_exporters(exporters, [FileExporter], config)
+    dashboard_exporters = _initialize_exporters(exporters, [FileExporter, ElasticSearchExporter], config)
 
     context = config.get_config('context')
     context.update(yaml.load(args.context))

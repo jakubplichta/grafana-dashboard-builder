@@ -50,6 +50,7 @@ params = {
     'version': '0.1.0a6',
     'packages': [
         'grafana_dashboards',
+        'grafana_dashboards.client',
         'grafana_dashboards.components'
     ],
     'scripts': [
