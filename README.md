@@ -31,19 +31,28 @@ After installation you'll find `grafana_dashboard_builder.py` on your path. Help
 option.
 
 ```
-usage: grafana_dashboard_builder.py [-h] -p PATH [PATH ...]
-                                    [--project PROJECT] [-o OUT]
-                                    [--plugins PLUGINS [PLUGINS ...]]
+usage: grafana_dashboard_builder.py [-h] -p PATH [PATH ...] [--project PROJECT] [-o OUT] [-c CONFIG]
+                                    [--context CONTEXT] [--plugins PLUGINS [PLUGINS ...]]
+                                    [--exporter EXPORTERS [EXPORTERS ...]]
 
 optional arguments:
   -h, --help            show this help message and exit
   -p PATH [PATH ...], --path PATH [PATH ...]
                         List of path to YAML definition files
-  --project PROJECT     (deprecated) Location of the file containing project
-                        definition.
-  -o OUT, --out OUT     Path to output folder
+  --project PROJECT     (deprecated, use path) Location of the file containing
+                        project definition.
+  -o OUT, --out OUT     (deprecated, use config file and file exporter) Path
+                        to output folder
+  -c CONFIG, --config CONFIG
+                        Configuration file containing fine-tuned setup of
+                        builder's components.
+  --context CONTEXT     YAML structure defining parameters for dashboard
+                        definition. Effectively overrides any parameter
+                        defined on project level.
   --plugins PLUGINS [PLUGINS ...]
                         List of external component plugins to load
+  --exporter EXPORTERS [EXPORTERS ...]
+                        List of dashboard exporters
 ```
 
 To start you need to create project configuration that needs to be in one YAML document. And some examples with current
