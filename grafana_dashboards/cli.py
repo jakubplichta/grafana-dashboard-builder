@@ -28,13 +28,25 @@ from grafana_dashboards.parser import DefinitionParser
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
 
+def _process_paths(paths):
+    definition_files = set()
+    for paths in paths:
+        if os.path.isdir(paths):
+            for root, dirs, filenames in os.walk(paths):
+                s = set([os.path.join(root, filename) for filename in filenames])
+                definition_files = definition_files.union(s)
+        else:
+            definition_files.add(paths)
+    return definition_files
+
+
 def main():
     logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', level=logging.DEBUG)
-    parser = argparse.ArgumentParser(conflict_handler="resolve")
+    parser = argparse.ArgumentParser()
     parser.add_argument('-p', '--path', required=True, nargs='+', type=str,
                         help='List of path to YAML definition files')
     parser.add_argument('--project',
-                        help='(deprecated) Location of the file containing project definition.')
+                        help='(deprecated, use path) Location of the file containing project definition.')
     parser.add_argument('-o', '--out',
                         help='Path to output folder')
     parser.add_argument('-c', '--config', default='./.grafana/grafana_dashboards.yaml',
@@ -54,15 +66,9 @@ def main():
             except Exception as e:
                 print 'Cannot load plugin %s: %s' % (plugin, str(e))
 
-    paths = []
     if args.project:
-        args.path.append(args.project)
-    for path in args.path:
-        if os.path.isdir(path):
-            for root, dirs, filenames in os.walk(path):
-                paths += [os.path.join(root, filename) for filename in filenames]
-        else:
-            paths.append(path)
+        args.path.add(args.project)
+    paths = _process_paths(args.path)
 
     config = Config(args.config)
     config.get_config('file').update(output_folder=args.out)
