@@ -12,7 +12,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from grafana_dashboards.components.base import JsonGenerator, get_component_type
+from grafana_dashboards.components.base import JsonGenerator
+from grafana_dashboards.common import get_component_type
 from grafana_dashboards.components.rows import Rows
 from grafana_dashboards.components.templates import Templates
 

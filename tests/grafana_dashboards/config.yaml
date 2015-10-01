@@ -1,2 +1,5 @@
 context:
   component: frontend
+dummy:
+  prop: value
+  other: true

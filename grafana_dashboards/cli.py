@@ -22,10 +22,17 @@ import os
 import yaml
 
 from grafana_dashboards.exporter import ProjectProcessor, FileExporter
+from grafana_dashboards.common import get_component_type
 from grafana_dashboards.config import Config
 from grafana_dashboards.parser import DefinitionParser
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
+
+
+def _initialize_exporters(exporter_names, exporter_types, config):
+    exporters = dict([(get_component_type(exporter), exporter) for exporter in exporter_types])
+    exporters = dict([(name[:-9], exporter) for name, exporter in exporters.iteritems() if name[:-9] in exporter_names])
+    return [exporter(**config.get_config(name)) for (name, exporter) in exporters.iteritems()]
 
 
 def _process_paths(paths):
@@ -48,7 +55,7 @@ def main():
     parser.add_argument('--project',
                         help='(deprecated, use path) Location of the file containing project definition.')
     parser.add_argument('-o', '--out',
-                        help='Path to output folder')
+                        help='(deprecated, use config file and file exporter) Path to output folder')
     parser.add_argument('-c', '--config', default='./.grafana/grafana_dashboards.yaml',
                         help='Configuration file containing fine-tuned setup of builder\'s components.')
     parser.add_argument('--context', default='{}',
@@ -56,6 +63,8 @@ def main():
                              ' Effectively overrides any parameter defined on project level.')
     parser.add_argument('--plugins', nargs='+', type=str,
                         help='List of external component plugins to load')
+    parser.add_argument('--exporter', nargs='+', type=str, default=set(), dest='exporters',
+                        help='List of dashboard exporters')
 
     args = parser.parse_args()
 
@@ -71,9 +80,12 @@ def main():
     paths = _process_paths(args.path)
 
     config = Config(args.config)
-    config.get_config('file').update(output_folder=args.out)
+    exporters = set(args.exporters)
+    if args.out:
+        exporters.add('file')
+        config.get_config('file').update(output_folder=args.out)
 
-    dashboard_exporters = [FileExporter(**config.get_config('file'))]
+    dashboard_exporters = _initialize_exporters(exporters, [FileExporter], config)
 
     context = config.get_config('context')
     context.update(yaml.load(args.context))

@@ -12,12 +12,34 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import os
 
 from mock import patch
 
 from grafana_dashboards import cli
+from grafana_dashboards.config import Config
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
+
+
+class DummyExporter(object):
+
+    def __init__(self, prop, **kwargs):
+        super(DummyExporter, self).__init__()
+        self.prop = prop
+        self.kwargs = kwargs
+
+
+def test_initialize_exporters():
+    config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.yaml')
+    config = Config(config_file)
+    # noinspection PyProtectedMember
+    exporters = cli._initialize_exporters('dummy', [DummyExporter], config)
+
+    assert exporters is not None
+    assert len(exporters) == 1
+    assert exporters[0].prop == 'value'
+    assert exporters[0].kwargs == {'other': True}
 
 
 # noinspection PyUnusedLocal
