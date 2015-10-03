@@ -29,31 +29,22 @@ class PanelsItemBase(JsonGenerator):
 
 
 class Graph(PanelsItemBase):
+
+    # noinspection PySetFunctionToLiteral
+    _copy_fields = set(['stack', 'fill', 'aliasColors', 'leftYAxisLabel', 'bars', 'lines', 'y_formats'])
+
     def gen_json_from_data(self, data, context):
-        panel_json = {
+        panel_json = super(Graph, self).gen_json_from_data(data, context)
+        panel_json.update({
             'type': 'graph',
             'title': self.data.get('title', None),
             'span': self.data.get('span', None),
-        }
+        })
         targets = self.data.get('targets', [])
         if 'target' in self.data:
             targets.append(self.data['target'])
         panel_json['targets'] = map(lambda v: {'target': v}, targets)
         panel_json['nullPointMode'] = self.data.get('nullPointMode', 'null')
-        if 'stack' in self.data:
-            panel_json['stack'] = self.data['stack']
-        if 'fill' in self.data:
-            panel_json['fill'] = self.data['fill']
-        if 'aliasColors' in self.data:
-            panel_json['aliasColors'] = self.data['aliasColors']
-        if 'leftYAxisLabel' in self.data:
-            panel_json['leftYAxisLabel'] = self.data['leftYAxisLabel']
-        if 'bars' in self.data:
-            panel_json['bars'] = self.data['bars']
-        if 'lines' in self.data:
-            panel_json['lines'] = self.data['lines']
-        if 'y_formats' in self.data:
-            panel_json['y_formats'] = self.data['y_formats']
         if 'grid' in self.data:
             panel_json['grid'] = {
                 'leftMax': self.data['grid'].get('leftMax', None),
@@ -79,32 +70,29 @@ class Graph(PanelsItemBase):
 
 
 class SingleStat(PanelsItemBase):
+
+    # noinspection PySetFunctionToLiteral
+    _copy_fields = set(['prefix', 'postfix', 'nullText', 'format'])
+
     def gen_json_from_data(self, data, context):
-        panel_json = {
+        panel_json = super(SingleStat, self).gen_json_from_data(data, context)
+        panel_json.update({
             'type': 'singlestat',
-            'title': self.data.get('title', None),
-            'span': self.data.get('span', None),
-            'targets': map(lambda v: {'target': v}, self.data.get('targets', [])),
-            'nullPointMode': self.data.get('nullPointMode', 'null'),
-            'valueName': self.data.get('valueName', 'current')
-        }
-        if 'prefix' in self.data:
-            panel_json['prefix'] = self.data['prefix']
-        if 'postfix' in self.data:
-            panel_json['postfix'] = self.data['postfix']
-        if 'nullText' in self.data:
-            panel_json['nullText'] = self.data['nullText']
-        if 'format' in self.data:
-            panel_json['format'] = self.data['format']
-        if 'sparkline' in self.data:
+            'title': data.get('title', None),
+            'span': data.get('span', None),
+            'targets': map(lambda v: {'target': v}, data.get('targets', [])),
+            'nullPointMode': data.get('nullPointMode', 'null'),
+            'valueName': data.get('valueName', 'current')
+        })
+        if 'sparkline' in data:
             panel_json['sparkline'] = {
                 'show': True,
-                'full': self.data['sparkline'].get('full', False),
-                'lineColor': self.data['sparkline'].get('lineColor', 'rgb(31, 120, 193)'),
-                'fillColor': self.data['sparkline'].get('fillColor', 'rgba(31, 118, 189, 0.18)')
+                'full': data['sparkline'].get('full', False),
+                'lineColor': data['sparkline'].get('lineColor', 'rgb(31, 120, 193)'),
+                'fillColor': data['sparkline'].get('fillColor', 'rgba(31, 118, 189, 0.18)')
             }
-        if get_component_type(Links) in self.data:
-            panel_json['links'] = self.registry.create_component(Links, self.data).gen_json()
+        if get_component_type(Links) in data:
+            panel_json['links'] = self.registry.create_component(Links, data).gen_json()
         return panel_json
 
 
@@ -112,8 +100,8 @@ class Text(PanelsItemBase):
     def gen_json_from_data(self, data, context):
         return {
             'type': 'text',
-            'title': self.data.get('title', None),
-            'span': self.data.get('span', None),
-            'mode': self.data.get('mode', 'text'),
-            'content': self.data.get('content', '')
+            'title': data.get('title', None),
+            'span': data.get('span', None),
+            'mode': data.get('mode', 'text'),
+            'content': data.get('content', '')
         }

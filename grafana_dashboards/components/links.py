@@ -31,12 +31,12 @@ class DashboardLink(LinksItemBase):
         link_json = {
             'type': 'dashboard',
             'name': 'Drilldown dashboard',
-            'title': self.data.get('title', None),
-            'dashboard': self.data.get('dashboard', None)
+            'title': data.get('title', None),
+            'dashboard': data.get('dashboard', None)
         }
-        if 'params' in self.data:
+        if 'params' in data:
             params = []
-            for param in self.data.get('params'):
+            for param in data.get('params'):
                 if isinstance(param, str):
                     params.append((param, '$' + param))
                 else:
@@ -51,6 +51,6 @@ class AbsoluteLink(LinksItemBase):
         return {
             'type': 'absolute',
             'name': 'Drilldown dashboard',
-            'title': self.data.get('title', None),
-            'url': self.data.get('url', None)
+            'title': data.get('title', None),
+            'url': data.get('url', None)
         }
