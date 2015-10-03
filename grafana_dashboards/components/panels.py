@@ -98,10 +98,12 @@ class SingleStat(PanelsItemBase):
 
 class Text(PanelsItemBase):
     def gen_json_from_data(self, data, context):
-        return {
+        panel_json = super(Text, self).gen_json_from_data(data, context)
+        panel_json.update({
             'type': 'text',
             'title': data.get('title', None),
             'span': data.get('span', None),
             'mode': data.get('mode', 'text'),
             'content': data.get('content', '')
-        }
+        })
+        return panel_json

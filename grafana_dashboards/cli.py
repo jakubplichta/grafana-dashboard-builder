@@ -77,12 +77,14 @@ def main():
                 print 'Cannot load plugin %s: %s' % (plugin, str(e))
 
     if args.project:
+        logging.warn("Using deprecated option '--project'")
         args.path.add(args.project)
     paths = _process_paths(args.path)
 
     config = Config(args.config)
     exporters = set(args.exporters)
     if args.out:
+        logging.warn("Using deprecated option '-o/--out'")
         exporters.add('file')
         config.get_config('file').update(output_folder=args.out)
 

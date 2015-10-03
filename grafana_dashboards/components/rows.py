@@ -30,12 +30,13 @@ class RowsItemBase(JsonGenerator):
 
 class Row(RowsItemBase):
     def gen_json_from_data(self, data, context):
-        row_json = {
+        row_json = super(Row, self).gen_json_from_data(data, context)
+        row_json.update({
             'title': data.get('title', ''),
             'height': data.get('height', '250px'),
             'showTitle': data.get('showTitle', False),
             'panels': []
-        }
+        })
         if get_component_type(Panels) in data:
             row_json['panels'] = self.registry.create_component(Panels, data).gen_json()
         return row_json

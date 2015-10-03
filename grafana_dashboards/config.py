@@ -28,7 +28,7 @@ class Config(object):
     def __init__(self, config=None):
         super(Config, self).__init__()
         if not os.path.exists(config):
-            logger.debug("Config file '{0}' does not exist".format(config))
+            logger.debug("Config file '%s' does not exist", config)
             self._config = {}
         else:
             with file(config) as fp:
