@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import json
+import logging
 import os
 
 from grafana_dashboards.exporter import DashboardExporter
@@ -21,17 +22,21 @@ from grafana_dashboards.client.connection import Connection
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
 
+logger = logging.getLogger(__name__)
+
+
 class ElasticSearchExporter(DashboardExporter):
     def __init__(self, **kwargs):
         super(ElasticSearchExporter, self).__init__()
-        host = os.getenv('ES_HOST', kwargs.get('host'))
+        self._host = os.getenv('ES_HOST', kwargs.get('host'))
         password = os.getenv('ES_PASSWORD', kwargs.get('password'))
         username = os.getenv('ES_USERNAME', kwargs.get('username'))
 
-        self._connection = Connection(username, password, host)
+        self._connection = Connection(username, password, self._host)
 
     def process_dashboard(self, project_name, dashboard_name, dashboard_data):
         super(ElasticSearchExporter, self).process_dashboard(project_name, dashboard_name, dashboard_data)
         body = {'user': 'guest', 'group': 'guest', 'title': dashboard_data['title'], 'tags': dashboard_data['tags'],
                 'dashboard': json.dumps(dashboard_data)}
+        logger.info("Uploading dashboard '%s' to %s", dashboard_name, self._host)
         self._connection.make_request('/es/grafana-dash/dashboard/{0}'.format(dashboard_name), body)

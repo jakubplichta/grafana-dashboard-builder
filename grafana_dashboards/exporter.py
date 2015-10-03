@@ -14,10 +14,14 @@
 # limitations under the License.
 
 import json
+import logging
 import os
 import errno
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
+
+
+logger = logging.getLogger(__name__)
 
 
 class DashboardExporter(object):
@@ -43,6 +47,7 @@ class ProjectProcessor(object):
         :type parent_context: dict
         """
         for project in projects:
+            logger.info("Processing project '%s'", project.name)
             for context in project.get_contexts(parent_context):
                 for dashboard in project.get_dashboards():
                     json_obj = dashboard.gen_json(context)
@@ -71,5 +76,6 @@ class FileExporter(DashboardExporter):
                 raise
 
         dashboard_path = os.path.join(dirname, dashboard_name + '.json')
+        logger.info("Saving dashboard '%s' to '%s'", dashboard_name, os.path.abspath(dashboard_path))
         with file(dashboard_path, 'w') as f:
             json.dump(dashboard_data, f, sort_keys=True, indent=2, separators=(',', ': '))

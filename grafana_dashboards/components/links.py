@@ -28,12 +28,13 @@ class LinksItemBase(JsonGenerator):
 
 class DashboardLink(LinksItemBase):
     def gen_json_from_data(self, data, context):
-        link_json = {
+        link_json = super(DashboardLink, self).gen_json_from_data(data, context)
+        link_json.update({
             'type': 'dashboard',
             'name': 'Drilldown dashboard',
             'title': data.get('title', None),
             'dashboard': data.get('dashboard', None)
-        }
+        })
         if 'params' in data:
             params = []
             for param in data.get('params'):
@@ -48,9 +49,11 @@ class DashboardLink(LinksItemBase):
 
 class AbsoluteLink(LinksItemBase):
     def gen_json_from_data(self, data, context):
-        return {
+        link_json = super(AbsoluteLink, self).gen_json_from_data(data, context)
+        link_json.update({
             'type': 'absolute',
             'name': 'Drilldown dashboard',
             'title': data.get('title', None),
             'url': data.get('url', None)
-        }
+        })
+        return link_json

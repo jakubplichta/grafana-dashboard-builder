@@ -133,6 +133,12 @@ class JsonGenerator(ComponentBase):
         return self.gen_json_from_data(context.expand_placeholders(self.data), context)
 
     def gen_json_from_data(self, data, context):
+        component_type = get_component_type(type(self))
+        if self.name:
+            logger.debug("Processing component '%s' with name '%s' from template '%s'",
+                         component_type, context.expand_placeholders(self.name), self.name)
+        else:
+            logger.debug("Processing anonymous component '%s'", component_type)
         json = {}
         for field in self._copy_fields:
             if field in data:
@@ -146,6 +152,7 @@ class JsonListGenerator(JsonGenerator):
         self.component_item_types = [get_component_type(clazz) for clazz in _get_subclasses(item_base_class)]
 
     def gen_json_from_data(self, data, context):
+        super(JsonListGenerator, self).gen_json_from_data(data, context)
         result_list = []
         for items in data:
             if isinstance(items, str):

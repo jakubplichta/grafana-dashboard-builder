@@ -22,15 +22,16 @@ __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
 class Dashboard(JsonGenerator):
     def gen_json_from_data(self, data, context):
+        json_data = super(Dashboard, self).gen_json_from_data(data, context)
         nav = {
             'type': 'timepicker'
         }
-        json_data = {
+        json_data.update({
             'title': data.get('title', self.name),
             'nav': [
                 nav
             ]
-        }
+        })
         if 'time' in data:
             json_data['time'] = {
                 'from': data['time']['from'],

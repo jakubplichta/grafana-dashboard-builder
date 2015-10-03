@@ -28,6 +28,7 @@ class TemplatesItemBase(JsonGenerator):
 
 class Query(TemplatesItemBase):
     def gen_json_from_data(self, data, context):
+        super(Query, self).gen_json_from_data(data, context)
         processed_parts = []
         queries = []
         if not data.get('query'):
@@ -63,12 +64,13 @@ class Query(TemplatesItemBase):
 
 class CustomTemplate(TemplatesItemBase):
     def gen_json_from_data(self, data, context):
-        template_json = {
+        template_json = super(CustomTemplate, self).gen_json_from_data(data, context)
+        template_json.update({
             'type': 'custom',
             'refresh_on_load': False,
             'name': data['name'],
             'query': ','.join(data['options'])
-        }
+        })
         if 'current' in data:
             current = data['current']
             template_json['current'] = {
