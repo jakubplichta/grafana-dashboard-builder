@@ -30,9 +30,9 @@ class Query(TemplatesItemBase):
     def gen_json_from_data(self, data, context):
         processed_parts = []
         queries = []
-        if not self.data.get('query'):
+        if not data.get('query'):
             return queries
-        for query_part in self.data['query'].split('.'):
+        for query_part in data['query'].split('.'):
             if query_part.startswith('$'):
                 is_first = False if queries else True
                 query = query_part[1:]
@@ -43,8 +43,8 @@ class Query(TemplatesItemBase):
                     'name': query,
                     'refresh': is_first
                 }
-                if query in self.data:
-                    query_config = self.data[query]
+                if query in data:
+                    query_config = data[query]
                     metric = query_config.get('metric', metric)
                     if 'current' in query_config:
                         current = query_config['current']
@@ -66,16 +66,16 @@ class CustomTemplate(TemplatesItemBase):
         template_json = {
             'type': 'custom',
             'refresh_on_load': False,
-            'name': self.data['name'],
-            'query': ','.join(self.data['options'])
+            'name': data['name'],
+            'query': ','.join(data['options'])
         }
-        if 'current' in self.data:
-            current = self.data['current']
+        if 'current' in data:
+            current = data['current']
             template_json['current'] = {
                 'text': current,
                 'value': current
             }
-        if 'options' in self.data:
+        if 'options' in data:
             template_json['options'] = [{'text': option, 'value': option} for option in
-                                        (self.data['options'])]
+                                        (data['options'])]
         return [template_json]

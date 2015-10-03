@@ -78,21 +78,21 @@ class SingleStat(PanelsItemBase):
         panel_json = super(SingleStat, self).gen_json_from_data(data, context)
         panel_json.update({
             'type': 'singlestat',
-            'title': self.data.get('title', None),
-            'span': self.data.get('span', None),
-            'targets': map(lambda v: {'target': v}, self.data.get('targets', [])),
-            'nullPointMode': self.data.get('nullPointMode', 'null'),
-            'valueName': self.data.get('valueName', 'current')
+            'title': data.get('title', None),
+            'span': data.get('span', None),
+            'targets': map(lambda v: {'target': v}, data.get('targets', [])),
+            'nullPointMode': data.get('nullPointMode', 'null'),
+            'valueName': data.get('valueName', 'current')
         })
-        if 'sparkline' in self.data:
+        if 'sparkline' in data:
             panel_json['sparkline'] = {
                 'show': True,
-                'full': self.data['sparkline'].get('full', False),
-                'lineColor': self.data['sparkline'].get('lineColor', 'rgb(31, 120, 193)'),
-                'fillColor': self.data['sparkline'].get('fillColor', 'rgba(31, 118, 189, 0.18)')
+                'full': data['sparkline'].get('full', False),
+                'lineColor': data['sparkline'].get('lineColor', 'rgb(31, 120, 193)'),
+                'fillColor': data['sparkline'].get('fillColor', 'rgba(31, 118, 189, 0.18)')
             }
-        if get_component_type(Links) in self.data:
-            panel_json['links'] = self.registry.create_component(Links, self.data).gen_json()
+        if get_component_type(Links) in data:
+            panel_json['links'] = self.registry.create_component(Links, data).gen_json()
         return panel_json
 
 
@@ -100,8 +100,8 @@ class Text(PanelsItemBase):
     def gen_json_from_data(self, data, context):
         return {
             'type': 'text',
-            'title': self.data.get('title', None),
-            'span': self.data.get('span', None),
-            'mode': self.data.get('mode', 'text'),
-            'content': self.data.get('content', '')
+            'title': data.get('title', None),
+            'span': data.get('span', None),
+            'mode': data.get('mode', 'text'),
+            'content': data.get('content', '')
         }
