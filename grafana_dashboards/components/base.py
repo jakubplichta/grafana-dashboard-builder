@@ -126,11 +126,18 @@ class ComponentBase(object):
 
 
 class JsonGenerator(ComponentBase):
+
+    _copy_fields = set()
+
     def gen_json(self, context=Context()):
         return self.gen_json_from_data(context.expand_placeholders(self.data), context)
 
     def gen_json_from_data(self, data, context):
-        return {}
+        json = {}
+        for field in self._copy_fields:
+            if field in data:
+                json[field] = data[field]
+        return json
 
 
 class JsonListGenerator(JsonGenerator):
