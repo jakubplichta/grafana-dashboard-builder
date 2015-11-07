@@ -32,3 +32,6 @@ graph:
     avg: true
     alignAsTable: true
     hideEmpty: true
+  tooltip:
+    value_type: cumulative
+    shared: true

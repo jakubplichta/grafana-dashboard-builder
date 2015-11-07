@@ -64,6 +64,11 @@ class Graph(PanelsItemBase):
                 'alignAsTable': self.data['legend'].get('alignAsTable', False),
                 'hideEmpty': self.data['legend'].get('hideEmpty', False)
             }
+        if 'tooltip' in self.data:
+            panel_json['tooltip'] = {
+                'value_type': self.data['tooltip'].get('value_type', 'individual'),
+                'shared': self.data['tooltip'].get('shared', False),
+            }
         if get_component_type(Links) in self.data:
             panel_json['links'] = self.registry.create_component(Links, self.data).gen_json()
         return panel_json
