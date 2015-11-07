@@ -2,6 +2,7 @@
   "title": "test title",
   "height": "100px",
   "showTitle": false,
+  "collapse": false,
   "panels": [
     "mocked"
   ]

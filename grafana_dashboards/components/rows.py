@@ -35,6 +35,7 @@ class Row(RowsItemBase):
             'title': data.get('title', ''),
             'height': data.get('height', '250px'),
             'showTitle': data.get('showTitle', False),
+            'collapse': data.get('collapse', False),
             'panels': []
         })
         if get_component_type(Panels) in data:
