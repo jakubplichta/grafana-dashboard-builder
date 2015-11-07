@@ -17,3 +17,5 @@ single-stat:
     full: true
     lineColor: rgb(1, 2, 3)
     fillColor: rgba(1, 2, 3, 4)
+  valueMaps:
+    'null': N/A

@@ -96,6 +96,9 @@ class SingleStat(PanelsItemBase):
                 'lineColor': data['sparkline'].get('lineColor', 'rgb(31, 120, 193)'),
                 'fillColor': data['sparkline'].get('fillColor', 'rgba(31, 118, 189, 0.18)')
             }
+        if 'valueMaps' in data:
+            panel_json['valueMaps'] = [{'value': value, 'op': '=', 'text': text} for value, text in
+                                       data['valueMaps'].iteritems()]
         if get_component_type(Links) in data:
             panel_json['links'] = self.registry.create_component(Links, data).gen_json()
         return panel_json
