@@ -2,5 +2,6 @@
   "title": "test title",
   "height": "100px",
   "showTitle": true,
+  "collapse": true,
   "panels": []
 }
