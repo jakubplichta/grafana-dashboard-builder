@@ -24,5 +24,12 @@
     "full": true,
     "lineColor": "rgb(1, 2, 3)",
     "show": true
-  }
+  },
+  "valueMaps": [
+    {
+      "value": "null",
+      "op": "=",
+      "text": "N/A"
+    }
+  ]
 }
