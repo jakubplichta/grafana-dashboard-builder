@@ -78,6 +78,11 @@ params = {
     'cmdclass': {'test': Tox},
     'tests_require': ['tox', 'mock'],
     'install_requires': ['PyYAML', 'argparse'],
+    'entry_points': {
+        'console_scripts': [
+            'grafana-dashboard-builder = grafana_dashboards.cli:main',
+        ],
+    },
     'long_description':
         """grafana-dashboard-builder is an open-source tool for easier creation of Grafana dashboards.
 It is written in Python and uses YAML descriptors for dashboard
