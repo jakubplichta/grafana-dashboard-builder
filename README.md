@@ -196,3 +196,18 @@ generate 2 dashboards named _prefix1-dashboard_ and _prefix2-dashboard_.
     dashboards:
       - '{dashboard-prefix}-dashboard'
 ```
+
+## External context definition
+
+Thanks to _project_ component you can use one dashboard template and configure it with different parameters. But what
+if you need to use different params based on the _Grafana_ you are uploading dashboards to. That's why you can define
+configuration externally to your projects and dashboard templates.
+
+You can reference configuration stored in YAML with `-config` option or even inline it to `--context` option. External
+configuration file can look like:
+
+```yaml
+context:
+  region: eu
+  default-datacenter: cze
+```
