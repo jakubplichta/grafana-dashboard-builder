@@ -1,0 +1,9 @@
+elastic-search:
+  host: https://this-is-my-domain.com
+  password: my_password
+  username: my_username
+file:
+  output_folder: /some/directory/on/my/disk
+context:
+  region: eu
+  default-datacenter: cze

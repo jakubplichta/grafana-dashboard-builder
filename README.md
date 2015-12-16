@@ -27,13 +27,13 @@ sudo python setup.py install
 
 ## Usage
 
-After installation you'll find `grafana_dashboard_builder.py` on your path. Help can be printed by `--help` command-line
+After installation you'll find `grafana-dashboard-builder` on your path. Help can be printed by `--help` command-line
 option.
 
 ```
-usage: grafana_dashboard_builder.py [-h] -p PATH [PATH ...] [--project PROJECT] [-o OUT] [-c CONFIG]
-                                    [--context CONTEXT] [--plugins PLUGINS [PLUGINS ...]]
-                                    [--exporter EXPORTERS [EXPORTERS ...]]
+usage: grafana-dashboard-builder [-h] -p PATH [PATH ...] [--project PROJECT] [-o OUT] [-c CONFIG]
+                                 [--context CONTEXT] [--plugins PLUGINS [PLUGINS ...]]
+                                 [--exporter EXPORTERS [EXPORTERS ...]]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -58,7 +58,45 @@ optional arguments:
 To start you need to create project configuration that needs to be in one YAML document. And some examples with current
 full capabilities can be found in [sample project](samples/project.yaml).
 
-### YAML format
+## Exporters
+
+_grafana-dashboard-builder_ provides several builtin exporters that can be enabled through `--exporter` option.
+Configuration for all of them is to be provided in configuration file given in `--config` option. Look at
+[sample config](samples/config.yaml).
+
+### File exporter
+
+File exporter is used when you want to store dashboards as JSON files on your local disk.
+
+```yaml
+file:
+  output_folder: /some/directory/on/my/disk
+```
+
+To use file exporter run _grafana-dashboard-builder_ with `--exporter file` option.
+
+### Grafana Elastic Search
+
+_grafana-dashboard-builder_ currently supports persisting dashboards only to _Elastic Search_ used by _Grafana_ prior
+to version 2.0
+
+To configure _Elastic Search_ endpoint put following structure to your configuration file:
+
+```yaml
+elastic-search:
+  host: https://this-is-my-domain.com
+  password: my_password
+  username: my_username
+```
+
+With this configuration your dashboard will be uploaded to `https://this-is-my-domain.com/es/grafana-dash/dashboard/dashboard_name`
+
+If you do not want to store your credentials in the configuration file you can use environment variables `ES_PASSWORD`
+and `ES_USERNAME`.
+
+To use elastic search exporter run _grafana-dashboard-builder_ with `--exporter elastic-search` option.
+
+## YAML definition format
 
 Each component follows the same configuration format. Top level must contain 2 fields - name and component type.
 Under component type is wrapped definition of the component.
@@ -157,4 +195,19 @@ generate 2 dashboards named _prefix1-dashboard_ and _prefix2-dashboard_.
       - prefix2
     dashboards:
       - '{dashboard-prefix}-dashboard'
+```
+
+## External context definition
+
+Thanks to _project_ component you can use one dashboard template and configure it with different parameters. But what
+if you need to use different params based on the _Grafana_ you are uploading dashboards to. That's why you can define
+configuration externally to your projects and dashboard templates.
+
+You can reference configuration stored in YAML with `-config` option or even inline it to `--context` option. External
+configuration file can look like:
+
+```yaml
+context:
+  region: eu
+  default-datacenter: cze
 ```
