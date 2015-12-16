@@ -17,7 +17,9 @@
     "leftMax": 2,
     "leftMin": 1,
     "rightMax": 4,
-    "rightMin": 3
+    "rightMin": 3,
+    "threshold1": 1,
+    "threshold2": 3
   },
   "y_formats": [
     "bytes",

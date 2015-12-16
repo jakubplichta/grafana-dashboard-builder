@@ -50,7 +50,9 @@ class Graph(PanelsItemBase):
                 'leftMax': self.data['grid'].get('leftMax', None),
                 'rightMax': self.data['grid'].get('rightMax', None),
                 'leftMin': self.data['grid'].get('leftMin', None),
-                'rightMin': self.data['grid'].get('rightMin', None)
+                'rightMin': self.data['grid'].get('rightMin', None),
+                'threshold1': self.data['grid'].get('threshold1', None),
+                'threshold2': self.data['grid'].get('threshold2', None)
             }
         if 'legend' in self.data:
             panel_json['legend'] = {

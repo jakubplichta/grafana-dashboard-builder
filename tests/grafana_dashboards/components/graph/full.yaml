@@ -13,6 +13,8 @@ graph:
     leftMax: 2
     rightMin: 3
     rightMax: 4
+    threshold1: 1
+    threshold2: 3
   y_formats: [bytes, short]
   nullPointMode: 'connected'
   stack: true
