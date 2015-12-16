@@ -31,7 +31,7 @@ class PanelsItemBase(JsonGenerator):
 class Graph(PanelsItemBase):
 
     # noinspection PySetFunctionToLiteral
-    _copy_fields = set(['stack', 'fill', 'aliasColors', 'leftYAxisLabel', 'bars', 'lines', 'y_formats'])
+    _copy_fields = set(['stack', 'fill', 'aliasColors', 'leftYAxisLabel', 'bars', 'lines', 'linewidth', 'y_formats'])
 
     def gen_json_from_data(self, data, context):
         panel_json = super(Graph, self).gen_json_from_data(data, context)
@@ -50,7 +50,9 @@ class Graph(PanelsItemBase):
                 'leftMax': self.data['grid'].get('leftMax', None),
                 'rightMax': self.data['grid'].get('rightMax', None),
                 'leftMin': self.data['grid'].get('leftMin', None),
-                'rightMin': self.data['grid'].get('rightMin', None)
+                'rightMin': self.data['grid'].get('rightMin', None),
+                'threshold1': self.data['grid'].get('threshold1', None),
+                'threshold2': self.data['grid'].get('threshold2', None)
             }
         if 'legend' in self.data:
             panel_json['legend'] = {
