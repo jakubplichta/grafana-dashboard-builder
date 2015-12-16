@@ -21,6 +21,7 @@ graph:
   fill: 4
   bars: true
   lines: false
+  linewidth: 2
   aliasColors:
     alias1: '#000000'
   leftYAxisLabel: axis label

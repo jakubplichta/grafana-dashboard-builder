@@ -36,6 +36,7 @@
   "stack": true,
   "bars": true,
   "lines": false,
+  "linewidth": 2,
   "leftYAxisLabel": "axis label",
   "legend": {
     "avg": true,
