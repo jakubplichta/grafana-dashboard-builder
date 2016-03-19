@@ -15,6 +15,7 @@
       - overview
       - '{component}-connections'
       - '{component}-{env}-{nodes}-system-details'
+      - 'some dashboard'
 
 - default-dashboard: &default-dashboard
     time_options: [1h, 6h, 12h, 24h, 2d, 7d, 14d, 30d]
@@ -157,3 +158,53 @@
           options:
             - first
             - last
+
+- name: 'some dashboard'
+  dashboard:
+    title: some dashboard
+    templates:
+      - another-template:
+          choices:
+            - x
+            - y
+    rows:
+      - row:
+          title: 'App'
+          height: '250px'
+          editable: true
+          collapse: true
+          panels:
+            - singlestat-{title}:
+                title:
+                  - overview:
+                      dashboard: 'Overview'
+                  - resources:
+                      dashboard: 'resources'
+                      params:
+                        - cluster: eu
+                        - node: 'www01'
+
+- name: 'another-template'
+  templates:
+    - custom-template:
+        name: 'choice'
+        options: '{choices}'
+
+- name: 'singlestat-{title}'
+  panels:
+    - single-stat:
+        title: '{title}'
+        error: false
+        span: 4
+        sparkline:
+          show: false
+          full: false
+          lineColor: "rgb(31, 120, 193)"
+          fillColor: "rgba(31, 118, 189, 0.18)"
+        valueMaps:
+          'null': '{title}'
+        links:
+          - dashboard-link:
+              title: '{title}'
+              dashboard: '{dashboard}'
+              params: '{params}'
