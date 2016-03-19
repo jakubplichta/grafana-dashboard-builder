@@ -55,6 +55,27 @@ def test_context_expands_list_value():
     assert contexts[1].expand_placeholders(to_expand) == expected1
 
 
+def test_context_inserts_list_value():
+    data = {
+        'single': 'first',
+        'inserted-list': [
+            'list0',
+            'list1'
+        ]
+    }
+    contexts = [context for context in Context.create_context(data, keys_to_expand=('expanded-list', 'expanded-dict'))]
+    assert len(contexts) == 1
+    expected = {
+        'single': 'first',
+        'inserted-list': [
+            'list0',
+            'list1'
+        ]
+    }
+    to_expand = {'single': '{single}', 'inserted-list': '{inserted-list}'}
+    assert contexts[0].expand_placeholders(to_expand) == expected
+
+
 def test_context_expands_dict_value():
     data = {
         'single': 'first',

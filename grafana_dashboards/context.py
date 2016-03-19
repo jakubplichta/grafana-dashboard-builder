@@ -12,13 +12,16 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import string
 import itertools
+import re
+import string
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
 
 class Context(object):
+
+    _pattern = re.compile('\{.*\}')
 
     def __init__(self, context=None):
         super(Context, self).__init__()
@@ -32,10 +35,9 @@ class Context(object):
         :rtype : dict
         """
         if isinstance(to_expand, str):
-            formatter = string.Formatter()
-            (result, to_expand) = (formatter.vformat(to_expand, (), self._context), to_expand)
+            (result, to_expand) = self._expand(to_expand)
             while result != to_expand:
-                (result, to_expand) = (formatter.vformat(result, (), self._context), result)
+                (result, to_expand) = self._expand(result)
             return result
         elif isinstance(to_expand, list):
             return [self.expand_placeholders(value) for value in to_expand]
@@ -43,6 +45,13 @@ class Context(object):
             return dict([(key, self.expand_placeholders(value)) for (key, value) in to_expand.iteritems()])
         else:
             return to_expand
+
+    def _expand(self, to_expand):
+        if not isinstance(to_expand, str):
+            return to_expand, to_expand
+        elif self._pattern.match(to_expand) and to_expand[1:-1] in self._context:
+            return self._context[to_expand[1:-1]], to_expand
+        return string.Formatter().vformat(to_expand, (), self._context), to_expand
 
     def __str__(self):
         return str(self._context)
@@ -68,6 +77,8 @@ class ContextExpander(object):
         if isinstance(value, list):
             if key in self._keys_to_expand:
                 contexts.append((context for data in value for context in self.create_context(key, data, key)))
+            else:
+                contexts.append(itertools.repeat({key: value}, 1))
         elif isinstance(value, dict):
             for (sub_key, sub_value) in value.iteritems():
                 if parent and len(value) == 1:

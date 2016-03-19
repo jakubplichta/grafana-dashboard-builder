@@ -35,7 +35,7 @@ class DashboardLink(LinksItemBase):
             'title': data.get('title', None),
             'dashboard': data.get('dashboard', None)
         })
-        if 'params' in data:
+        if 'params' in data and isinstance(data.get('params'), list):
             params = []
             for param in data.get('params'):
                 if isinstance(param, str):
