@@ -38,3 +38,9 @@ graph:
   tooltip:
     value_type: cumulative
     shared: true
+  seriesOverrides:
+    - Limit usage:
+        yaxis: 2
+    - used:
+        bars: true
+        points: true

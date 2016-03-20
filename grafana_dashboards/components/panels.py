@@ -71,6 +71,14 @@ class Graph(PanelsItemBase):
                 'value_type': self.data['tooltip'].get('value_type', 'individual'),
                 'shared': self.data['tooltip'].get('shared', False),
             }
+        if 'seriesOverrides' in self.data:
+            overrides = []
+            for override in self.data['seriesOverrides']:
+                for alias, settings in override.iteritems():
+                    to_add = {'alias': alias}
+                    to_add.update(settings)
+                    overrides.append(to_add)
+            panel_json['seriesOverrides'] = overrides
         if get_component_type(Links) in self.data:
             panel_json['links'] = self.registry.create_component(Links, self.data).gen_json()
         return panel_json

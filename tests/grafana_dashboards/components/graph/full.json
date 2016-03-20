@@ -52,5 +52,16 @@
   "tooltip": {
     "value_type": "cumulative",
     "shared": true
-  }
+  },
+  "seriesOverrides": [
+    {
+      "alias": "Limit usage",
+      "yaxis": 2
+    },
+    {
+      "alias": "used",
+      "bars": true,
+      "points": true
+    }
+  ]
 }
