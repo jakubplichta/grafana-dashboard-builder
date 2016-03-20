@@ -21,6 +21,10 @@ __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
 
 class Dashboard(JsonGenerator):
+
+    # noinspection PySetFunctionToLiteral
+    _copy_fields = set(['sharedCrosshair'])
+
     def gen_json_from_data(self, data, context):
         json_data = super(Dashboard, self).gen_json_from_data(data, context)
         nav = {
