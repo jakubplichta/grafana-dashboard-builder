@@ -1,6 +1,7 @@
 {
   "title": "title",
   "refresh": "5m",
+  "sharedCrosshair": true,
   "tags": [
     "tag1",
     "tag2"
