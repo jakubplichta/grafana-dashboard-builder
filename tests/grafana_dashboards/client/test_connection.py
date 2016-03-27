@@ -21,6 +21,19 @@ from grafana_dashboards.client.connection import Connection
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
 
+class Capture(object):
+    """
+    Class for use in method call verification that captures call argument that can be tested later on.
+    """
+    def __eq__(self, other):
+        """
+        Captures argument and always returns true to make verification successful.
+        :return: True
+        """
+        self.value = other
+        return True
+
+
 def test_elastic_search():
     connection = Connection('username', 'password', 'https://host')
     connection._opener = MagicMock()
@@ -30,11 +43,16 @@ def test_elastic_search():
     assert connection.make_request('/uri', {'it\'s': 'alive'}) == {'hello': 'world'}
 
     request = urllib2.Request('https://host/uri',
-                              '{"it\'s":"alive"}',
+                              '{"it\'s": "alive"}',
                               headers={
                                   'Content-type': 'application/json',
                                   'Accept': 'application/json',
                                   'Authorization': 'Basic dXNlcm5hbWU6cGFzc3dvcmQ='
                               })
-    # noinspection PyProtectedMember,PyUnresolvedReferences
-    connection._opener.open.verify_called_once_with(request)
+    capture = Capture()
+    # noinspection PyProtectedMember
+    connection._opener.open.assert_called_with(capture)
+    assert request.get_full_url() == capture.value.get_full_url()
+    assert request.header_items() == capture.value.header_items()
+    assert request.get_method() == capture.value.get_method()
+    assert request.get_data() == capture.value.get_data()
