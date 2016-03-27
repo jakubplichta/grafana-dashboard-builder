@@ -77,7 +77,7 @@ To use file exporter run _grafana-dashboard-builder_ with `--exporter file` opti
 
 ### Grafana Elastic Search
 
-_grafana-dashboard-builder_ currently supports persisting dashboards only to _Elastic Search_ used by _Grafana_ prior
+_grafana-dashboard-builder_ currently supports persisting dashboards to _Elastic Search_ used by _Grafana_ prior
 to version 2.0
 
 To configure _Elastic Search_ endpoint put following structure to your configuration file:
@@ -95,6 +95,26 @@ If you do not want to store your credentials in the configuration file you can u
 and `ES_USERNAME`.
 
 To use elastic search exporter run _grafana-dashboard-builder_ with `--exporter elastic-search` option.
+
+### Grafana Elastic Search
+
+_grafana-dashboard-builder_ currently supports _Grafana_ version 2.0 API.
+
+To configure _Grafana_ endpoint put following structure to your configuration file:
+
+```yaml
+grafana:
+  host: https://this-is-my-domain.com
+  password: my_password
+  username: my_username
+```
+
+With this configuration your dashboard will be POSTed to `https://this-is-my-domain.com/api/dashboards/db`
+
+If you do not want to store your credentials in the configuration file you can use environment variables
+`GRAFANA_PASSWORD` and `GRAFANA_USERNAME`.
+
+To use Grafana exporter run _grafana-dashboard-builder_ with `--exporter grafana` option.
 
 ## YAML definition format
 

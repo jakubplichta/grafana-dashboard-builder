@@ -52,7 +52,8 @@ def test_file_exporter(patch_exists, path_isdir, makedirs, json_dump, mock_file)
     dashboard_data = {'some_key': 'some_value'}
     exporter.process_dashboard('project_name', 'dashboard_name', dashboard_data)
 
-    json_dump.verify_called_once_with(dashboard_data, mock_file, sort_keys=True, indent=2, separators=(',', ': '))
+    json_dump.assert_called_once_with(dashboard_data, mock_file().__enter__(), sort_keys=True, indent=2,
+                                      separators=(',', ': '))
 
 
 @patch('os.makedirs', side_effect=[True, OSError('testing')])
