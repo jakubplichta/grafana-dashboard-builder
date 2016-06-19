@@ -34,7 +34,7 @@ def pytest_generate_tests(metafunc):
 
 
 def load_test_fixtures():
-    for component in base.get_generators():
+    for component in base.get_generators():  # NOQA
         component_type = grafana_dashboards.common.get_component_type(component)
         dirname = os.path.join(os.path.dirname(os.path.abspath(__file__)), component_type)
         if not os.path.isdir(dirname):
