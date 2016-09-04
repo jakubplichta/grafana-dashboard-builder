@@ -38,6 +38,8 @@
   "lines": false,
   "linewidth": 2,
   "leftYAxisLabel": "axis label",
+  "x-axis": true,
+  "y-axis": false,
   "legend": {
     "avg": true,
     "current": true,

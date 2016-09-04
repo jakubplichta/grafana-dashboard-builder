@@ -31,7 +31,8 @@ class PanelsItemBase(JsonGenerator):
 class Graph(PanelsItemBase):
 
     # noinspection PySetFunctionToLiteral
-    _copy_fields = set(['stack', 'fill', 'aliasColors', 'leftYAxisLabel', 'bars', 'lines', 'linewidth', 'y_formats'])
+    _copy_fields = set(['stack', 'fill', 'aliasColors', 'leftYAxisLabel', 'bars', 'lines', 'linewidth', 'y_formats',
+                        'x-axis', 'y-axis'])
 
     def gen_json_from_data(self, data, context):
         panel_json = super(Graph, self).gen_json_from_data(data, context)
