@@ -88,7 +88,8 @@ class Graph(PanelsItemBase):
 class SingleStat(PanelsItemBase):
 
     # noinspection PySetFunctionToLiteral
-    _copy_fields = set(['prefix', 'postfix', 'nullText', 'format'])
+    _copy_fields = set(['prefix', 'postfix', 'nullText', 'format', 'thresholds', 'colorValue', 'colorBackground',
+                        'colors', 'prefixFontSize', 'valueFontSize', 'postfixFontSize', 'maxDataPoints'])
 
     def gen_json_from_data(self, data, context):
         panel_json = super(SingleStat, self).gen_json_from_data(data, context)
@@ -107,6 +108,12 @@ class SingleStat(PanelsItemBase):
                 'lineColor': data['sparkline'].get('lineColor', 'rgb(31, 120, 193)'),
                 'fillColor': data['sparkline'].get('fillColor', 'rgba(31, 118, 189, 0.18)')
             }
+        if 'colors' not in data:
+            panel_json['colors'] = [
+                'rgba(50, 172, 45, 0.97)',
+                'rgba(237, 129, 40, 0.89)',
+                'rgba(245, 54, 54, 0.9)'
+            ]
         if 'valueMaps' in data:
             panel_json['valueMaps'] = [{'value': value, 'op': '=', 'text': text} for value, text in
                                        data['valueMaps'].iteritems()]
