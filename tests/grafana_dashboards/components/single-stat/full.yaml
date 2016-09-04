@@ -19,3 +19,12 @@ single-stat:
     fillColor: rgba(1, 2, 3, 4)
   valueMaps:
     'null': N/A
+  thresholds: 0,0,0
+  colorValue: true
+  colorBackground: true
+  colors:
+    - rgba(50, 172, 45, 0.97)
+  prefixFontSize: 50%
+  valueFontSize: 80%
+  postfixFontSize: 50%
+  maxDataPoints: 100

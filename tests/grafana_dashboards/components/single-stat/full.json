@@ -19,6 +19,16 @@
   "postfix": "postfix",
   "prefix": "prefix",
   "nullText": "n/a",
+  "colorBackground": true,
+  "colorValue": true,
+  "colors": [
+    "rgba(50, 172, 45, 0.97)"
+  ],
+  "maxDataPoints": 100,
+  "postfixFontSize": "50%",
+  "prefixFontSize": "50%",
+  "thresholds": "0,0,0",
+  "valueFontSize": "80%",
   "sparkline": {
     "fillColor": "rgba(1, 2, 3, 4)",
     "full": true,
