@@ -1,0 +1,51 @@
+{
+  "columns": [
+    {
+      "text": "Min",
+      "value": "min"
+    },
+    {
+      "text": "Max",
+      "value": "max"
+    },
+    {
+      "text": "Avg",
+      "value": "avg"
+    },
+    {
+      "text": "Current",
+      "value": "current"
+    }
+  ],
+  "fontSize": "120%",
+  "pageSize": 50,
+  "scroll": true,
+  "showHeader": true,
+  "span": 6,
+  "styles": [
+    {
+      "colorMode": "value",
+      "colors": [
+        "rgba(16, 204, 0, 0.9)",
+        "rgba(255, 140, 0, 0.89)",
+        "rgba(221, 5, 5, 0.97)"
+      ],
+      "decimals": 0,
+      "pattern": "/.*/",
+      "thresholds": [
+        "270",
+        "275"
+      ],
+      "type": "number",
+      "unit": "ev"
+    }
+  ],
+  "targets": [
+    {
+      "target": "aliasByNode(apps.backend.*.counters.requests.count, 2)"
+    }
+  ],
+  "title": "Time series aggregations",
+  "transform": "timeseries_aggregations",
+  "type": "table"
+}

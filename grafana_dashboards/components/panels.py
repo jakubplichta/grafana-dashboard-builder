@@ -122,6 +122,33 @@ class SingleStat(PanelsItemBase):
         return panel_json
 
 
+class Table(PanelsItemBase):
+    # noinspection PySetFunctionToLiteral
+    _copy_fields = set(['fontSize', 'pageSize', 'showHeader', 'scroll'])
+
+    def gen_json_from_data(self, data, context):
+        panel_json = super(Table, self).gen_json_from_data(data, context)
+        panel_json.update({
+            'type': 'table',
+            'title': data.get('title', None),
+            'span': data.get('span', None),
+            'targets': map(lambda v: {'target': v}, data.get('targets', [])),
+            'transform': data.get('transform', None),
+            'columns': map(lambda v: {'text': v, 'value': str(v).lower()}, data.get('columns', []))
+        })
+
+        if 'styles' in self.data:
+            styles = []
+            for override in self.data['styles']:
+                for pattern, settings in override.iteritems():
+                    to_add = {'pattern': pattern}
+                    to_add.update(settings)
+                    styles.append(to_add)
+            panel_json['styles'] = styles
+
+        return panel_json
+
+
 class Text(PanelsItemBase):
     def gen_json_from_data(self, data, context):
         panel_json = super(Text, self).gen_json_from_data(data, context)

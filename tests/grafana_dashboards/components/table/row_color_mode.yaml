@@ -1,0 +1,26 @@
+table:
+  span: 6
+  title: Row color mode
+  fontSize: 100%
+  pageSize: 50
+  scroll: True
+  showHeader: True
+  targets:
+    - aliasByNode(apps.backend.backend_01.counters.requests.count, 2)
+  transform: timeseries_to_columns
+  styles:
+    - Time:
+        type: date
+        dateFormat: YYYY-MM-DD HH:mm:ss
+    - /.*/:
+        unit: short
+        type: number
+        decimals: 2
+        colors:
+          - rgba(163, 55, 55, 0.9)
+          - rgba(253, 137, 41, 0.89)
+          - rgba(68, 163, 65, 0.97)
+        colorMode: row
+        thresholds:
+          - ' 200'
+          - ' 250'
