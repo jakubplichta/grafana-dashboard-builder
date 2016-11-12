@@ -1,0 +1,29 @@
+table:
+  span: 6
+  title: Time series aggregations
+  fontSize: 120%
+  pageSize: 50
+  scroll: True
+  showHeader: True
+  targets:
+    - aliasByNode(apps.backend.*.counters.requests.count, 2)
+  transform: timeseries_aggregations
+  columns:
+    - Min
+    - Max
+    - Avg
+    - Current
+  styles:
+    - /.*/:
+        unit: ev
+        type: number
+        decimals: 0
+        colors:
+          - rgba(16, 204, 0, 0.9)
+          - rgba(255, 140, 0, 0.89)
+          - rgba(221, 5, 5, 0.97)
+        colorMode: value
+        pattern: /.*/
+        thresholds:
+          - '270'
+          - '275'

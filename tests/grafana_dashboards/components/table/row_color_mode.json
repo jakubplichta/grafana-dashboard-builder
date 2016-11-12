@@ -1,0 +1,39 @@
+{
+  "columns": [],
+  "fontSize": "100%",
+  "pageSize": 50,
+  "scroll": true,
+  "showHeader": true,
+  "span": 6,
+  "styles": [
+    {
+      "dateFormat": "YYYY-MM-DD HH:mm:ss",
+      "pattern": "Time",
+      "type": "date"
+    },
+    {
+      "colorMode": "row",
+      "colors": [
+        "rgba(163, 55, 55, 0.9)",
+        "rgba(253, 137, 41, 0.89)",
+        "rgba(68, 163, 65, 0.97)"
+      ],
+      "decimals": 2,
+      "pattern": "/.*/",
+      "thresholds": [
+        " 200",
+        " 250"
+      ],
+      "type": "number",
+      "unit": "short"
+    }
+  ],
+  "targets": [
+    {
+      "target": "aliasByNode(apps.backend.backend_01.counters.requests.count, 2)"
+    }
+  ],
+  "title": "Row color mode",
+  "transform": "timeseries_to_columns",
+  "type": "table"
+}
