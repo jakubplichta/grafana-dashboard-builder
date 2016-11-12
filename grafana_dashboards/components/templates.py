@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2015 grafana-dashboard-builder contributors
+# Copyright 2015-2016 grafana-dashboard-builder contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -62,14 +62,20 @@ class Query(TemplatesItemBase):
         return queries
 
 
-class CustomTemplate(TemplatesItemBase):
+class EnumeratedTemplateBase(TemplatesItemBase):
+
+    def __init__(self, data, registry, template_type):
+        super(EnumeratedTemplateBase, self).__init__(data, registry)
+        self._template_type = template_type
+
     def gen_json_from_data(self, data, context):
-        template_json = super(CustomTemplate, self).gen_json_from_data(data, context)
+        template_json = super(EnumeratedTemplateBase, self).gen_json_from_data(data, context)
         template_json.update({
-            'type': 'custom',
+            'type': self._template_type,
             'refresh_on_load': False,
+            'datasource': None,
             'name': data['name'],
-            'query': ','.join(data['options'])
+            'query': ','.join([str(options) for options in data['options']])
         })
         if 'current' in data:
             current = data['current']
@@ -81,3 +87,13 @@ class CustomTemplate(TemplatesItemBase):
             template_json['options'] = [{'text': option, 'value': option} for option in
                                         (data['options'])]
         return [template_json]
+
+
+class CustomTemplate(EnumeratedTemplateBase):
+    def __init__(self, data, registry):
+        super(CustomTemplate, self).__init__(data, registry, 'custom')
+
+
+class IntervalTemplate(EnumeratedTemplateBase):
+    def __init__(self, data, registry):
+        super(IntervalTemplate, self).__init__(data, registry, 'interval')

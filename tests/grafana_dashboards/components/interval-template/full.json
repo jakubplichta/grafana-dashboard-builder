@@ -17,7 +17,7 @@
     },
     "query": "o1,o2",
     "refresh_on_load": false,
-    "type": "custom",
+    "type": "interval",
     "datasource": null
   }
 ]
