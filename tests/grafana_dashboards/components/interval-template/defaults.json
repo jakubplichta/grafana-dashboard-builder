@@ -4,7 +4,7 @@
     "options": [],
     "query": "",
     "refresh_on_load": false,
-    "type": "custom",
+    "type": "interval",
     "datasource": null
   }
 ]
