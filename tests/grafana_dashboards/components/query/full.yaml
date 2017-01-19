@@ -6,3 +6,4 @@ query:
     options:
       - o1
       - o2
+    regex: '/opt\^(value)\^\w+/'
