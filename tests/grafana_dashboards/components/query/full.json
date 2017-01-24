@@ -18,7 +18,8 @@
         "text": "o2",
         "value": "o2"
       }
-    ]
+    ],
+    "regex": "/opt\\^(value)\\^\\w+/"
   },
   {
     "name": "var2",
