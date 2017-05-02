@@ -24,6 +24,14 @@ graph:
   linewidth: 2
   x-axis: true
   y-axis: false
+  yaxes:
+  - show: true
+    min: 1
+    logBase: 2
+    format: ms
+  xaxis:
+    show: true
+    mode: time
   aliasColors:
     alias1: '#000000'
   leftYAxisLabel: axis label

@@ -40,6 +40,8 @@
   "leftYAxisLabel": "axis label",
   "x-axis": true,
   "y-axis": false,
+  "yaxes": [{"format": "ms", "logBase": 2, "min": 1, "show": true}],
+  "xaxis": {"mode": "time", "show": true},
   "legend": {
     "avg": true,
     "current": true,
