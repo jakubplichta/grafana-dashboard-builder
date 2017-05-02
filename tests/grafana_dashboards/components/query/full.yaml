@@ -7,3 +7,6 @@ query:
       - o1
       - o2
     regex: '/opt\^(value)\^\w+/'
+  var2:
+    includeAll: true
+    multi: true
