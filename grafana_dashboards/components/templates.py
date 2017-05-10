@@ -27,6 +27,7 @@ class TemplatesItemBase(JsonGenerator):
 
 
 class Query(TemplatesItemBase):
+
     def gen_json_from_data(self, data, context):
         super(Query, self).gen_json_from_data(data, context)
         processed_parts = []
@@ -56,8 +57,11 @@ class Query(TemplatesItemBase):
                     if 'options' in query_config:
                         template_json['options'] = [{'text': option, 'value': option} for option in
                                                     (query_config['options'])]
-                    if 'regex' in query_config:
-                        template_json['regex'] = query_config['regex']
+
+                    for key in ['regex', 'multi', 'includeAll']:
+                        if key in query_config:
+                            template_json[key] = query_config[key]
+
                 template_json['query'] = '.'.join(processed_parts + [metric])
                 queries.append(template_json)
             processed_parts.append(query_part)
