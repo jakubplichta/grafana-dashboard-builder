@@ -24,6 +24,8 @@ graph:
   linewidth: 2
   x-axis: true
   y-axis: false
+  points: false
+  pointradius: 3
   yaxes:
   - show: true
     min: 1
