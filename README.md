@@ -96,7 +96,7 @@ and `ES_USERNAME`.
 
 To use elastic search exporter run _grafana-dashboard-builder_ with `--exporter elastic-search` option.
 
-### Grafana Elastic Search
+### Grafana API
 
 _grafana-dashboard-builder_ currently supports _Grafana_ version 2.0 API.
 
