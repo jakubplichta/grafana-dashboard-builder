@@ -40,6 +40,8 @@
   "leftYAxisLabel": "axis label",
   "points": false,
   "pointradius": 3,
+  "percentage": true,
+  "steppedLine": true,
   "x-axis": true,
   "y-axis": false,
   "yaxes": [{"format": "ms", "logBase": 2, "min": 1, "show": true}],

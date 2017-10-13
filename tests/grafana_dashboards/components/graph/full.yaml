@@ -26,6 +26,8 @@ graph:
   y-axis: false
   points: false
   pointradius: 3
+  percentage: true
+  steppedLine: true
   yaxes:
   - show: true
     min: 1
