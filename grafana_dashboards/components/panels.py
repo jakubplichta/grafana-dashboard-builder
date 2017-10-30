@@ -39,7 +39,7 @@ class Graph(PanelsItemBase):
         panel_json.update({
             'type': 'graph',
             'title': self.data.get('title', None),
-            'span': self.data.get('span', None),
+            'span': self.data.get('span', 12),
         })
         targets = self.data.get('targets', [])
         if 'target' in self.data:
