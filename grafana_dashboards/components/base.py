@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2015-2016 grafana-dashboard-builder contributors
+# Copyright 2015-2017 grafana-dashboard-builder contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -155,21 +155,27 @@ class JsonListGenerator(JsonGenerator):
         super(JsonListGenerator, self).gen_json_from_data(data, context)
         result_list = []
         for items in data:
-            if isinstance(items, str):
-                # this is component without context
-                result_list += self.registry.get_component(type(self), items).gen_json()
-            else:
-                # TODO add check for dictionary
-                for (item_type, item_data) in items.iteritems():
-                    if item_type not in self.component_item_types:
-                        # this is named component with context
-                        for context in Context.create_context(item_data, get_placeholders(item_type)):
-                            result_list += self.registry.get_component(type(self), item_type).gen_json(context)
-                    else:
-                        # this is inplace defined component
-                        item = self.registry.create_component(item_type, {item_type: item_data}).gen_json()
-                        if isinstance(item, list):
-                            result_list += item
-                        else:
-                            result_list.append(item)
+            self.gen_item_json(items, result_list)
         return result_list
+
+    def gen_item_json(self, items, result_list):
+        if isinstance(items, str):
+            # this is component without context
+            result_list += self.registry.get_component(type(self), items).gen_json()
+        else:
+            self._gen_item_json_with_context(items, result_list)
+
+    def _gen_item_json_with_context(self, items, result_list):
+        # TODO add check for dictionary
+        for (item_type, item_data) in items.iteritems():
+            if item_type not in self.component_item_types:
+                # this is named component with context
+                for context in Context.create_context(item_data, get_placeholders(item_type)):
+                    result_list += self.registry.get_component(type(self), item_type).gen_json(context)
+            else:
+                # this is inplace defined component
+                item = self.registry.create_component(item_type, {item_type: item_data}).gen_json()
+                if isinstance(item, list):
+                    result_list += item
+                else:
+                    result_list.append(item)

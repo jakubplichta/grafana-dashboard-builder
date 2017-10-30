@@ -1,0 +1,7 @@
+yaxis:
+  format: bytes
+  label: label
+  logBase: 10
+  min: -5
+  max: 10
+  show: false
