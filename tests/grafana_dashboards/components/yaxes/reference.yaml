@@ -1,0 +1,8 @@
+yaxes:
+  - yaxes-defined-elsewhere
+  - yaxes-with-params:
+      param1: 1
+  - yaxes-with-{placeholder}:
+      placeholder:
+        - 1
+        - 2

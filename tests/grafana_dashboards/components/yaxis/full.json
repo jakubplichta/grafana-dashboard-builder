@@ -1,0 +1,8 @@
+{
+  "format": "bytes",
+  "label": "label",
+  "logBase": 10,
+  "max": 10,
+  "min": -5,
+  "show": false
+}

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2015-2016 grafana-dashboard-builder contributors
+# Copyright 2015-2017 grafana-dashboard-builder contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,6 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from grafana_dashboards.components.axes import Yaxes
 from grafana_dashboards.components.base import JsonListGenerator, JsonGenerator
 from grafana_dashboards.common import get_component_type
 from grafana_dashboards.components.links import Links
@@ -32,7 +33,7 @@ class Graph(PanelsItemBase):
 
     # noinspection PySetFunctionToLiteral
     _copy_fields = set(['stack', 'fill', 'aliasColors', 'leftYAxisLabel', 'bars', 'lines', 'linewidth', 'y_formats',
-                        'x-axis', 'y-axis', 'xaxis', 'yaxes', 'points', 'pointradius', 'percentage', 'steppedLine'])
+                        'x-axis', 'y-axis', 'xaxis', 'points', 'pointradius', 'percentage', 'steppedLine'])
 
     def gen_json_from_data(self, data, context):
         panel_json = super(Graph, self).gen_json_from_data(data, context)
@@ -83,13 +84,17 @@ class Graph(PanelsItemBase):
                     to_add.update(settings)
                     overrides.append(to_add)
             panel_json['seriesOverrides'] = overrides
-        if get_component_type(Links) in self.data:
-            panel_json['links'] = self.registry.create_component(Links, self.data).gen_json()
+        self._create_component(panel_json, Links)
         if (('leftYAxisLabel' in self.data
             or 'grid' in self.data and ('leftMin' in grid_data or 'leftMax' in grid_data))
                 and ('y_formats' not in self.data)):
             panel_json['y_formats'] = ['short', 'short']
+        self._create_component(panel_json, Yaxes)
         return panel_json
+
+    def _create_component(self, panel_json, clazz):
+        if get_component_type(clazz) in self.data:
+            panel_json[get_component_type(clazz)] = self.registry.create_component(clazz, self.data).gen_json()
 
 
 class SingleStat(PanelsItemBase):
