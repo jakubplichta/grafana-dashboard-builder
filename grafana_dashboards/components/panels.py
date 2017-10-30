@@ -46,14 +46,17 @@ class Graph(PanelsItemBase):
             targets.append(self.data['target'])
         panel_json['targets'] = map(lambda v: {'target': v}, targets)
         panel_json['nullPointMode'] = self.data.get('nullPointMode', 'null')
-        if 'grid' in self.data:
+        grid_data = self.data.get('grid', {}) or {}
+        if 'grid' in self.data or 'y_formats' in self.data:
             panel_json['grid'] = {
-                'leftMax': self.data['grid'].get('leftMax', None),
-                'rightMax': self.data['grid'].get('rightMax', None),
-                'leftMin': self.data['grid'].get('leftMin', None),
-                'rightMin': self.data['grid'].get('rightMin', None),
-                'threshold1': self.data['grid'].get('threshold1', None),
-                'threshold2': self.data['grid'].get('threshold2', None)
+                'leftMax': grid_data.get('leftMax', None),
+                'rightMax': grid_data.get('rightMax', None),
+                'leftMin': grid_data.get('leftMin', None),
+                'rightMin': grid_data.get('rightMin', None),
+                'threshold1': grid_data.get('threshold1', None),
+                'threshold2': grid_data.get('threshold2', None),
+                'threshold1Color': grid_data.get('threshold1Color', 'rgba(216, 200, 27, 0.27)'),
+                'threshold2Color': grid_data.get('threshold2Color', 'rgba(234, 112, 112, 0.22)')
             }
         if 'legend' in self.data:
             panel_json['legend'] = {
@@ -82,6 +85,10 @@ class Graph(PanelsItemBase):
             panel_json['seriesOverrides'] = overrides
         if get_component_type(Links) in self.data:
             panel_json['links'] = self.registry.create_component(Links, self.data).gen_json()
+        if (('leftYAxisLabel' in self.data
+            or 'grid' in self.data and ('leftMin' in grid_data or 'leftMax' in grid_data))
+                and ('y_formats' not in self.data)):
+            panel_json['y_formats'] = ['short', 'short']
         return panel_json
 
 
