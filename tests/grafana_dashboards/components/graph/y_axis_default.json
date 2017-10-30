@@ -1,0 +1,12 @@
+{
+  "span": 12,
+  "targets": [],
+  "title": null,
+  "type": "graph",
+  "nullPointMode": "null",
+  "leftYAxisLabel": "label",
+  "y_formats": [
+    "short",
+    "short"
+  ]
+}
