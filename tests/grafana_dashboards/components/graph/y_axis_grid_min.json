@@ -1,0 +1,19 @@
+{
+  "span": 12,
+  "targets": [],
+  "title": null,
+  "type": "graph",
+  "nullPointMode": "null",
+  "grid": {
+    "leftMax": null,
+    "leftMin": 1,
+    "rightMax": null,
+    "rightMin": null,
+    "threshold1": null,
+    "threshold2": null
+  },
+  "y_formats": [
+    "short",
+    "short"
+  ]
+}

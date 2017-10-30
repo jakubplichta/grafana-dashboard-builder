@@ -82,7 +82,9 @@ class Graph(PanelsItemBase):
             panel_json['seriesOverrides'] = overrides
         if get_component_type(Links) in self.data:
             panel_json['links'] = self.registry.create_component(Links, self.data).gen_json()
-        if 'leftYAxisLabel' in self.data and 'y_formats' not in self.data:
+        if (('leftYAxisLabel' in self.data
+            or 'grid' in self.data and ('leftMin' in self.data['grid'] or 'leftMax' in self.data['grid']))
+                and ('y_formats' not in self.data)):
             panel_json['y_formats'] = ['short', 'short']
         return panel_json
 
