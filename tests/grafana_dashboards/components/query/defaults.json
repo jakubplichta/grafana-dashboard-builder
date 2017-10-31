@@ -1,1 +1,16 @@
-[]
+[
+  {
+    "name": "var1",
+    "query": "test.*",
+    "refresh": true,
+    "refresh_on_load": true,
+    "type": "query"
+  },
+  {
+    "name": "var2",
+    "query": "test.$var1.*",
+    "refresh": true,
+    "refresh_on_load": true,
+    "type": "query"
+  }
+]

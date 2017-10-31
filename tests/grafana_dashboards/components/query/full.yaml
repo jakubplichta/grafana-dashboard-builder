@@ -1,5 +1,6 @@
 query:
   query: part1.$var1.part2.$var2.$var3
+  refresh-only-first: true
   var1:
     metric: '*x*'
     current: o1

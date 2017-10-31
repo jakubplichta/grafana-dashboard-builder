@@ -34,6 +34,7 @@ class Query(TemplatesItemBase):
         queries = []
         if not data.get('query'):
             return queries
+        refresh_only_first = data.get('refresh-only-first', False)
         for query_part in data['query'].split('.'):
             if query_part.startswith('$'):
                 is_first = False if queries else True
@@ -41,9 +42,9 @@ class Query(TemplatesItemBase):
                 metric = '*'
                 template_json = {
                     'type': 'query',
-                    'refresh_on_load': is_first,
+                    'refresh_on_load': not refresh_only_first or is_first,
                     'name': query,
-                    'refresh': is_first
+                    'refresh': not refresh_only_first or is_first
                 }
                 if query in data:
                     query_config = data[query]
