@@ -3,3 +3,4 @@ row:
   height: 100px
   showTitle: true
   collapse: true
+  repeat: node

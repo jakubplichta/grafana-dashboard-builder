@@ -11,3 +11,4 @@ query:
   var2:
     includeAll: true
     multi: true
+    hide: 2
