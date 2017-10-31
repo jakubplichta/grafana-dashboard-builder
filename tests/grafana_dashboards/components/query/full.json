@@ -28,7 +28,8 @@
     "refresh_on_load": false,
     "type": "query",
     "multi": true,
-    "includeAll": true
+    "includeAll": true,
+    "hide": 2
   },
   {
     "name": "var3",

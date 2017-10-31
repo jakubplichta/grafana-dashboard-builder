@@ -3,5 +3,6 @@
   "height": "100px",
   "showTitle": true,
   "collapse": true,
-  "panels": []
+  "panels": [],
+  "repeat": "node"
 }

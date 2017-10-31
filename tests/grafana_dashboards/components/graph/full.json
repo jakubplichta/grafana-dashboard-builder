@@ -73,5 +73,7 @@
       "bars": true,
       "points": true
     }
-  ]
+  ],
+  "min-span": 3,
+  "repeat": "node"
 }
