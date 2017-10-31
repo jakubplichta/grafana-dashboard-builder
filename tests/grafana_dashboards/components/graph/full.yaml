@@ -58,5 +58,5 @@ graph:
     - used:
         bars: true
         points: true
-  min-span: 3
+  minSpan: 3
   repeat: node
