@@ -3,7 +3,7 @@ elastic-search:
   password: my_password
   username: my_username
 file:
-  output_folder: /some/directory/on/my/disk
+  output_folder: ./out
 context:
   region: eu
   default-datacenter: cze
