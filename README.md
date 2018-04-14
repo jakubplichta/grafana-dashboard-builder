@@ -56,7 +56,11 @@ optional arguments:
 ```
 
 To start you need to create project configuration that needs to be in one YAML document. And some examples with current
-full capabilities can be found in [sample project](samples/project.yaml).
+can be found in [sample project](samples/project.yaml):
+
+```bash
+grafana-dashboard-builder -p ./samples/project.yaml --exporter file --config ./samples/config.yaml
+```
 
 ## Exporters
 
