@@ -8,5 +8,9 @@
   "y_formats": [
     "short",
     "short"
-  ]
+  ],
+  "xaxis": {
+    "format": "time",
+    "show": true
+  }
 }

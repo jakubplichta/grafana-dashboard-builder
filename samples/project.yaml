@@ -128,6 +128,8 @@
           rightMax: 10
           leftMin: 0
           rightMin: -10
+        yaxes:
+          - my-yaxes
 
 - name: memory
   panels:
@@ -208,3 +210,8 @@
               title: '{title}'
               dashboard: '{dashboard}'
               params: '{params}'
+
+- name: my-yaxes
+  yaxes:
+    - yaxis:
+        format: bytes

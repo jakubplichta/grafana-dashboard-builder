@@ -21,6 +21,11 @@ class Yaxes(JsonListGenerator):
     def __init__(self, data, registry):
         super(Yaxes, self).__init__(data, registry, YaxesItemBase)
 
+    def gen_json_from_data(self, data, context):
+        if len(data) == 1:
+            data.append(data[0])
+        return super(Yaxes, self).gen_json_from_data(data, context)
+
     def gen_item_json(self, items, result_list):
         if isinstance(items, dict) and len(items) > 1:
             result_list.append(items)
