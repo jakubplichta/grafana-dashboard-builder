@@ -3,5 +3,9 @@
   "targets": [],
   "title": null,
   "type": "graph",
-  "nullPointMode": "null"
+  "nullPointMode": "null",
+  "xaxis": {
+    "format": "time",
+    "show": true
+  }
 }

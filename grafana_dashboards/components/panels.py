@@ -32,7 +32,7 @@ class PanelsItemBase(JsonGenerator):
 class Graph(PanelsItemBase):
 
     _copy_fields = {'stack', 'fill', 'aliasColors', 'leftYAxisLabel', 'bars', 'lines', 'linewidth', 'y_formats',
-                    'x-axis', 'y-axis', 'xaxis', 'points', 'pointradius', 'percentage', 'steppedLine', 'repeat',
+                    'x-axis', 'y-axis', 'points', 'pointradius', 'percentage', 'steppedLine', 'repeat',
                     'minSpan'}
 
     def gen_json_from_data(self, data, context):
@@ -89,6 +89,7 @@ class Graph(PanelsItemBase):
             or 'grid' in self.data and ('leftMin' in grid_data or 'leftMax' in grid_data))
                 and ('y_formats' not in self.data)):
             panel_json['y_formats'] = ['short', 'short']
+        panel_json['xaxis'] = self.data.get('xaxis', {'show': True, 'format': 'time'})
         self._create_component(panel_json, Yaxes)
         return panel_json
 

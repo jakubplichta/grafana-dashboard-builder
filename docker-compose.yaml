@@ -1,0 +1,8 @@
+version: "3"
+services:
+  grafana-graphite:
+    image: "kamon/grafana_graphite"
+    ports:
+      - "2003:2003"
+      - "8380:80"
+      - "8381:81"
