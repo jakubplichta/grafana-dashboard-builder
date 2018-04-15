@@ -2,6 +2,10 @@ elastic-search:
   host: https://this-is-my-domain.com
   password: my_password
   username: my_username
+grafana:
+  host: http://localhost:8380
+  username: admin
+  password: admin
 file:
   output_folder: ./out
 context:
