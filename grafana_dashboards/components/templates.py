@@ -59,7 +59,7 @@ class Query(TemplatesItemBase):
                         template_json['options'] = [{'text': option, 'value': option} for option in
                                                     (query_config['options'])]
 
-                    for key in ['regex', 'multi', 'includeAll', 'hide']:
+                    for key in ['regex', 'multi', 'includeAll', 'hide', 'allFormat', 'allValue']:
                         if key in query_config:
                             template_json[key] = query_config[key]
 

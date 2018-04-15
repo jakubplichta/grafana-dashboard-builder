@@ -16,6 +16,7 @@
       - '{component}-connections'
       - '{component}-{env}-{nodes}-system-details'
       - 'some dashboard'
+      - docker-statsd
 
 - default-dashboard: &default-dashboard
     time_options: [1h, 6h, 12h, 24h, 2d, 7d, 14d, 30d]
@@ -215,3 +216,23 @@
   yaxes:
     - yaxis:
         format: bytes
+
+- name: docker-statsd
+  dashboard:
+    title: Docker statsd
+    <<: *default-dashboard
+    templates:
+      - query:
+          query: 'stats.statsd.graphiteStats.$metric'
+          metric:
+            current: calculationtime
+            includeAll: true
+            multi: true
+            current: All
+    rows:
+      - row:
+          panels:
+            - graph:
+                title: dynamic
+                target: 'stats.statsd.graphiteStats.$metric'
+                repeat: metric

@@ -10,5 +10,7 @@ query:
     regex: '/opt\^(value)\^\w+/'
   var2:
     includeAll: true
+    allFormat: glob
+    allValue: test*
     multi: true
     hide: 2

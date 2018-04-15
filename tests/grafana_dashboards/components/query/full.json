@@ -29,6 +29,8 @@
     "type": "query",
     "multi": true,
     "includeAll": true,
+    "allFormat": "glob",
+    "allValue": "test*",
     "hide": 2
   },
   {
