@@ -14,9 +14,10 @@
 # limitations under the License.
 import urllib2
 
-from mock import MagicMock
+from mock import MagicMock, patch
+from requests_kerberos import HTTPKerberosAuth
 
-from grafana_dashboards.client.connection import Connection
+from grafana_dashboards.client.connection import Connection, KerberosConnection
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
@@ -34,7 +35,7 @@ class Capture(object):
         return True
 
 
-def test_elastic_search():
+def test_connection():
     connection = Connection('username', 'password', 'https://host')
     connection._opener = MagicMock()
     # noinspection PyProtectedMember
@@ -56,3 +57,16 @@ def test_elastic_search():
     assert request.header_items() == capture.value.header_items()
     assert request.get_method() == capture.value.get_method()
     assert request.get_data() == capture.value.get_data()
+
+
+@patch('requests.post')
+def test_connection_with_kerberos(post):
+    connection = KerberosConnection('https://host')
+
+    post().json.return_value = {'hello': 'world'}
+
+    assert connection.make_request('/uri', {'it\'s': 'alive'}) == {'hello': 'world'}
+
+    capture = Capture()
+    post.assert_called_with('https://host/uri', auth=capture, json={"it's": 'alive'}, verify=False)
+    assert isinstance(capture.value, HTTPKerberosAuth)

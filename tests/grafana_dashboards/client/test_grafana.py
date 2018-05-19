@@ -20,8 +20,21 @@ from grafana_dashboards.client.grafana import GrafanaExporter
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
 
-def test_elastic_search():
+def test_grafana():
     exporter = GrafanaExporter(host='host', username='username', password='password')
+    exporter._connection = MagicMock()
+
+    dashboard_data = {'title': 'title', 'tags': []}
+    exporter.process_dashboard('project_name', 'dashboard_name', dashboard_data)
+
+    body = {'overwrite': True, 'dashboard': dashboard_data}
+    # noinspection PyProtectedMember
+    exporter._connection.make_request.assert_called_once_with('/api/dashboards/db',
+                                                              body)
+
+
+def test_grafana_with_kerberos():
+    exporter = GrafanaExporter(host='host', use_kerberos='true')
     exporter._connection = MagicMock()
 
     dashboard_data = {'title': 'title', 'tags': []}
