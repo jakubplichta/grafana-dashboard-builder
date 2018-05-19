@@ -32,3 +32,16 @@ def test_elastic_search():
     # noinspection PyProtectedMember
     exporter._connection.make_request.assert_called_once_with('/es/grafana-dash/dashboard/dashboard_name',
                                                               body)
+
+
+def test_elastic_search_with_kerberos():
+    exporter = ElasticSearchExporter(host='host', use_kerberos='true')
+    exporter._connection = MagicMock()
+
+    dashboard_data = {'title': 'title', 'tags': []}
+    exporter.process_dashboard('project_name', 'dashboard_name', dashboard_data)
+
+    body = {'user': 'guest', 'group': 'guest', 'title': 'title', 'tags': [], 'dashboard': json.dumps(dashboard_data)}
+    # noinspection PyProtectedMember
+    exporter._connection.make_request.assert_called_once_with('/es/grafana-dash/dashboard/dashboard_name',
+                                                              body)

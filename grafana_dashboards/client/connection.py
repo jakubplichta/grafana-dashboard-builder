@@ -19,6 +19,9 @@ import logging
 import urllib2
 from urlparse import urlparse
 
+import requests
+from requests_kerberos import HTTPKerberosAuth
+
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
 logger = logging.getLogger(__name__)
@@ -68,3 +71,13 @@ class LoggingHandler(urllib2.BaseHandler):
 
     https_request = http_request
     https_response = http_response
+
+
+class KerberosConnection(object):
+    def __init__(self, host):
+        logger.debug('Creating new kerberos connection with host=%s', host)
+        self._host = host
+
+    def make_request(self, uri, body=None):
+        response = requests.post('{0}{1}'.format(self._host, uri), json=body, auth=HTTPKerberosAuth(), verify=False)
+        return response.json()
