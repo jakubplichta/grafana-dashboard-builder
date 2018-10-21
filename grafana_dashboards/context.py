@@ -26,19 +26,26 @@ class Context(object):
     def __init__(self, context=None):
         super(Context, self).__init__()
         if not context:
-            context = {}
-        self._context = DictDefaultingToPlaceholder(context)
+            self._context = None
+        else:
+            self._context = DictDefaultingToPlaceholder(context)
 
     def expand_placeholders(self, to_expand):
         """
 
         :rtype : dict
         """
+        if not self._context:
+            return to_expand
+
         if isinstance(to_expand, str):
             (result, to_expand) = self._expand(to_expand)
             while result != to_expand:
                 (result, to_expand) = self._expand(result)
-            return result
+            if isinstance(result, str):
+                return string.Formatter().vformat(result, (), self._context)
+            else:
+                return result
         elif isinstance(to_expand, list):
             return [self.expand_placeholders(value) for value in to_expand]
         elif isinstance(to_expand, dict):
@@ -51,7 +58,8 @@ class Context(object):
             return to_expand, to_expand
         elif self._pattern.match(to_expand) and to_expand[1:-1] in self._context:
             return self._context[to_expand[1:-1]], to_expand
-        return string.Formatter().vformat(to_expand, (), self._context), to_expand
+        escaped = to_expand.replace('{{', '{{{{').replace('}}', '}}}}')
+        return string.Formatter().vformat(escaped, (), self._context), to_expand
 
     def __str__(self):
         return str(self._context)

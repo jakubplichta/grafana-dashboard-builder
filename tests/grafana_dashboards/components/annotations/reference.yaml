@@ -1,0 +1,8 @@
+annotations:
+  - annotation-defined-elsewhere
+  - annotation-with-params:
+      param1: 1
+  - annotation-with-{placeholder}:
+      placeholder:
+        - 1
+        - 2

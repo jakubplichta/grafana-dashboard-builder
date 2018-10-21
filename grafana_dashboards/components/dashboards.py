@@ -12,6 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from grafana_dashboards.components.annotations import Annotations
 from grafana_dashboards.components.base import JsonGenerator
 from grafana_dashboards.common import get_component_type
 from grafana_dashboards.components.rows import Rows
@@ -49,6 +50,8 @@ class Dashboard(JsonGenerator):
             nav['refresh_intervals'] = data.get('refresh_intervals', [])
         if 'refresh' in data:
             json_data['refresh'] = data.get('refresh')
+        if get_component_type(Annotations) in data:
+            json_data['annotations'] = {'list': self.registry.create_component(Annotations, data).gen_json()}
         if get_component_type(Rows) in data:
             json_data['rows'] = self.registry.create_component(Rows, data).gen_json()
         if get_component_type(Templates) in data:

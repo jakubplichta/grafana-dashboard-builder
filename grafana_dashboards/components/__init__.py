@@ -22,11 +22,13 @@ import templates
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 __all__ = [
+    'annotations',
     'base',
     'dashboards',
     'links',
     'panels',
     'projects',
     'rows',
+    'targets',
     'templates'
 ]

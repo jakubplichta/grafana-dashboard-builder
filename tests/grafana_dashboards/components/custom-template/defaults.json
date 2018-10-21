@@ -1,10 +1,9 @@
-[
-  {
-    "name": "name",
-    "options": [],
-    "query": "",
-    "refresh_on_load": false,
-    "type": "custom",
-    "datasource": null
-  }
-]
+{
+  "name": "name",
+  "options": [],
+  "query": "",
+  "refresh_on_load": false,
+  "type": "custom",
+  "datasource": null,
+  "refresh": 0
+}

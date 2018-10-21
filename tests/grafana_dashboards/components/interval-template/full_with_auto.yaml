@@ -1,0 +1,9 @@
+interval-template:
+  name: name
+  auto:
+    count: 500
+    min: 20s
+  current: auto
+  options:
+    - o1
+    - o2

@@ -12,12 +12,12 @@
     }
   ],
   "rows": [
-    "mocked"
+    "mocked <class 'grafana_dashboards.components.rows.Rows'>"
   ],
   "templating": {
     "enable": true,
     "list": [
-      "mocked"
+      "mocked <class 'grafana_dashboards.components.templates.Templates'>"
     ]
   },
   "time": {

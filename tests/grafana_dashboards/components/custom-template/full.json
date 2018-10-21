@@ -1,23 +1,22 @@
-[
-  {
-    "name": "name",
-    "options": [
-      {
-        "text": "o1",
-        "value": "o1"
-      },
-      {
-        "text": "o2",
-        "value": "o2"
-      }
-    ],
-    "current": {
+{
+  "name": "name",
+  "options": [
+    {
       "text": "o1",
       "value": "o1"
     },
-    "query": "o1,o2",
-    "refresh_on_load": false,
-    "type": "custom",
-    "datasource": null
-  }
-]
+    {
+      "text": "o2",
+      "value": "o2"
+    }
+  ],
+  "current": {
+    "text": "o1",
+    "value": "o1"
+  },
+  "query": "o1,o2",
+  "refresh_on_load": false,
+  "type": "custom",
+  "datasource": null,
+  "refresh": 0
+}

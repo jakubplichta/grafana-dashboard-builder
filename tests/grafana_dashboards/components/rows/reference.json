@@ -1,10 +1,6 @@
 [
-  "mocked1",
-  "mocked2",
-  "mocked1",
-  "mocked2",
-  "mocked1",
-  "mocked2",
-  "mocked1",
-  "mocked2"
+  "mocked <class 'grafana_dashboards.components.rows.Rows'> for name row-defined-elsewhere",
+  "mocked <class 'grafana_dashboards.components.rows.Rows'> for name row-with-params",
+  "mocked <class 'grafana_dashboards.components.rows.Rows'> for name row-with-{placeholder}",
+  "mocked <class 'grafana_dashboards.components.rows.Rows'> for name row-with-{placeholder}"
 ]

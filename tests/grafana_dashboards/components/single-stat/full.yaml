@@ -28,3 +28,4 @@ single-stat:
   valueFontSize: 80%
   postfixFontSize: 50%
   maxDataPoints: 100
+  datasource: datasource

@@ -40,12 +40,9 @@
       "unit": "ev"
     }
   ],
-  "targets": [
-    {
-      "target": "aliasByNode(apps.backend.*.counters.requests.count, 2)"
-    }
-  ],
+  "targets": ["mocked <class 'grafana_dashboards.components.targets.Targets'>"],
   "title": "Time series aggregations",
   "transform": "timeseries_aggregations",
-  "type": "table"
+  "type": "table",
+  "datasource": "datasource"
 }

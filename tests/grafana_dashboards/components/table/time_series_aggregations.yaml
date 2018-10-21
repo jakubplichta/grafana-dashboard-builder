@@ -8,6 +8,7 @@ table:
   targets:
     - aliasByNode(apps.backend.*.counters.requests.count, 2)
   transform: timeseries_aggregations
+  datasource: datasource
   columns:
     - Min
     - Max

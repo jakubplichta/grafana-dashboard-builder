@@ -1,6 +1,6 @@
 {
   "span": 12,
-  "targets": [],
+  "targets": ["mocked <class 'grafana_dashboards.components.targets.Targets'>"],
   "title": null,
   "type": "graph",
   "nullPointMode": "null",

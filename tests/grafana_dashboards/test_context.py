@@ -33,8 +33,20 @@ def test_context_expands_scalar_value():
     }
     contexts = [context for context in Context.create_context(data, keys_to_expand=('expanded-list', 'expanded-dict'))]
     assert len(contexts) == 1
-    expected = {'double-wrapped': 'first', 'single': 'first', 'wrapped': 'first'}
-    to_expand = {'single': '{single}', 'wrapped': '{wrapped}', 'double-wrapped': '{double-wrapped}'}
+    expected = {
+        'double-wrapped': 'first',
+        'single': 'first',
+        'wrapped': 'first',
+        'single-escaped': '{not-expanded}',
+        'double-escaped': '{{not-expanded}}'
+    }
+    to_expand = {
+        'single': '{single}',
+        'wrapped': '{wrapped}',
+        'double-wrapped': '{double-wrapped}',
+        'single-escaped': '{{not-expanded}}',
+        'double-escaped': '{{{{not-expanded}}}}'
+    }
     assert contexts[0].expand_placeholders(to_expand) == expected
 
 

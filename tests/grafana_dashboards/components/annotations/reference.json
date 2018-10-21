@@ -1,0 +1,6 @@
+[
+  "mocked <class 'grafana_dashboards.components.annotations.Annotations'> for name annotation-defined-elsewhere",
+  "mocked <class 'grafana_dashboards.components.annotations.Annotations'> for name annotation-with-params",
+  "mocked <class 'grafana_dashboards.components.annotations.Annotations'> for name annotation-with-{placeholder}",
+  "mocked <class 'grafana_dashboards.components.annotations.Annotations'> for name annotation-with-{placeholder}"
+]

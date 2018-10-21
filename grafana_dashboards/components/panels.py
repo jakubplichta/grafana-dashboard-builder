@@ -12,10 +12,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from grafana_dashboards.common import get_component_type
 from grafana_dashboards.components.axes import Yaxes
 from grafana_dashboards.components.base import JsonListGenerator, JsonGenerator
-from grafana_dashboards.common import get_component_type
 from grafana_dashboards.components.links import Links
+from grafana_dashboards.components.targets import Targets
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
@@ -33,7 +34,7 @@ class Graph(PanelsItemBase):
 
     _copy_fields = {'stack', 'fill', 'aliasColors', 'leftYAxisLabel', 'bars', 'lines', 'linewidth', 'y_formats',
                     'x-axis', 'y-axis', 'points', 'pointradius', 'percentage', 'steppedLine', 'repeat',
-                    'minSpan'}
+                    'minSpan', 'datasource'}
 
     def gen_json_from_data(self, data, context):
         panel_json = super(Graph, self).gen_json_from_data(data, context)
@@ -45,7 +46,7 @@ class Graph(PanelsItemBase):
         targets = self.data.get('targets', [])
         if 'target' in self.data:
             targets.append(self.data['target'])
-        panel_json['targets'] = map(lambda v: {'target': v}, targets)
+        self._create_component(panel_json, Targets, {'targets': targets})
         panel_json['nullPointMode'] = self.data.get('nullPointMode', 'null')
         grid_data = self.data.get('grid', {}) or {}
         if 'grid' in self.data or 'y_formats' in self.data:
@@ -84,25 +85,25 @@ class Graph(PanelsItemBase):
                     to_add.update(settings)
                     overrides.append(to_add)
             panel_json['seriesOverrides'] = overrides
-        self._create_component(panel_json, Links)
+        self._create_component(panel_json, Links, self.data)
         if (('leftYAxisLabel' in self.data
             or 'grid' in self.data and ('leftMin' in grid_data or 'leftMax' in grid_data))
                 and ('y_formats' not in self.data)):
             panel_json['y_formats'] = ['short', 'short']
         panel_json['xaxis'] = self.data.get('xaxis', {'show': True, 'format': 'time'})
-        self._create_component(panel_json, Yaxes)
+        self._create_component(panel_json, Yaxes, self.data)
         return panel_json
 
-    def _create_component(self, panel_json, clazz):
-        if get_component_type(clazz) in self.data:
-            panel_json[get_component_type(clazz)] = self.registry.create_component(clazz, self.data).gen_json()
+    def _create_component(self, panel_json, clazz, data):
+        if get_component_type(clazz) in data:
+            panel_json[get_component_type(clazz)] = self.registry.create_component(clazz, data).gen_json()
 
 
 class SingleStat(PanelsItemBase):
 
     # noinspection PySetFunctionToLiteral
     _copy_fields = set(['prefix', 'postfix', 'nullText', 'format', 'thresholds', 'colorValue', 'colorBackground',
-                        'colors', 'prefixFontSize', 'valueFontSize', 'postfixFontSize', 'maxDataPoints'])
+                        'colors', 'prefixFontSize', 'valueFontSize', 'postfixFontSize', 'maxDataPoints', 'datasource'])
 
     def gen_json_from_data(self, data, context):
         panel_json = super(SingleStat, self).gen_json_from_data(data, context)
@@ -110,10 +111,10 @@ class SingleStat(PanelsItemBase):
             'type': 'singlestat',
             'title': data.get('title', None),
             'span': data.get('span', None),
-            'targets': map(lambda v: {'target': v}, data.get('targets', [])),
             'nullPointMode': data.get('nullPointMode', 'null'),
             'valueName': data.get('valueName', 'current')
         })
+        panel_json['targets'] = self.registry.create_component(Targets, data).gen_json() if 'targets' in data else []
         if 'sparkline' in data:
             panel_json['sparkline'] = {
                 'show': True,
@@ -137,7 +138,7 @@ class SingleStat(PanelsItemBase):
 
 class Table(PanelsItemBase):
     # noinspection PySetFunctionToLiteral
-    _copy_fields = set(['fontSize', 'pageSize', 'showHeader', 'scroll'])
+    _copy_fields = set(['fontSize', 'pageSize', 'showHeader', 'scroll', 'datasource'])
 
     def gen_json_from_data(self, data, context):
         panel_json = super(Table, self).gen_json_from_data(data, context)
@@ -149,6 +150,7 @@ class Table(PanelsItemBase):
             'transform': data.get('transform', None),
             'columns': map(lambda v: {'text': v, 'value': str(v).lower()}, data.get('columns', []))
         })
+        panel_json['targets'] = self.registry.create_component(Targets, data).gen_json() if 'targets' in data else []
 
         if 'styles' in self.data:
             styles = []

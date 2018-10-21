@@ -8,6 +8,7 @@ table:
   targets:
     - aliasByNode(apps.backend.backend_01.counters.requests.count, 2)
   transform: timeseries_to_columns
+  datasource: datasource
   styles:
     - Time:
         type: date

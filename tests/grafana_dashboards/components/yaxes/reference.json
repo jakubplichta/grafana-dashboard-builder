@@ -1,10 +1,6 @@
 [
-  "mocked1",
-  "mocked2",
-  "mocked1",
-  "mocked2",
-  "mocked1",
-  "mocked2",
-  "mocked1",
-  "mocked2"
+  "mocked <class 'grafana_dashboards.components.axes.Yaxes'> for name yaxes-defined-elsewhere",
+  "mocked <class 'grafana_dashboards.components.axes.Yaxes'> for name yaxes-with-params",
+  "mocked <class 'grafana_dashboards.components.axes.Yaxes'> for name yaxes-with-{placeholder}",
+  "mocked <class 'grafana_dashboards.components.axes.Yaxes'> for name yaxes-with-{placeholder}"
 ]

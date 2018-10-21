@@ -1,0 +1,30 @@
+[
+  {
+    "name": "query_name",
+    "query": "label_values(kube_namespace_labels, namespace)",
+    "datasource": "$datasource",
+    "type": "query",
+    "refresh": 0,
+    "current": {
+      "text": "o1",
+      "value": "o1"
+    },
+    "options": [
+      {
+        "text": "o1",
+        "value": "o1"
+      },
+      {
+        "text": "o2",
+        "value": "o2"
+      }
+    ],
+    "regex": "/opt\\^(value)\\^\\w+/",
+    "multi": true,
+    "includeAll": true,
+    "allFormat": "glob",
+    "allValue": "test*",
+    "hide": 2
+  }
+]
+
