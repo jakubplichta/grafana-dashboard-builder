@@ -1,0 +1,43 @@
+---
+- name: Example influxdb project
+  project:
+    dashboards:
+    - influxdb-overview
+
+- default-dashboard: &default-dashboard
+    time_options: [1h, 6h, 12h, 24h, 2d, 7d, 14d, 30d]
+    refresh_intervals: [5m, 15m, 30m, 1h]
+    time:
+      from: now-2d
+      to: now
+
+- name: influxdb-overview
+  dashboard:
+    title: influxdb Overview
+    tags:
+    - tag1
+    <<: *default-dashboard
+    templates:
+    - datasource-template:
+        query: influxdb
+    sharedCrosshair: true
+    rows:
+    - row:
+        panels:
+        - graph:
+            title: "Overall Cluster CPU Usage"
+            datasource: $datasource
+            yaxes:
+            - yaxis:
+                label: Milicores
+            - yaxis:
+            targets:
+            - influxdb-target:
+                query: "SELECT sum(\"value\") FROM \"cpu/usage_rate\" WHERE \"type\" = 'node' AND $timeFilter GROUP BY time($interval) fill(null)"
+                alias: Usage
+            - influxdb-target:
+                query: "SELECT sum(\"value\") FROM \"cpu/limit\" WHERE \"type\" = 'node' AND $timeFilter GROUP BY time($interval) fill(null)"
+                alias: Limit
+            - influxdb-target:
+                query: "SELECT sum(\"value\") FROM \"cpu/request\" WHERE \"type\" = 'node' AND $timeFilter GROUP BY time($interval) fill(null)"
+                alias: Request
