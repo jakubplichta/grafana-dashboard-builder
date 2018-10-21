@@ -1,0 +1,11 @@
+{
+  "span": 3,
+  "title": "test title",
+  "type": "dashlist",
+  "query": "query",
+  "tags": ["tag1", "tag2"],
+  "search": true,
+  "starred": true,
+  "recent": true,
+  "limit": 20
+}
