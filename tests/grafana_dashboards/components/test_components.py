@@ -12,6 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import inspect
 import json
 import os
 
@@ -20,6 +21,8 @@ import yaml
 
 import grafana_dashboards.common
 from grafana_dashboards.components import *  # NOQA
+from grafana_dashboards.components.base import JsonListGenerator
+from grafana_dashboards.errors import UnregisteredComponentError
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
@@ -52,10 +55,23 @@ def load_test_fixtures():
 
 def test_component(component, config, expected):
     with mock.patch('grafana_dashboards.components.base.ComponentRegistry') as registry:
-        gen = mock.Mock()
-        gen.gen_json = mock.Mock(return_value=['mocked'])
-        registry.create_component = mock.Mock(return_value=gen)
-        gen = mock.Mock()
-        gen.gen_json = mock.Mock(return_value=['mocked1', 'mocked2'])
-        registry.get_component = mock.Mock(return_value=gen)
+        def create_component(component_type, data):
+            gen = mock.Mock()
+            if inspect.isclass(component_type) and issubclass(component_type, JsonListGenerator):
+                gen.gen_json = mock.Mock(return_value=['mocked ' + str(component_type)])
+            else:
+                gen.gen_json = mock.Mock(return_value='mocked ' + str(component_type))
+            return gen
+
+        registry.create_component = mock.Mock(side_effect=create_component)
+
+        def get_component(component_type, name):
+            if name == 'not-mocked':
+                raise UnregisteredComponentError("No component '%s' with name '%s' found!" % (component_type, name))
+
+            gen = mock.Mock()
+            gen.gen_json = mock.Mock(return_value=['mocked ' + str(component_type) + ' for name ' + name])
+            return gen
+
+        registry.get_component = mock.Mock(side_effect=get_component)
         assert component(config, registry).gen_json() == expected

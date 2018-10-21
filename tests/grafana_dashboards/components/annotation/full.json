@@ -1,0 +1,9 @@
+{
+  "datasource": "$datasource",
+  "enable": false,
+  "expr": "sum(changes(kube_pod_created{namespace=\"$namespace\", pod=\"$pod\"}[1m]))",
+  "hide": true,
+  "iconColor": "rgba(255, 255, 255, 1)",
+  "name": "deploy",
+  "showIn": 1
+}

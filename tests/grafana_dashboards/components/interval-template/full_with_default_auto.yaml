@@ -1,0 +1,7 @@
+interval-template:
+  name: name
+  auto:
+  current: auto
+  options:
+    - o1
+    - o2

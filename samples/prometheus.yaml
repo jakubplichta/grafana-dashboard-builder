@@ -1,0 +1,103 @@
+---
+- name: Example Prometheus project
+  project:
+    dashboards:
+    - prometheus-overview
+
+- default-dashboard: &default-dashboard
+    time_options: [1h, 6h, 12h, 24h, 2d, 7d, 14d, 30d]
+    refresh_intervals: [5m, 15m, 30m, 1h]
+    time:
+      from: now-2d
+      to: now
+
+- name: prometheus-overview
+  dashboard:
+    title: Prometheus Overview
+    tags:
+    - tag1
+    <<: *default-dashboard
+    templates:
+    - datasource-template:
+        query: prometheus
+    - query:
+        datasource: $datasource
+        name: namespace
+        query: label_values(kube_namespace_labels, namespace)
+    - query:
+        datasource: $datasource
+        name: pod
+        query: label_values(kube_pod_labels{namespace="$namespace"},pod)
+    - interval-template:
+        name: interval
+        current: auto
+        auto:
+          count: 500
+          min: 10s
+        options:
+        - 1m
+        - 2m
+        - 3m
+        - 5m
+        - 10m
+        - 30m
+        - 1h
+        - 6h
+        - 12h
+        - 1d
+    annotations:
+    - annotation:
+        name: deploy
+        expr: "sum(changes(kube_pod_created{namespace=\"$namespace\", pod=\"$pod\"}[1m]))"
+        datasource: $datasource
+    sharedCrosshair: true
+    rows:
+    - row:
+        panels:
+        - single-stat:
+            span: 2
+            title: Running pods
+            datasource: $datasource
+            targets:
+            - prometheus-target:
+                expr: "sum(kube_pod_container_status_running{namespace=\"$namespace\"})"
+    - row:
+        panels:
+        - graph:
+            span: 6
+            title: "Individual CPU Usage: $pod - rate $interval"
+            datasource: $datasource
+            yaxes:
+            - yaxis:
+                label: Milicores
+            - yaxis:
+            targets:
+            - prometheus-target:
+                expr: 'sum(rate(container_cpu_usage_seconds_total{{namespace="$namespace", pod_name=~"$pod", container_name=~".+"}}[$interval])) by (container_name) * 1000'
+                legendFormat: Usage {{{{container_name}}}}
+            - prometheus-target:
+                expr: "sum(kube_pod_container_resource_limits_cpu_cores{{namespace=\"$namespace\", pod=~\"$pod\"}}) by (container) * 1000"
+                legendFormat: Limit {{{{container}}}}
+            - prometheus-target:
+                expr: "sum(kube_pod_container_resource_requests_cpu_cores{{namespace=\"$namespace\", pod=~\"$pod\"}}) by (container) * 1000"
+                legendFormat: Request {{{{container}}}}
+        - graph:
+            span: 6
+            title: "Individual Memory Usage: $pod"
+            datasource: $datasource
+            yaxes:
+            - yaxis:
+                format: bytes
+            targets:
+            - prometheus-target:
+                expr: "sum(container_memory_usage_bytes{{namespace=\"$namespace\", pod_name=~\"$pod\", container_name=~\".+\"}}) by (container_name)"
+                legendFormat: Usage {{{{container_name}}}}
+            - prometheus-target:
+                expr: "sum(kube_pod_container_resource_limits_memory_bytes{{namespace=\"$namespace\", pod=~\"$pod\"}}) by (container)"
+                legendFormat: Limit {{{{container}}}}
+            - prometheus-target:
+                expr: "sum(kube_pod_container_resource_requests_memory_bytes{{namespace=\"$namespace\", pod=~\"$pod\"}}) by (container)"
+                legendFormat: Request {{{{container}}}}
+            - prometheus-target:
+                expr: "sum(container_memory_working_set_bytes{{namespace=\"$namespace\", pod_name=~\"$pod\", container_name=~\".+\"}}) by (container_name)"
+                legendFormat: Working Set {{{{container_name}}}}

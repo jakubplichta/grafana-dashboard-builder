@@ -1,0 +1,9 @@
+query:
+  name: query_name
+  query: label_values(kube_namespace_labels, namespace)
+  datasource: '$datasource'
+  refresh: 2
+  current: o1
+  options:
+    - o1
+    - o2

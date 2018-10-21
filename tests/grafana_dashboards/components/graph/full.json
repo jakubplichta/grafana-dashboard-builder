@@ -1,16 +1,6 @@
 {
   "span": 3,
-  "targets": [
-    {
-      "target": "t1"
-    },
-    {
-      "target": "t2"
-    },
-    {
-      "target": "target"
-    }
-  ],
+  "targets": ["mocked <class 'grafana_dashboards.components.targets.Targets'>"],
   "title": "test title",
   "type": "graph",
   "grid": {
@@ -28,7 +18,7 @@
     "short"
   ],
   "links": [
-    "mocked"
+    "mocked <class 'grafana_dashboards.components.links.Links'>"
   ],
   "nullPointMode": "connected",
   "aliasColors": {
@@ -46,7 +36,7 @@
   "steppedLine": true,
   "x-axis": true,
   "y-axis": false,
-  "yaxes": ["mocked"],
+  "yaxes": ["mocked <class 'grafana_dashboards.components.axes.Yaxes'>"],
   "xaxis": {"mode": "time", "show": true},
   "legend": {
     "avg": true,
@@ -75,5 +65,6 @@
     }
   ],
   "minSpan": 3,
-  "repeat": "node"
+  "repeat": "node",
+  "datasource": "datasource"
 }

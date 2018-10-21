@@ -1,0 +1,3 @@
+{
+  "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=\"$namespace\", pod_name=~\"$pod\"}[$interval])) by (container_name) * 1000"
+}

@@ -4,6 +4,6 @@
   "showTitle": false,
   "collapse": false,
   "panels": [
-    "mocked"
+    "mocked <class 'grafana_dashboards.components.panels.Panels'>"
   ]
 }

@@ -1,0 +1,5 @@
+{
+  "name": "datasource",
+  "query": "prometheus",
+  "type": "datasource"
+}

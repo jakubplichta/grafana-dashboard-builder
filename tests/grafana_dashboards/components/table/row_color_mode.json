@@ -28,12 +28,9 @@
       "unit": "short"
     }
   ],
-  "targets": [
-    {
-      "target": "aliasByNode(apps.backend.backend_01.counters.requests.count, 2)"
-    }
-  ],
+  "targets": ["mocked <class 'grafana_dashboards.components.targets.Targets'>"],
   "title": "Row color mode",
   "transform": "timeseries_to_columns",
-  "type": "table"
+  "type": "table",
+  "datasource": "datasource"
 }

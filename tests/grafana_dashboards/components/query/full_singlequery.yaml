@@ -1,0 +1,14 @@
+query:
+  name: query_name
+  query: label_values(kube_namespace_labels, namespace)
+  datasource: '$datasource'
+  current: o1
+  options:
+    - o1
+    - o2
+  regex: '/opt\^(value)\^\w+/'
+  includeAll: true
+  allFormat: glob
+  allValue: test*
+  multi: true
+  hide: 2

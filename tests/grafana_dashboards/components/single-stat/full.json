@@ -4,16 +4,9 @@
   "type": "singlestat",
   "valueName": "current",
   "nullPointMode": "connected",
-  "targets": [
-    {
-      "target": "t1"
-    },
-    {
-      "target": "t2"
-    }
-  ],
+  "targets": ["mocked <class 'grafana_dashboards.components.targets.Targets'>"],
   "links": [
-    "mocked"
+    "mocked <class 'grafana_dashboards.components.links.Links'>"
   ],
   "format": "bytes",
   "postfix": "postfix",
@@ -41,5 +34,6 @@
       "op": "=",
       "text": "N/A"
     }
-  ]
+  ],
+  "datasource": "datasource"
 }

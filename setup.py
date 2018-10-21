@@ -47,7 +47,7 @@ class Tox(TestCommand):
 
 params = {
     'name': 'grafana-dashboard-builder',
-    'version': '0.3.0a6',
+    'version': '0.4.0a1',
     'packages': [
         'grafana_dashboards',
         'grafana_dashboards.client',
@@ -73,7 +73,7 @@ params = {
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
     ],
-    'keywords': 'grafana yaml',
+    'keywords': 'grafana yaml graphite prometheus',
     'cmdclass': {'test': Tox},
     'tests_require': ['tox', 'mock'],
     'install_requires': ['PyYAML', 'argparse', 'requests-kerberos', 'requests'],

@@ -120,6 +120,13 @@ If you do not want to store your credentials in the configuration file you can u
 
 To use Grafana exporter run _grafana-dashboard-builder_ with `--exporter grafana` option.
 
+## Supported data stores
+
+At this moment _grafana-dashboard-builder_ supports following data stores:
+
+- [Graphite](https://graphiteapp.org/)
+- [Prometheus](https://prometheus.io/)
+
 ## YAML definition format
 
 Each component follows the same configuration format. Top level must contain 2 fields - name and component type.

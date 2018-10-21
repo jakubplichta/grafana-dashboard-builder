@@ -1,0 +1,8 @@
+[
+  {
+    "name": "query_name",
+    "query": "label_values(kube_namespace_labels, namespace)",
+    "type": "query",
+    "refresh": 1
+  }
+]

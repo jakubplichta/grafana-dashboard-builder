@@ -1,0 +1,8 @@
+annotation:
+  name: deploy
+  expr: "sum(changes(kube_pod_created{namespace=\"$namespace\", pod=\"$pod\"}[1m]))"
+  datasource: "$datasource"
+  enable: false
+  hide: true
+  iconColor: "rgba(255, 255, 255, 1)"
+  showIn: 1

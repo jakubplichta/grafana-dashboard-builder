@@ -1,0 +1,9 @@
+{
+  "name": "name",
+  "current": {
+    "text": "o1",
+    "value": "o1"
+  },
+  "query": "prometheus",
+  "type": "datasource"
+}

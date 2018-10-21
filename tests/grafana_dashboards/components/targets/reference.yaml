@@ -1,0 +1,9 @@
+targets:
+- not-mocked
+- target-defined-elsewhere
+- target-with-params:
+    param1: 1
+- target-with-{placeholder}:
+    placeholder:
+    - 1
+    - 2
