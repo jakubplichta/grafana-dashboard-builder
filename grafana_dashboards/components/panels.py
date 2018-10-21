@@ -175,3 +175,18 @@ class Text(PanelsItemBase):
             'content': data.get('content', '')
         })
         return panel_json
+
+
+class Dashlist(PanelsItemBase):
+    _copy_fields = {'headings', 'limit', 'recent', 'tags', 'query'}
+
+    def gen_json_from_data(self, data, context):
+        panel_json = super(Dashlist, self).gen_json_from_data(data, context)
+        panel_json.update({
+            'type': 'dashlist',
+            'title': data.get('title', None),
+            'span': data.get('span', 12),
+            'search': 'query' in data or 'tags' in data,
+            'starred': data.get('starred') or ('query' not in data and 'tags' not in data)
+        })
+        return panel_json

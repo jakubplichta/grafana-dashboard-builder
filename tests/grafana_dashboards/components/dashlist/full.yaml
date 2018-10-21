@@ -1,0 +1,11 @@
+dashlist:
+  span: 3
+  title: 'test title'
+  tags:
+  - tag1
+  - tag2
+  query: query
+  recent: true
+  starred: true
+  heading: true
+  limit: 20
