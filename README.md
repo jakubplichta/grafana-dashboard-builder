@@ -126,6 +126,7 @@ At this moment _grafana-dashboard-builder_ supports following data stores:
 
 - [Graphite](https://graphiteapp.org/)
 - [Prometheus](https://prometheus.io/)
+- [InfluxDB](https://www.influxdata.com/)
 
 ## YAML definition format
 

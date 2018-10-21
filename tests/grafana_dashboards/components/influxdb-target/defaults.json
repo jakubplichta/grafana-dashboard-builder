@@ -1,0 +1,5 @@
+{
+  "dsType": "influxdb",
+  "rawQuery": true,
+  "query": "SELECT sum(\"value\") FROM \"cpu/usage_rate\" WHERE \"type\" = 'node' AND $timeFilter GROUP BY time($interval) fill(null)"
+}

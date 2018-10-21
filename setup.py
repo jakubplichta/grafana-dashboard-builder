@@ -73,7 +73,7 @@ params = {
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
     ],
-    'keywords': 'grafana yaml graphite prometheus',
+    'keywords': 'grafana yaml graphite prometheus influxdb',
     'cmdclass': {'test': Tox},
     'tests_require': ['tox', 'mock'],
     'install_requires': ['PyYAML', 'argparse', 'requests-kerberos', 'requests'],

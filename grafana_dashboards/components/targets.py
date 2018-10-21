@@ -54,3 +54,14 @@ class PrometheusTarget(TargetsItemBase):
         template_json = super(PrometheusTarget, self).gen_json_from_data(data, context)
         template_json['expr'] = data['expr']
         return template_json
+
+
+class InfluxdbTarget(TargetsItemBase):
+    _copy_fields = {'alias'}
+
+    def gen_json_from_data(self, data, context):
+        template_json = super(InfluxdbTarget, self).gen_json_from_data(data, context)
+        template_json['query'] = data['query']
+        template_json['dsType'] = 'influxdb'
+        template_json['rawQuery'] = True
+        return template_json
