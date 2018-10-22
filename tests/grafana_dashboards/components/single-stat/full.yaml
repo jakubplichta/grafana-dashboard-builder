@@ -29,3 +29,4 @@ single-stat:
   postfixFontSize: 50%
   maxDataPoints: 100
   datasource: datasource
+  repeat: var
