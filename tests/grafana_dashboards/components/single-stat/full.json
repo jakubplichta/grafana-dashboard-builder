@@ -35,5 +35,6 @@
       "text": "N/A"
     }
   ],
-  "datasource": "datasource"
+  "datasource": "datasource",
+  "repeat": "var"
 }
