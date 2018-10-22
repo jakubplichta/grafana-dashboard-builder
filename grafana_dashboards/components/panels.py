@@ -104,7 +104,7 @@ class SingleStat(PanelsItemBase):
     # noinspection PySetFunctionToLiteral
     _copy_fields = set(['prefix', 'postfix', 'nullText', 'format', 'thresholds', 'colorValue', 'colorBackground',
                         'colors', 'prefixFontSize', 'valueFontSize', 'postfixFontSize', 'maxDataPoints', 'datasource',
-                        'repeat'])
+                        'repeat', 'decimals', 'minSpan'])
 
     def gen_json_from_data(self, data, context):
         panel_json = super(SingleStat, self).gen_json_from_data(data, context)
@@ -122,6 +122,14 @@ class SingleStat(PanelsItemBase):
                 'full': data['sparkline'].get('full', False),
                 'lineColor': data['sparkline'].get('lineColor', 'rgb(31, 120, 193)'),
                 'fillColor': data['sparkline'].get('fillColor', 'rgba(31, 118, 189, 0.18)')
+            }
+        if 'gauge' in data:
+            panel_json['gauge'] = {
+                'show': True,
+                'minValue': data['gauge'].get('minValue', 0),
+                'maxValue': data['gauge'].get('maxValue', 100),
+                'thresholdMarkers': data['gauge'].get('thresholdMarkers', True),
+                'thresholdLabels': data['gauge'].get('thresholdLabels', False)
             }
         if 'colors' not in data:
             panel_json['colors'] = [

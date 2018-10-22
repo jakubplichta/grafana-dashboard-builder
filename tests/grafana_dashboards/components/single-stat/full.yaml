@@ -30,3 +30,12 @@ single-stat:
   maxDataPoints: 100
   datasource: datasource
   repeat: var
+  decimals: 1
+  minSpan: 2
+  gauge:
+    show: true
+    minValue: 1
+    maxValue: 2
+    thresholdMarkers: false
+    thresholdLabels: true
+
