@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2015-2018 grafana-dashboard-builder contributors
+# Copyright 2015-2019 grafana-dashboard-builder contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,9 +12,16 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from __future__ import unicode_literals
+
 from grafana_dashboards.common import get_component_type
 from grafana_dashboards.components.base import JsonListGenerator, JsonGenerator
 from grafana_dashboards.errors import UnregisteredComponentError
+
+try:
+    basestring
+except NameError:
+    basestring = str
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
@@ -40,7 +47,7 @@ class GraphiteTarget(TargetsItemBase):
 
     def gen_json_from_data(self, data, context):
         template_json = super(GraphiteTarget, self).gen_json_from_data(data, context)
-        if isinstance(data, str):
+        if isinstance(data, basestring):
             template_json['target'] = data
         else:
             template_json['target'] = data['target']

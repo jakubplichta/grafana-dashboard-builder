@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2015-2018 grafana-dashboard-builder contributors
+# Copyright 2015-2019 grafana-dashboard-builder contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,12 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import base
-import dashboards
-import panels
-import projects
-import rows
-import templates
+from grafana_dashboards.components import base
+from grafana_dashboards.components import dashboards
+from grafana_dashboards.components import panels
+from grafana_dashboards.components import projects
+from grafana_dashboards.components import rows
+from grafana_dashboards.components import templates
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 __all__ = [

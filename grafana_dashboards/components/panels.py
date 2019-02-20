@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2015-2018 grafana-dashboard-builder contributors
+# Copyright 2015-2019 grafana-dashboard-builder contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,6 +12,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from __future__ import unicode_literals
+
 from grafana_dashboards.common import get_component_type
 from grafana_dashboards.components.axes import Yaxes
 from grafana_dashboards.components.base import JsonListGenerator, JsonGenerator
@@ -80,7 +82,7 @@ class Graph(PanelsItemBase):
         if 'seriesOverrides' in self.data:
             overrides = []
             for override in self.data['seriesOverrides']:
-                for alias, settings in override.iteritems():
+                for alias, settings in override.items():
                     to_add = {'alias': alias}
                     to_add.update(settings)
                     overrides.append(to_add)
@@ -139,7 +141,7 @@ class SingleStat(PanelsItemBase):
             ]
         if 'valueMaps' in data:
             panel_json['valueMaps'] = [{'value': value, 'op': '=', 'text': text} for value, text in
-                                       data['valueMaps'].iteritems()]
+                                       data['valueMaps'].items()]
         if get_component_type(Links) in data:
             panel_json['links'] = self.registry.create_component(Links, data).gen_json()
         return panel_json
@@ -155,16 +157,16 @@ class Table(PanelsItemBase):
             'type': 'table',
             'title': data.get('title', None),
             'span': data.get('span', None),
-            'targets': map(lambda v: {'target': v}, data.get('targets', [])),
+            'targets': [{'target': v} for v in data.get('targets', [])],
             'transform': data.get('transform', None),
-            'columns': map(lambda v: {'text': v, 'value': str(v).lower()}, data.get('columns', []))
+            'columns': [{'text': v, 'value': str(v).lower()} for v in data.get('columns', [])]
         })
         panel_json['targets'] = self.registry.create_component(Targets, data).gen_json() if 'targets' in data else []
 
         if 'styles' in self.data:
             styles = []
             for override in self.data['styles']:
-                for pattern, settings in override.iteritems():
+                for pattern, settings in override.items():
                     to_add = {'pattern': pattern}
                     to_add.update(settings)
                     styles.append(to_add)

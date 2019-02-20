@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2015-2018 grafana-dashboard-builder contributors
+# Copyright 2015-2019 grafana-dashboard-builder contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,14 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from __future__ import unicode_literals
+
 from grafana_dashboards.components.base import JsonListGenerator, JsonGenerator
+
+try:
+    basestring
+except NameError:
+    basestring = str
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
@@ -38,10 +45,10 @@ class DashboardLink(LinksItemBase):
         if 'params' in data and isinstance(data.get('params'), list):
             params = []
             for param in data.get('params'):
-                if isinstance(param, str):
+                if isinstance(param, basestring):
                     params.append((param, '$' + param))
                 else:
-                    for key, value in param.iteritems():
+                    for key, value in param.items():
                         params.append((key, value))
             link_json['params'] = '&'.join(map(lambda pair: 'var-%s=%s' % (pair[0], pair[1]), params))
         return link_json

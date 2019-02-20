@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2015-2018 grafana-dashboard-builder contributors
+# Copyright 2015-2019 grafana-dashboard-builder contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,9 +12,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from __future__ import unicode_literals
 
-from mock import patch, MagicMock
 import pytest
+from mock import patch, MagicMock
 
 from grafana_dashboards.exporter import ProjectProcessor, FileExporter
 
@@ -41,7 +42,7 @@ def test_project_processor():
                                                                   dashboard.gen_json())
 
 
-@patch('grafana_dashboards.exporter.file', create=True)
+@patch('grafana_dashboards.exporter.open', create=True)
 @patch('json.dump')
 @patch('os.makedirs', return_value=True)
 @patch('os.path.isdir', return_value=True)

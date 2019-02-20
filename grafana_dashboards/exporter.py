@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2015-2018 grafana-dashboard-builder contributors
+# Copyright 2015-2019 grafana-dashboard-builder contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,11 +12,12 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from __future__ import unicode_literals
 
+import errno
 import json
 import logging
 import os
-import errno
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
@@ -77,5 +78,5 @@ class FileExporter(DashboardExporter):
 
         dashboard_path = os.path.join(dirname, dashboard_name + '.json')
         logger.info("Saving dashboard '%s' to '%s'", dashboard_name, os.path.abspath(dashboard_path))
-        with file(dashboard_path, 'w') as f:
+        with open(dashboard_path, 'w') as f:
             json.dump(dashboard_data, f, sort_keys=True, indent=2, separators=(',', ': '))
