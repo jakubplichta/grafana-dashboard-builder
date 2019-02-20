@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2015-2018 grafana-dashboard-builder contributors
+# Copyright 2015-2019 grafana-dashboard-builder contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,16 +12,23 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from __future__ import unicode_literals
+
 import itertools
 import re
 import string
+
+try:
+    basestring
+except NameError:
+    basestring = str
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
 
 class Context(object):
 
-    _pattern = re.compile('\{.*\}')
+    _pattern = re.compile('{.*}')
 
     def __init__(self, context=None):
         super(Context, self).__init__()
@@ -38,23 +45,23 @@ class Context(object):
         if not self._context:
             return to_expand
 
-        if isinstance(to_expand, str):
+        if isinstance(to_expand, basestring):
             (result, to_expand) = self._expand(to_expand)
             while result != to_expand:
                 (result, to_expand) = self._expand(result)
-            if isinstance(result, str):
+            if isinstance(result, basestring):
                 return string.Formatter().vformat(result, (), self._context)
             else:
                 return result
         elif isinstance(to_expand, list):
             return [self.expand_placeholders(value) for value in to_expand]
         elif isinstance(to_expand, dict):
-            return dict([(key, self.expand_placeholders(value)) for (key, value) in to_expand.iteritems()])
+            return dict([(key, self.expand_placeholders(value)) for (key, value) in to_expand.items()])
         else:
             return to_expand
 
     def _expand(self, to_expand):
-        if not isinstance(to_expand, str):
+        if not isinstance(to_expand, basestring):
             return to_expand, to_expand
         elif self._pattern.match(to_expand) and to_expand[1:-1] in self._context:
             return self._context[to_expand[1:-1]], to_expand
@@ -88,7 +95,7 @@ class ContextExpander(object):
             else:
                 contexts.append(itertools.repeat({key: value}, 1))
         elif isinstance(value, dict):
-            for (sub_key, sub_value) in value.iteritems():
+            for (sub_key, sub_value) in value.items():
                 if parent and len(value) == 1:
                     contexts.append(self.create_context(parent, sub_key))
                 contexts.append(self.create_context(sub_key, sub_value))

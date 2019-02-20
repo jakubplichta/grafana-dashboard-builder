@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2015-2018 grafana-dashboard-builder contributors
+# Copyright 2015-2019 grafana-dashboard-builder contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,12 +12,26 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from __future__ import unicode_literals
+
 import base64
-import cookielib
 import json
 import logging
-import urllib2
-from urlparse import urlparse
+
+try:
+    from cookielib import CookieJar
+except ImportError:
+    from http.cookiejar import CookieJar
+try:
+    from urllib2 import build_opener, HTTPHandler, HTTPSHandler, HTTPCookieProcessor, HTTPDefaultErrorHandler, \
+        Request, BaseHandler
+except ImportError:
+    from urllib.request import build_opener, HTTPHandler, HTTPSHandler, HTTPCookieProcessor, HTTPDefaultErrorHandler, \
+        Request, BaseHandler
+try:
+    from urlparse import urlparse
+except ImportError:
+    from urllib.parse import urlparse
 
 import requests
 from requests_kerberos import HTTPKerberosAuth
@@ -37,24 +51,24 @@ class Connection(object):
         logger.debug('Creating new connection with username=%s host=%s', username, host)
         self._host = host
 
-        base64string = base64.encodestring('%s:%s' % (username, password)).replace('\n', '')
-        self._headers['Authorization'] = 'Basic %s' % base64string
+        base64string = base64.encodestring(('%s:%s' % (username, password)).encode('utf-8')).replace(b'\n', b'')
+        self._headers['Authorization'] = b'Basic ' + base64string
 
-        self._opener = urllib2.build_opener(urllib2.HTTPHandler(debuglevel=debug),
-                                            urllib2.HTTPSHandler(debuglevel=debug),
-                                            urllib2.HTTPCookieProcessor(cookielib.CookieJar()),
-                                            LoggingHandler(),
-                                            urllib2.HTTPDefaultErrorHandler())
+        self._opener = build_opener(HTTPHandler(debuglevel=debug),
+                                    HTTPSHandler(debuglevel=debug),
+                                    HTTPCookieProcessor(CookieJar()),
+                                    LoggingHandler(),
+                                    HTTPDefaultErrorHandler())
 
     def make_request(self, uri, body=None):
-        request = urllib2.Request('{0}{1}'.format(self._host, uri),
-                                  json.dumps(body) if body else None,
-                                  headers=self._headers)
+        request = Request('{0}{1}'.format(self._host, uri),
+                          json.dumps(body) if body else None,
+                          headers=self._headers)
         response_body = self._opener.open(request).read()
         return {} if (response_body is None or response_body == '') else json.loads(response_body)
 
 
-class LoggingHandler(urllib2.BaseHandler):
+class LoggingHandler(BaseHandler):
     def __init__(self):
         pass
 

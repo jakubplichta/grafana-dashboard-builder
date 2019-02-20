@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2015-2018 grafana-dashboard-builder contributors
+# Copyright 2015-2019 grafana-dashboard-builder contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,12 +12,14 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from __future__ import unicode_literals
+
 import json
 import logging
 import os
 
-from grafana_dashboards.exporter import DashboardExporter
 from grafana_dashboards.client.connection import Connection, KerberosConnection
+from grafana_dashboards.exporter import DashboardExporter
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 

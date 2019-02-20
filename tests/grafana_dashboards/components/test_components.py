@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2015-2018 grafana-dashboard-builder contributors
+# Copyright 2015-2019 grafana-dashboard-builder contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,6 +12,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from __future__ import unicode_literals
+
 import inspect
 import json
 import os
@@ -46,9 +48,9 @@ def load_test_fixtures():
             if not f.endswith('.yaml'):
                 continue
             filename = f[:-5]
-            with file(os.path.join(dirname, '%s.yaml' % filename), 'r') as fp:
+            with open(os.path.join(dirname, '%s.yaml' % filename), 'r') as fp:
                 config = yaml.load(fp)
-            with file(os.path.join(dirname, '%s.json' % filename), 'r') as fp:
+            with open(os.path.join(dirname, '%s.json' % filename), 'r') as fp:
                 output = json.load(fp)
             yield component, filename, config, output
 

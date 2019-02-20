@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2015-2018 grafana-dashboard-builder contributors
+# Copyright 2015-2019 grafana-dashboard-builder contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,12 +12,19 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from __future__ import unicode_literals
+
 import logging
 import string
 
 from grafana_dashboards import errors
 from grafana_dashboards.common import get_component_type
 from grafana_dashboards.context import Context
+
+try:
+    basestring
+except NameError:
+    basestring = str
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
@@ -55,7 +62,7 @@ class ComponentRegistry(object):
             self._components[clazz] = {}
 
     def _class_for_type(self, component_type):
-        if isinstance(component_type, str):
+        if isinstance(component_type, basestring):
             component_type = self._types.get(component_type)
         if self._components.get(component_type) is None:
             raise errors.UnregisteredComponentError("No component of type '%s' found!" % component_type)
@@ -159,7 +166,7 @@ class JsonListGenerator(JsonGenerator):
         return result_list
 
     def gen_item_json(self, items, result_list):
-        if isinstance(items, str):
+        if isinstance(items, basestring):
             # this is component without context
             result_list += self.registry.get_component(type(self), items).gen_json()
         else:
@@ -167,7 +174,7 @@ class JsonListGenerator(JsonGenerator):
 
     def _gen_item_json_with_context(self, items, result_list):
         # TODO add check for dictionary
-        for (item_type, item_data) in items.iteritems():
+        for (item_type, item_data) in items.items():
             if item_type not in self.component_item_types:
                 # this is named component with context
                 for context in Context.create_context(item_data, get_placeholders(item_type)):

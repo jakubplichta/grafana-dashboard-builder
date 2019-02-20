@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2015-2018 grafana-dashboard-builder contributors
+# Copyright 2015-2019 grafana-dashboard-builder contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,6 +13,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from __future__ import print_function
+from __future__ import unicode_literals
 
 import argparse
 import imp
@@ -21,11 +23,11 @@ import os
 
 import yaml
 
-from grafana_dashboards.client.grafana import GrafanaExporter
-from grafana_dashboards.exporter import ProjectProcessor, FileExporter
 from grafana_dashboards.client.elastic_search import ElasticSearchExporter
+from grafana_dashboards.client.grafana import GrafanaExporter
 from grafana_dashboards.common import get_component_type
 from grafana_dashboards.config import Config
+from grafana_dashboards.exporter import ProjectProcessor, FileExporter
 from grafana_dashboards.parser import DefinitionParser
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
@@ -33,8 +35,8 @@ __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
 def _initialize_exporters(exporter_names, exporter_types, config):
     exporters = dict([(get_component_type(exporter), exporter) for exporter in exporter_types])
-    exporters = dict([(name[:-9], exporter) for name, exporter in exporters.iteritems() if name[:-9] in exporter_names])
-    return [exporter(**config.get_config(name)) for (name, exporter) in exporters.iteritems()]
+    exporters = dict([(name[:-9], exporter) for name, exporter in exporters.items() if name[:-9] in exporter_names])
+    return [exporter(**config.get_config(name)) for (name, exporter) in exporters.items()]
 
 
 def _process_paths(paths):
@@ -75,7 +77,7 @@ def main():
             try:
                 imp.load_source('grafana_dashboards.components.$loaded', plugin)
             except Exception as e:
-                print 'Cannot load plugin %s: %s' % (plugin, str(e))
+                print('Cannot load plugin %s: %s' % (plugin, str(e)))
 
     if args.project:
         logging.warn("Using deprecated option '--project'")
