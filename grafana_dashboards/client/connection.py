@@ -62,7 +62,7 @@ class Connection(object):
 
     def make_request(self, uri, body=None):
         request = Request('{0}{1}'.format(self._host, uri),
-                          json.dumps(body) if body else None,
+                          json.dumps(body).encode('utf-8') if body else None,
                           headers=self._headers)
         response_body = self._opener.open(request).read()
         return {} if (response_body is None or response_body == '') else json.loads(response_body)
