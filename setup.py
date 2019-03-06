@@ -49,7 +49,7 @@ class Tox(TestCommand):
 
 params = {
     'name': 'grafana-dashboard-builder',
-    'version': '0.5.0a1',
+    'version': '0.5.0a2',
     'packages': [
         'grafana_dashboards',
         'grafana_dashboards.client',

@@ -60,7 +60,7 @@ def test_connection():
     assert request.get_full_url() == capture.value.get_full_url()
     assert request.header_items() == capture.value.header_items()
     assert request.get_method() == capture.value.get_method()
-    assert request.data == capture.value.data
+    assert request.data.encode('utf-8') == capture.value.data
 
 
 @patch('requests.post')
