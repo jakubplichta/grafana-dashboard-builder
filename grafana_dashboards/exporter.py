@@ -60,7 +60,7 @@ class ProjectProcessor(object):
 class FileExporter(DashboardExporter):
 
     def __init__(self, output_folder):
-        super(DashboardExporter, self).__init__()
+        super(FileExporter, self).__init__()
         self._output_folder = output_folder
         if not os.path.exists(self._output_folder):
             os.makedirs(self._output_folder)
