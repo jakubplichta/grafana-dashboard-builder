@@ -152,8 +152,7 @@ class DatasourceTemplate(TemplatesItemBase):
         template_json.update({
             'type': 'datasource',
             'name': data.get('name', 'datasource'),
-            'query': data['query'],
-            'regex': data['regex']
+            'query': data['query']
         })
         if 'current' in data:
             current = data['current']
@@ -161,5 +160,7 @@ class DatasourceTemplate(TemplatesItemBase):
                 'text': current,
                 'value': current
             }
+        if 'regex' in data:
+            template_json['regex'] = data['regex']
 
         return template_json
