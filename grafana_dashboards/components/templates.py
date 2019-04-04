@@ -160,5 +160,7 @@ class DatasourceTemplate(TemplatesItemBase):
                 'text': current,
                 'value': current
             }
+        if 'regex' in data:
+            template_json['regex'] = data['regex']
 
         return template_json
