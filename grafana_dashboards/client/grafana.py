@@ -17,7 +17,7 @@ from __future__ import unicode_literals
 import logging
 import os
 
-from grafana_dashboards.client.connection import Connection, KerberosConnection
+from grafana_dashboards.client.connection import KerberosConnection, BearerAuthConnection, BasicAuthConnection
 from grafana_dashboards.exporter import DashboardExporter
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
@@ -32,12 +32,15 @@ class GrafanaExporter(DashboardExporter):
         self._host = os.getenv('GRAFANA_HOST', kwargs.get('host'))
         password = os.getenv('GRAFANA_PASSWORD', kwargs.get('password'))
         username = os.getenv('GRAFANA_USERNAME', kwargs.get('username'))
+        auth_token = os.getenv('GRAFANA_TOKEN', kwargs.get('token'))
         use_kerberos = os.getenv('GRAFANA_USE_KERBEROS', kwargs.get('use_kerberos'))
 
         if use_kerberos:
             self._connection = KerberosConnection(self._host)
+        elif auth_token:
+            self._connection = BearerAuthConnection(auth_token, self._host)
         else:
-            self._connection = Connection(username, password, self._host)
+            self._connection = BasicAuthConnection(username, password, self._host)
 
     def process_dashboard(self, project_name, dashboard_name, dashboard_data):
         super(GrafanaExporter, self).process_dashboard(project_name, dashboard_name, dashboard_data)

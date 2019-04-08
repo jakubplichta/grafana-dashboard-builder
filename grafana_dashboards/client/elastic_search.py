@@ -18,7 +18,7 @@ import json
 import logging
 import os
 
-from grafana_dashboards.client.connection import Connection, KerberosConnection
+from grafana_dashboards.client.connection import BasicAuthConnection, KerberosConnection
 from grafana_dashboards.exporter import DashboardExporter
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
@@ -38,7 +38,7 @@ class ElasticSearchExporter(DashboardExporter):
         if use_kerberos:
             self._connection = KerberosConnection(self._host)
         else:
-            self._connection = Connection(username, password, self._host)
+            self._connection = BasicAuthConnection(username, password, self._host)
 
     def process_dashboard(self, project_name, dashboard_name, dashboard_data):
         super(ElasticSearchExporter, self).process_dashboard(project_name, dashboard_name, dashboard_data)
