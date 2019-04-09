@@ -20,7 +20,7 @@ except ImportError:
 from mock import MagicMock, patch
 from requests_kerberos import HTTPKerberosAuth
 
-from grafana_dashboards.client.connection import Connection, KerberosConnection
+from grafana_dashboards.client.connection import KerberosConnection, BasicAuthConnection, BearerAuthConnection
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
@@ -40,7 +40,7 @@ class Capture(object):
 
 
 def test_connection():
-    connection = Connection('username', 'password', 'https://host')
+    connection = BasicAuthConnection('username', 'password', 'https://host')
     connection._opener = MagicMock()
     # noinspection PyProtectedMember
     connection._opener.open().read.return_value = '{"hello":"world"}'
@@ -53,6 +53,30 @@ def test_connection():
                           'Content-type': 'application/json',
                           'Accept': 'application/json',
                           'Authorization': b'Basic dXNlcm5hbWU6cGFzc3dvcmQ='
+                      })
+    capture = Capture()
+    # noinspection PyProtectedMember
+    connection._opener.open.assert_called_with(capture)
+    assert request.get_full_url() == capture.value.get_full_url()
+    assert request.header_items() == capture.value.header_items()
+    assert request.get_method() == capture.value.get_method()
+    assert request.data.encode('utf-8') == capture.value.data
+
+
+def test_connection_with_token():
+    connection = BearerAuthConnection('token', 'https://host')
+    connection._opener = MagicMock()
+    # noinspection PyProtectedMember
+    connection._opener.open().read.return_value = '{"hello":"world"}'
+
+    assert connection.make_request('/uri', {'it\'s': 'alive'}) == {'hello': 'world'}
+
+    request = Request('https://host/uri',
+                      '{"it\'s": "alive"}',
+                      headers={
+                          'Content-type': 'application/json',
+                          'Accept': 'application/json',
+                          'Authorization': 'Bearer token'
                       })
     capture = Capture()
     # noinspection PyProtectedMember

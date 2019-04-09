@@ -118,6 +118,21 @@ With this configuration your dashboard will be POSTed to `https://this-is-my-dom
 If you do not want to store your credentials in the configuration file you can use environment variables
 `GRAFANA_PASSWORD` and `GRAFANA_USERNAME`.
 
+
+You can use Organization API Key to access _Grafana_ API:
+
+Set token in your configuration file:
+```yaml
+grafana:
+  host: https://this-is-my-domain.com
+  token: eyJrIjoiOGNTW...o2b2123kO==
+```
+
+Or in `GRAFANA_TOKEN` environment variable.
+
+Read more about authentication in [_Grafana_ docs](http://docs.grafana.org/http_api/auth/#authentication-api).
+
+
 To use Grafana exporter run _grafana-dashboard-builder_ with `--exporter grafana` option.
 
 ## Supported data stores

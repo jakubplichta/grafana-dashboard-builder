@@ -41,18 +41,15 @@ __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 logger = logging.getLogger(__name__)
 
 
-class Connection(object):
+class BaseConnection(object):
     _headers = {
         'Content-type': 'application/json',
         'Accept': 'application/json'
     }
 
-    def __init__(self, username, password, host, debug=0):
-        logger.debug('Creating new connection with username=%s host=%s', username, host)
+    def __init__(self, host, auth_header, debug=0):
         self._host = host
-
-        base64string = base64.encodestring(('%s:%s' % (username, password)).encode('utf-8')).replace(b'\n', b'')
-        self._headers['Authorization'] = b'Basic ' + base64string
+        self._headers['Authorization'] = auth_header
 
         self._opener = build_opener(HTTPHandler(debuglevel=debug),
                                     HTTPSHandler(debuglevel=debug),
@@ -66,6 +63,22 @@ class Connection(object):
                           headers=self._headers)
         response_body = self._opener.open(request).read()
         return {} if (response_body is None or response_body == '') else json.loads(response_body)
+
+
+class BasicAuthConnection(BaseConnection):
+    def __init__(self, username, password, host, debug=0):
+        logger.debug('Creating new connection with username=%s host=%s', username, host)
+
+        base64string = base64.encodestring(('%s:%s' % (username, password)).encode('utf-8')).replace(b'\n', b'')
+
+        super(BasicAuthConnection, self).__init__(host, b'Basic ' + base64string, debug)
+
+
+class BearerAuthConnection(BaseConnection):
+    def __init__(self, token, host, debug=0):
+        logger.debug('Creating new connection with token=%s host=%s', token[:5], host)
+
+        super(BearerAuthConnection, self).__init__(host, 'Bearer %s' % token.strip(), debug)
 
 
 class LoggingHandler(BaseHandler):
