@@ -29,21 +29,28 @@ class Panels(JsonListGenerator):
 
 
 class PanelsItemBase(JsonGenerator):
-    pass
+    _default_span = None
+
+    def copy_basic_fields(self, source, dest):
+        for field in {'description', 'transparent', 'repeat'}:
+            if field in source:
+                dest[field] = source[field]
+
+        dest['span'] = source.get('span', self._default_span)
+        dest['title'] = source.get('title', None)
 
 
 class Graph(PanelsItemBase):
-
+    _default_span = 12
     _copy_fields = {'stack', 'fill', 'aliasColors', 'leftYAxisLabel', 'bars', 'lines', 'linewidth', 'y_formats',
                     'x-axis', 'y-axis', 'points', 'pointradius', 'percentage', 'steppedLine', 'repeat',
                     'repeatDirection', 'decimals', 'minSpan', 'datasource', 'description'}
 
     def gen_json_from_data(self, data, context):
         panel_json = super(Graph, self).gen_json_from_data(data, context)
+        self.copy_basic_fields(data, panel_json)
         panel_json.update({
             'type': 'graph',
-            'title': self.data.get('title', None),
-            'span': self.data.get('span', 12),
         })
         targets = self.data.get('targets', [])
         if 'target' in self.data:
@@ -110,13 +117,16 @@ class SingleStat(PanelsItemBase):
     _copy_fields = {'prefix', 'postfix', 'nullText', 'format', 'thresholds', 'colorValue', 'colorBackground',
                     'colors', 'prefixFontSize', 'valueFontSize', 'postfixFontSize', 'maxDataPoints', 'datasource',
                     'repeat', 'repeatDirection', 'decimals', 'minSpan', 'description', 'colorPostfix'}
+    # noinspection PySetFunctionToLiteral
+    _copy_fields = set(['prefix', 'postfix', 'nullText', 'format', 'thresholds', 'colorValue', 'colorBackground',
+                        'colors', 'prefixFontSize', 'valueFontSize', 'postfixFontSize', 'maxDataPoints', 'datasource',
+                        'decimals', 'minSpan'])
 
     def gen_json_from_data(self, data, context):
         panel_json = super(SingleStat, self).gen_json_from_data(data, context)
+        self.copy_basic_fields(data, panel_json)
         panel_json.update({
             'type': 'singlestat',
-            'title': data.get('title', None),
-            'span': data.get('span', None),
             'nullPointMode': data.get('nullPointMode', 'null'),
             'valueName': data.get('valueName', 'current')
         })
@@ -156,10 +166,9 @@ class Table(PanelsItemBase):
 
     def gen_json_from_data(self, data, context):
         panel_json = super(Table, self).gen_json_from_data(data, context)
+        self.copy_basic_fields(data, panel_json)
         panel_json.update({
             'type': 'table',
-            'title': data.get('title', None),
-            'span': data.get('span', None),
             'targets': [{'target': v} for v in data.get('targets', [])],
             'transform': data.get('transform', None),
             'columns': [{'text': v, 'value': str(v).lower()} for v in data.get('columns', [])]
@@ -183,10 +192,9 @@ class Text(PanelsItemBase):
 
     def gen_json_from_data(self, data, context):
         panel_json = super(Text, self).gen_json_from_data(data, context)
+        self.copy_basic_fields(data, panel_json)
         panel_json.update({
             'type': 'text',
-            'title': data.get('title', None),
-            'span': data.get('span', None),
             'mode': data.get('mode', 'text'),
             'content': data.get('content', '')
         })
@@ -195,13 +203,13 @@ class Text(PanelsItemBase):
 
 class Dashlist(PanelsItemBase):
     _copy_fields = {'headings', 'limit', 'recent', 'tags', 'query', 'description'}
+    _default_span = 12
 
     def gen_json_from_data(self, data, context):
         panel_json = super(Dashlist, self).gen_json_from_data(data, context)
+        self.copy_basic_fields(data, panel_json)
         panel_json.update({
             'type': 'dashlist',
-            'title': data.get('title', None),
-            'span': data.get('span', 12),
             'search': 'query' in data or 'tags' in data,
             'starred': data.get('starred') or ('query' not in data and 'tags' not in data)
         })
