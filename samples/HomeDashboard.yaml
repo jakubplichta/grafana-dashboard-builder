@@ -1,0 +1,82 @@
+---
+- name: test Official Dashboards
+  project:
+    dashboard-prefix: test
+    component:
+      - frontend
+      - backend
+    # services:
+    #   - tier0:
+    env:
+      - production:
+          nodes: node3
+    dashboards:
+      - test Home
+
+- name: test Home
+  dashboard:
+    title: 'Home'
+    tags:
+      - test
+      - qos
+    templates:
+    - datasource-template:
+        name: datasource
+        query: 'prometheus'
+        regex: '/Z__P1_eu_west_\d/'
+    - query:
+        datasource: $datasource
+        name: account
+        query: label_values(up{{account=~^subito.*}}, account)
+    - query:
+        datasource: $datasource
+        name: haproxy_job
+        query: label_values({{__name__=~"haproxy_backend_http_response_time_average_.+",account=~"^subito.*pro.*"}}, job)
+        regex: '/(.+)/'
+    - custom-template:
+        name: tier0
+        options: 
+          - All
+          - anubi
+          - areariservata
+          - daphne
+          - dike
+          - erebus
+          - eunomia
+          - giapete
+          - hephaestus
+          - hermes
+          - iolaus
+          - lethe
+          - meti
+          - narcissus
+          - obolo
+          - orodha
+          - plutus
+          - shop
+          - thanatos
+    rows:
+    - row:
+        panels:
+        - single-stat:
+            span: 2
+            title: QoS (Avg) for TIER 0
+            description: > #This does not work!
+              'Threshold is 99.95
+              List of TIER0 services:
+              ${{tier0:global}}'
+            datasource: $datasource
+            targets:
+            - prometheus-target:
+                expr: >
+                  sum by(backend) (account_job_backend:haproxy_backend_http_responses_ok:increase1d{{account=~"$account", backend=~\".*$tier0.*\", job=~\"$haproxy_job\"}})
+                #"avg(((sum by(backend) (account_job_backend:haproxy_backend_http_responses_ok:increase1d{{account=~"$account", backend=~\".*$tier0.*\", job=~\"$haproxy_job\"}})) / (sum by(backend) (   account_job_backend:haproxy_backend_http_responses_all:increase1d{{account=~\"$account\", backend=~\".*$tier0.*\", job=~\"$haproxy_job\"}}))) > 0)"
+                  
+                  # avg(( (sum by(backend)  
+                  #   (account_job_backend:haproxy_backend_http_responses_ok:increase1d{
+                  #     account=~"$account", backend=~".*${tier0:regex}.*", job=~"$haproxy_job"}
+                  #   )) / 
+                  #   (sum by(backend) (   
+                  #     account_job_backend:haproxy_backend_http_responses_all:increase1d{
+                  #     account=~"$account", backend=~".*${tier0:regex}.*", job=~"$haproxy_job"}
+                  #     ))) > 0)
