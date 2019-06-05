@@ -65,7 +65,7 @@
               maxValue: 1
               thresholdMarkers: false
               thresholdLabels: true
-            description: > #This does not work!
+            description: >
               'Threshold is 99.95
               List of TIER0 services:
               ${{tier0:global}}'
