@@ -57,6 +57,7 @@
         - single-stat:
             span: 2
             title: Running pods
+            description: This is the number of running pods
             datasource: $datasource
             targets:
             - prometheus-target:
