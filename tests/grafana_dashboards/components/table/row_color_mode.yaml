@@ -1,6 +1,7 @@
 table:
   span: 6
   title: Row color mode
+  ddescription: 'test description'
   fontSize: 100%
   pageSize: 50
   scroll: True

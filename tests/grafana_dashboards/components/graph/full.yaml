@@ -1,6 +1,7 @@
 graph:
   span: 3
   title: 'test title'
+  description: 'test description'
   target: target
   targets:
     - t1

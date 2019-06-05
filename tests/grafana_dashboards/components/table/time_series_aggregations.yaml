@@ -1,6 +1,7 @@
 table:
   span: 6
   title: Time series aggregations
+  description: 'test description'
   fontSize: 120%
   pageSize: 50
   scroll: True

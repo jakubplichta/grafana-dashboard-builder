@@ -1,6 +1,7 @@
 single-stat:
   span: 3
   title: 'test title'
+  description: 'test description'
   targets:
     - t1
     - t2

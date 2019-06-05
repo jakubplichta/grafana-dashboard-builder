@@ -1,6 +1,7 @@
 text:
   span: 3
   title: 'test title'
+  description: 'test description'
   mode: 'text'
   content: |
     this is

@@ -1,6 +1,7 @@
 dashlist:
   span: 3
   title: 'test title'
+  description: 'test description'
   tags:
   - tag1
   - tag2
