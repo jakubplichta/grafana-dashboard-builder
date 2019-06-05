@@ -114,6 +114,7 @@ class SingleStat(PanelsItemBase):
             'type': 'singlestat',
             'title': data.get('title', None),
             'span': data.get('span', None),
+            'description': data.get('description', None),
             'nullPointMode': data.get('nullPointMode', 'null'),
             'valueName': data.get('valueName', 'current')
         })
