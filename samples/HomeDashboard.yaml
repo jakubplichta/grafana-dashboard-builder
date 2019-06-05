@@ -5,8 +5,6 @@
     component:
       - frontend
       - backend
-    # services:
-    #   - tier0:
     env:
       - production:
           nodes: node3
@@ -61,6 +59,12 @@
         - single-stat:
             span: 2
             title: QoS (Avg) for TIER 0
+            gauge:
+              show: true
+              minValue: 0
+              maxValue: 1
+              thresholdMarkers: false
+              thresholdLabels: true
             description: > #This does not work!
               'Threshold is 99.95
               List of TIER0 services:
@@ -77,13 +81,3 @@
                     account_job_backend:haproxy_backend_http_responses_all:increase1d{{
                     account=~"$account", backend=~".*${{tier0:regex}}.*", job=~"$haproxy_job"}}
                   ))) > 0)
-                #  sum by(backend) (account_job_backend:haproxy_backend_http_responses_ok:increase1d{{account=~"$account", backend=~".*${{tier0:regex}}.*", job=~"$haproxy_job"}})
-                #"avg(((sum by(backend) (account_job_backend:haproxy_backend_http_responses_ok:increase1d{{account=~"$account", backend=~\".*$tier0.*\", job=~\"$haproxy_job\"}})) / (sum by(backend) (   account_job_backend:haproxy_backend_http_responses_all:increase1d{{account=~\"$account\", backend=~\".*$tier0.*\", job=~\"$haproxy_job\"}}))) > 0)"
-                  # avg(( (sum by(backend)  
-                  #   (account_job_backend:haproxy_backend_http_responses_ok:increase1d{
-                  #     account=~"$account", backend=~".*${tier0:regex}.*", job=~"$haproxy_job"}
-                  #   )) / 
-                  #   (sum by(backend) (   
-                  #     account_job_backend:haproxy_backend_http_responses_all:increase1d{
-                  #     account=~"$account", backend=~".*${tier0:regex}.*", job=~"$haproxy_job"}
-                  #     ))) > 0)
