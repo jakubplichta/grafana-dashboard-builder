@@ -55,7 +55,7 @@ class GraphiteTarget(TargetsItemBase):
 
 
 class PrometheusTarget(TargetsItemBase):
-    _copy_fields = {'format', 'hide', 'intervalFactor', 'legendFormat', 'step'}
+    _copy_fields = {'format', 'hide', 'intervalFactor', 'legendFormat', 'interval'}
 
     def gen_json_from_data(self, data, context):
         template_json = super(PrometheusTarget, self).gen_json_from_data(data, context)
