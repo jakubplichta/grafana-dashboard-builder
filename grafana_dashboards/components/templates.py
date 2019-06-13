@@ -116,9 +116,16 @@ class EnumeratedTemplateBase(TemplatesItemBase):
                 'text': current,
                 'value': current
             }
+        for key in ['regex', 'multi', 'includeAll', 'hide', 'allFormat', 'allValue']:
+            if key in data:
+                template_json[key] = data[key]
+                
         if 'options' in data:
             template_json['options'] = [{'text': option, 'value': option} for option in
                                         (data['options'])]
+            if 'includeAll' in data:
+                all_option = {'text': 'All', 'value': '$__all'}
+                template_json.setdefault('options', []).insert(0,all_option)
         return template_json
 
 
