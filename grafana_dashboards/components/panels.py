@@ -35,14 +35,15 @@ class PanelsItemBase(JsonGenerator):
 class Graph(PanelsItemBase):
 
     _copy_fields = {'stack', 'fill', 'aliasColors', 'leftYAxisLabel', 'bars', 'lines', 'linewidth', 'y_formats',
-                    'x-axis', 'y-axis', 'points', 'pointradius', 'percentage', 'steppedLine', 'repeat',
-                    'minSpan', 'datasource'}
+                    'x-axis', 'y-axis', 'points', 'pointradius', 'percentage', 'steppedLine', 'repeat', 'repeatDirection',
+                    'decimals','minSpan', 'datasource'}
 
     def gen_json_from_data(self, data, context):
         panel_json = super(Graph, self).gen_json_from_data(data, context)
         panel_json.update({
             'type': 'graph',
             'title': self.data.get('title', None),
+            'description': data.get('description', None),
             'span': self.data.get('span', 12),
         })
         targets = self.data.get('targets', [])
@@ -114,6 +115,7 @@ class SingleStat(PanelsItemBase):
             'type': 'singlestat',
             'title': data.get('title', None),
             'span': data.get('span', None),
+            'description': data.get('description', None),
             'nullPointMode': data.get('nullPointMode', 'null'),
             'valueName': data.get('valueName', 'current')
         })
@@ -156,6 +158,7 @@ class Table(PanelsItemBase):
         panel_json.update({
             'type': 'table',
             'title': data.get('title', None),
+            'description': data.get('description', None),
             'span': data.get('span', None),
             'targets': [{'target': v} for v in data.get('targets', [])],
             'transform': data.get('transform', None),
@@ -181,6 +184,7 @@ class Text(PanelsItemBase):
         panel_json.update({
             'type': 'text',
             'title': data.get('title', None),
+            'description': data.get('description', None),
             'span': data.get('span', None),
             'mode': data.get('mode', 'text'),
             'content': data.get('content', '')
@@ -196,6 +200,7 @@ class Dashlist(PanelsItemBase):
         panel_json.update({
             'type': 'dashlist',
             'title': data.get('title', None),
+            'description': data.get('description', None),
             'span': data.get('span', 12),
             'search': 'query' in data or 'tags' in data,
             'starred': data.get('starred') or ('query' not in data and 'tags' not in data)
