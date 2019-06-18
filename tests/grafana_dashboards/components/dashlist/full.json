@@ -7,5 +7,6 @@
   "search": true,
   "starred": true,
   "recent": true,
-  "limit": 20
+  "limit": 20,
+  "description": "description"
 }
