@@ -36,7 +36,7 @@ class Graph(PanelsItemBase):
 
     _copy_fields = {'stack', 'fill', 'aliasColors', 'leftYAxisLabel', 'bars', 'lines', 'linewidth', 'y_formats',
                     'x-axis', 'y-axis', 'points', 'pointradius', 'percentage', 'steppedLine', 'repeat',
-                    'minSpan', 'datasource'}
+                    'minSpan', 'datasource', 'description'}
 
     def gen_json_from_data(self, data, context):
         panel_json = super(Graph, self).gen_json_from_data(data, context)
@@ -103,10 +103,9 @@ class Graph(PanelsItemBase):
 
 class SingleStat(PanelsItemBase):
 
-    # noinspection PySetFunctionToLiteral
-    _copy_fields = set(['prefix', 'postfix', 'nullText', 'format', 'thresholds', 'colorValue', 'colorBackground',
-                        'colors', 'prefixFontSize', 'valueFontSize', 'postfixFontSize', 'maxDataPoints', 'datasource',
-                        'repeat', 'decimals', 'minSpan'])
+    _copy_fields = {'prefix', 'postfix', 'nullText', 'format', 'thresholds', 'colorValue', 'colorBackground',
+                    'colors', 'prefixFontSize', 'valueFontSize', 'postfixFontSize', 'maxDataPoints', 'datasource',
+                    'repeat', 'decimals', 'minSpan', 'description'}
 
     def gen_json_from_data(self, data, context):
         panel_json = super(SingleStat, self).gen_json_from_data(data, context)
@@ -149,7 +148,7 @@ class SingleStat(PanelsItemBase):
 
 class Table(PanelsItemBase):
     # noinspection PySetFunctionToLiteral
-    _copy_fields = set(['fontSize', 'pageSize', 'showHeader', 'scroll', 'datasource'])
+    _copy_fields = {'fontSize', 'pageSize', 'showHeader', 'scroll', 'datasource', 'description'}
 
     def gen_json_from_data(self, data, context):
         panel_json = super(Table, self).gen_json_from_data(data, context)
@@ -176,6 +175,8 @@ class Table(PanelsItemBase):
 
 
 class Text(PanelsItemBase):
+    _copy_fields = {'description'}
+
     def gen_json_from_data(self, data, context):
         panel_json = super(Text, self).gen_json_from_data(data, context)
         panel_json.update({
@@ -189,7 +190,7 @@ class Text(PanelsItemBase):
 
 
 class Dashlist(PanelsItemBase):
-    _copy_fields = {'headings', 'limit', 'recent', 'tags', 'query'}
+    _copy_fields = {'headings', 'limit', 'recent', 'tags', 'query', 'description'}
 
     def gen_json_from_data(self, data, context):
         panel_json = super(Dashlist, self).gen_json_from_data(data, context)

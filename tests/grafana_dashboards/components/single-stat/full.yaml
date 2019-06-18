@@ -38,4 +38,5 @@ single-stat:
     maxValue: 2
     thresholdMarkers: false
     thresholdLabels: true
+  description: description
 

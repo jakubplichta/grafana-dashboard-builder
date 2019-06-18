@@ -61,3 +61,4 @@ graph:
   minSpan: 3
   repeat: node
   datasource: datasource
+  description: description

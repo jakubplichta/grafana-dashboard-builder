@@ -28,3 +28,4 @@ table:
         thresholds:
           - '270'
           - '275'
+  description: description
