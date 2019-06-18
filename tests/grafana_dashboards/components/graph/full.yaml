@@ -39,6 +39,7 @@ graph:
   aliasColors:
     alias1: '#000000'
   leftYAxisLabel: axis label
+  decimals: 2
   legend:
     show: false
     values: true
