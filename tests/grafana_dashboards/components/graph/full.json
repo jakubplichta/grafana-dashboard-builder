@@ -38,6 +38,7 @@
   "y-axis": false,
   "yaxes": ["mocked <class 'grafana_dashboards.components.axes.Yaxes'>"],
   "xaxis": {"mode": "time", "show": true},
+  "decimals": 2,
   "legend": {
     "avg": true,
     "current": true,
