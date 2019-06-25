@@ -72,6 +72,7 @@ class Graph(PanelsItemBase):
                 'total': self.data['legend'].get('total', False),
                 'avg': self.data['legend'].get('avg', False),
                 'alignAsTable': self.data['legend'].get('alignAsTable', False),
+                'rightSide': self.data['legend'].get('rightSide', False),
                 'hideEmpty': self.data['legend'].get('hideEmpty', False)
             }
         if 'tooltip' in self.data:
