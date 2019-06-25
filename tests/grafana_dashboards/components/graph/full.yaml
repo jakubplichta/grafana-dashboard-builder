@@ -49,6 +49,7 @@ graph:
     total: true
     avg: true
     alignAsTable: true
+    rightSide: true
     hideEmpty: true
   tooltip:
     value_type: cumulative
