@@ -34,6 +34,7 @@ class GrafanaExporter(DashboardExporter):
         username = os.getenv('GRAFANA_USERNAME', kwargs.get('username'))
         auth_token = os.getenv('GRAFANA_TOKEN', kwargs.get('token'))
         use_kerberos = os.getenv('GRAFANA_USE_KERBEROS', kwargs.get('use_kerberos'))
+        self._folder_id = os.getenv('GRAFANA_FOLDER_ID', kwargs.get('folder_id'))
 
         if use_kerberos:
             self._connection = KerberosConnection(self._host)
@@ -44,6 +45,6 @@ class GrafanaExporter(DashboardExporter):
 
     def process_dashboard(self, project_name, dashboard_name, dashboard_data):
         super(GrafanaExporter, self).process_dashboard(project_name, dashboard_name, dashboard_data)
-        body = {'overwrite': True, 'dashboard': dashboard_data}
-        logger.info("Uploading dashboard '%s' to %s", dashboard_name, self._host)
+        body = {'overwrite': True, 'dashboard': dashboard_data, 'folderId': self._folder_id}
+        logger.info("Uploading dashboard '%s' to %s (folder id: %s)", dashboard_name, self._host,self._folder_id)
         self._connection.make_request('/api/dashboards/db', body)
