@@ -45,5 +45,9 @@ class GrafanaExporter(DashboardExporter):
     def process_dashboard(self, project_name, dashboard_name, dashboard_data):
         super(GrafanaExporter, self).process_dashboard(project_name, dashboard_name, dashboard_data)
         body = {'overwrite': True, 'dashboard': dashboard_data}
+
+        if 'folder_id' in dashboard_data:
+            body.update( {'folderId': dashboard_data['folder_id']} )
+        
         logger.info("Uploading dashboard '%s' to %s", dashboard_name, self._host)
         self._connection.make_request('/api/dashboards/db', body)
