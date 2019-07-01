@@ -5,5 +5,6 @@
   "query": "query",
   "tags": ["tag1", "tag2"],
   "search": true,
-  "starred": false
+  "starred": false,
+  "description": null
 }

@@ -7,5 +7,6 @@
   "xaxis": {
     "format": "time",
     "show": true
-  }
+  },
+  "description": null
 }

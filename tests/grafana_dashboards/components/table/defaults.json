@@ -4,5 +4,6 @@
   "title": null,
   "columns": [],
   "transform": null,
-  "type": "table"
+  "type": "table",
+  "description": null
 }
