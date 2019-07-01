@@ -39,6 +39,7 @@ graph:
   aliasColors:
     alias1: '#000000'
   leftYAxisLabel: axis label
+  decimals: 2
   legend:
     show: false
     values: true
@@ -62,3 +63,4 @@ graph:
   minSpan: 3
   repeat: node
   datasource: datasource
+  description: description
