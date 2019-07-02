@@ -52,6 +52,8 @@ class Dashboard(JsonGenerator):
             nav['refresh_intervals'] = data.get('refresh_intervals', [])
         if 'refresh' in data:
             json_data['refresh'] = data.get('refresh')
+        if 'folderId' in data:
+            json_data['folderId'] = data.get('folderId')
         if get_component_type(Annotations) in data:
             json_data['annotations'] = {'list': self.registry.create_component(Annotations, data).gen_json()}
         if get_component_type(Rows) in data:
