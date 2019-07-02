@@ -43,7 +43,6 @@ class Graph(PanelsItemBase):
         panel_json.update({
             'type': 'graph',
             'title': self.data.get('title', None),
-            'description': self.data.get('description', None),
             'span': self.data.get('span', 12),
         })
         targets = self.data.get('targets', [])
@@ -114,9 +113,7 @@ class SingleStat(PanelsItemBase):
         panel_json.update({
             'type': 'singlestat',
             'title': data.get('title', None),
-            'description': data.get('description', None),
             'span': data.get('span', None),
-            'description': data.get('description', None),
             'nullPointMode': data.get('nullPointMode', 'null'),
             'valueName': data.get('valueName', 'current')
         })
@@ -159,7 +156,6 @@ class Table(PanelsItemBase):
         panel_json.update({
             'type': 'table',
             'title': data.get('title', None),
-            'description': data.get('description', None),
             'span': data.get('span', None),
             'targets': [{'target': v} for v in data.get('targets', [])],
             'transform': data.get('transform', None),
@@ -187,7 +183,6 @@ class Text(PanelsItemBase):
         panel_json.update({
             'type': 'text',
             'title': data.get('title', None),
-            'description': data.get('description', None),
             'span': data.get('span', None),
             'mode': data.get('mode', 'text'),
             'content': data.get('content', '')
@@ -203,7 +198,6 @@ class Dashlist(PanelsItemBase):
         panel_json.update({
             'type': 'dashlist',
             'title': data.get('title', None),
-            'description': data.get('description', None),
             'span': data.get('span', 12),
             'search': 'query' in data or 'tags' in data,
             'starred': data.get('starred') or ('query' not in data and 'tags' not in data)
