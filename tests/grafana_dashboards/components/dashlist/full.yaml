@@ -9,3 +9,4 @@ dashlist:
   starred: true
   heading: true
   limit: 20
+  description: description

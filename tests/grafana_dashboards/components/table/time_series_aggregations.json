@@ -44,5 +44,6 @@
   "title": "Time series aggregations",
   "transform": "timeseries_aggregations",
   "type": "table",
-  "datasource": "datasource"
+  "datasource": "datasource",
+  "description": "description"
 }

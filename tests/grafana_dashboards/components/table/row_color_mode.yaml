@@ -25,3 +25,4 @@ table:
         thresholds:
           - ' 200'
           - ' 250'
+  description: description
