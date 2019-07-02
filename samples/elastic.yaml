@@ -32,23 +32,13 @@
                 label: Milicores
             - yaxis:
             targets:
-            # - elastic-target:
-            #     query: "SELECT sum(\"value\") FROM \"cpu/usage_rate\" WHERE \"type\" = 'node' AND $timeFilter GROUP BY time($interval) fill(null)"
-            #     alias: Usage
-            # - elastic-target:
-            #     query: "SELECT sum(\"value\") FROM \"cpu/limit\" WHERE \"type\" = 'node' AND $timeFilter GROUP BY time($interval) fill(null)"
-            #     alias: Limit
-            # - elastic-target:
-            #     query: "SELECT sum(\"value\") FROM \"cpu/request\" WHERE \"type\" = 'node' AND $timeFilter GROUP BY time($interval) fill(null)"
-            #     alias: Request
-
             - elastic-target:
                 bucketAggs:
                 - field: finishedAt
                   type: date_histogram
                   id: 2
                   settings:
-                  - interval: '$qos_interval'
+                  - interval: '5m'
                     min_doc_count: 0
                     trimEdges: 0
                 hide: false
@@ -59,18 +49,6 @@
                   pipelineAgg: "select metric"
                   settings: ""
                   type: count
-                query: ""
+                query: '(status: "succeeded")'
                 refId: "A"
                 timeField: finishedAt
-      #   {
-      #     "field": "select metric",
-      #     "id": "1",
-      #     "meta": {},
-      #     "pipelineAgg": "select metric",
-      #     "settings": {},
-      #     "type": "count"
-      #   }
-      # ],
-      # "query": "(status: \"succeeded\" AND environment: \"pro\" AND team: \"sdrn:schibsted:team:subito\" AND origin : \"sdrn:schibsted:service:fiaas\" AND repository: ([0 TO 9] [a TO z] [A TO Z])) + (target.team: \"sdrn:schibsted:team:subito\" AND status: \"succeeded\" AND environment: \"pro\")",
-      # "refId": "C",
-      # "timeField": "finishedAt"

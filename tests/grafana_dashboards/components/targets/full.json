@@ -1,4 +1,5 @@
 [
   "mocked graphite-target",
-  "mocked prometheus-target"
+  "mocked prometheus-target",
+  "mocked elastic-target"
 ]

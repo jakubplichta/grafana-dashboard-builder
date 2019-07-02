@@ -1,3 +1,4 @@
 targets:
   - graphite-target:
   - prometheus-target:
+  - elastic-target:
