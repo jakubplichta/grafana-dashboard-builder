@@ -1,0 +1,76 @@
+---
+- name: Example Elastic project
+  project:
+    dashboards:
+    - elastic-overview
+
+- default-dashboard: &default-dashboard
+    time_options: [1h, 6h, 12h, 24h, 2d, 7d, 14d, 30d]
+    refresh_intervals: [5m, 15m, 30m, 1h]
+    time:
+      from: now-2d
+      to: now
+
+- name: elastic-overview
+  dashboard:
+    title: elastic Overview
+    tags:
+    - tag1
+    <<: *default-dashboard
+    templates:
+    - datasource-template:
+        query: elastic
+    sharedCrosshair: true
+    rows:
+    - row:
+        panels:
+        - graph:
+            title: "Elastic"
+            datasource: $datasource
+            yaxes:
+            - yaxis:
+                label: Milicores
+            - yaxis:
+            targets:
+            # - elastic-target:
+            #     query: "SELECT sum(\"value\") FROM \"cpu/usage_rate\" WHERE \"type\" = 'node' AND $timeFilter GROUP BY time($interval) fill(null)"
+            #     alias: Usage
+            # - elastic-target:
+            #     query: "SELECT sum(\"value\") FROM \"cpu/limit\" WHERE \"type\" = 'node' AND $timeFilter GROUP BY time($interval) fill(null)"
+            #     alias: Limit
+            # - elastic-target:
+            #     query: "SELECT sum(\"value\") FROM \"cpu/request\" WHERE \"type\" = 'node' AND $timeFilter GROUP BY time($interval) fill(null)"
+            #     alias: Request
+
+            - elastic-target:
+                bucketAggs:
+                - field: finishedAt
+                  type: date_histogram
+                  id: 2
+                  settings:
+                  - interval: '$qos_interval'
+                    min_doc_count: 0
+                    trimEdges: 0
+                hide: false
+                metrics: 
+                - field: "select metric"
+                  id: 1
+                  meta: ""
+                  pipelineAgg: "select metric"
+                  settings: ""
+                  type: count
+                query: ""
+                refId: "A"
+                timeField: finishedAt
+      #   {
+      #     "field": "select metric",
+      #     "id": "1",
+      #     "meta": {},
+      #     "pipelineAgg": "select metric",
+      #     "settings": {},
+      #     "type": "count"
+      #   }
+      # ],
+      # "query": "(status: \"succeeded\" AND environment: \"pro\" AND team: \"sdrn:schibsted:team:subito\" AND origin : \"sdrn:schibsted:service:fiaas\" AND repository: ([0 TO 9] [a TO z] [A TO Z])) + (target.team: \"sdrn:schibsted:team:subito\" AND status: \"succeeded\" AND environment: \"pro\")",
+      # "refId": "C",
+      # "timeField": "finishedAt"

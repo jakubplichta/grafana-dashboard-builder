@@ -72,3 +72,18 @@ class InfluxdbTarget(TargetsItemBase):
         template_json['dsType'] = 'influxdb'
         template_json['rawQuery'] = True
         return template_json
+
+
+class ElasticTarget(TargetsItemBase):
+    _copy_fields = {'refId'}
+
+    def gen_json_from_data(self, data, context):
+        template_json = super(ElasticTarget, self).gen_json_from_data(data, context)
+        template_json['bucketAggs'] = data['bucketAggs']
+        template_json['hide'] = data['hide']
+        template_json['metrics'] = data['metrics']
+        template_json['query'] = data['query']
+        template_json['refId'] = data['refId']
+        template_json['timeField'] = data['timeField']
+
+        return template_json
