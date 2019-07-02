@@ -6,7 +6,7 @@
       "id": "2",
       "settings": {
         "interval": "5m",
-        "min_doc_count": 0,
+        "min_doc_count": 1,
         "trimEdges": 0
       },
       "type": "date_histogram"
@@ -17,9 +17,6 @@
     {
       "field": "select metric",
       "id": "1",
-      "meta": "",
-      "pipelineAgg": "select metric",
-      "settings": "",
       "type": "count"
     }
   ],
