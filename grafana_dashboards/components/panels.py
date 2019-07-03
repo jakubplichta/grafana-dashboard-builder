@@ -36,7 +36,7 @@ class Graph(PanelsItemBase):
 
     _copy_fields = {'stack', 'fill', 'aliasColors', 'leftYAxisLabel', 'bars', 'lines', 'linewidth', 'y_formats',
                     'x-axis', 'y-axis', 'points', 'pointradius', 'percentage', 'steppedLine', 'repeat',
-                    'decimals', 'minSpan', 'datasource', 'description'}
+                    'repeatDirection', 'decimals', 'minSpan', 'datasource', 'description'}
 
     def gen_json_from_data(self, data, context):
         panel_json = super(Graph, self).gen_json_from_data(data, context)
@@ -106,7 +106,7 @@ class SingleStat(PanelsItemBase):
 
     _copy_fields = {'prefix', 'postfix', 'nullText', 'format', 'thresholds', 'colorValue', 'colorBackground',
                     'colors', 'prefixFontSize', 'valueFontSize', 'postfixFontSize', 'maxDataPoints', 'datasource',
-                    'repeat', 'decimals', 'minSpan', 'description'}
+                    'repeat', 'repeatDirection', 'decimals', 'minSpan', 'description'}
 
     def gen_json_from_data(self, data, context):
         panel_json = super(SingleStat, self).gen_json_from_data(data, context)
