@@ -5,7 +5,7 @@
       "field": "finishedAt",
       "id": "2",
       "settings": {
-        "interval": "5m",
+        "interval": "auto",
         "min_doc_count": 1,
         "trimEdges": 0
       },
