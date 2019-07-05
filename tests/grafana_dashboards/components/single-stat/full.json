@@ -37,6 +37,7 @@
   ],
   "datasource": "datasource",
   "repeat": "var",
+  "repeatDirection": "v",
   "decimals": 1,
   "minSpan": 2,
   "gauge" : {
