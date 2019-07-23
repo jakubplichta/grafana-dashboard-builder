@@ -35,7 +35,6 @@ class GrafanaExporter(DashboardExporter):
         username = os.getenv('GRAFANA_USERNAME', kwargs.get('username'))
         auth_token = os.getenv('GRAFANA_TOKEN', kwargs.get('token'))
         use_kerberos = os.getenv('GRAFANA_USE_KERBEROS', kwargs.get('use_kerberos'))
-        self._folder_id = os.getenv('GRAFANA_FOLDER_ID', kwargs.get('folder_id'))
 
         if use_kerberos:
             self._connection = KerberosConnection(self._host)
