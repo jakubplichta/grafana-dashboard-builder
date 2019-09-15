@@ -68,6 +68,7 @@
   ],
   "minSpan": 3,
   "repeat": "node",
+  "repeatDirection": "v",
   "datasource": "datasource",
   "description": "description"
 }
