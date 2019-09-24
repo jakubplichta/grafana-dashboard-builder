@@ -32,5 +32,6 @@
   "title": "Row color mode",
   "transform": "timeseries_to_columns",
   "type": "table",
-  "datasource": "datasource"
+  "datasource": "datasource",
+  "description": "description"
 }

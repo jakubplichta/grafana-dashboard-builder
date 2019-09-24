@@ -34,7 +34,7 @@ class Config(object):
             self._config = {}
         else:
             with open(config) as fp:
-                self._config = yaml.load(fp)
+                self._config = yaml.load(fp, Loader=yaml.FullLoader)
 
     def get_config(self, section):
         return self._config.setdefault(section, {})

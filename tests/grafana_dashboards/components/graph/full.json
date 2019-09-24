@@ -38,6 +38,7 @@
   "y-axis": false,
   "yaxes": ["mocked <class 'grafana_dashboards.components.axes.Yaxes'>"],
   "xaxis": {"mode": "time", "show": true},
+  "decimals": 2,
   "legend": {
     "avg": true,
     "current": true,
@@ -47,6 +48,7 @@
     "total": true,
     "values": true,
     "alignAsTable": true,
+    "rightSide": true,
     "hideEmpty": true
   },
   "tooltip": {
@@ -66,5 +68,7 @@
   ],
   "minSpan": 3,
   "repeat": "node",
-  "datasource": "datasource"
+  "repeatDirection": "v",
+  "datasource": "datasource",
+  "description": "description"
 }
