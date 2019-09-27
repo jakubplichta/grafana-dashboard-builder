@@ -49,7 +49,7 @@ def load_test_fixtures():
                 continue
             filename = f[:-5]
             with open(os.path.join(dirname, '%s.yaml' % filename), 'r') as fp:
-                config = yaml.load(fp)
+                config = yaml.load(fp, Loader=yaml.FullLoader)
             with open(os.path.join(dirname, '%s.json' % filename), 'r') as fp:
                 output = json.load(fp)
             yield component, filename, config, output
