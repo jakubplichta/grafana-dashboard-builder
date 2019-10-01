@@ -24,7 +24,8 @@
     "includeAll": true,
     "allFormat": "glob",
     "allValue": "test*",
-    "hide": 2
+    "hide": 2,
+    "sort": 1
   }
 ]
 
