@@ -50,6 +50,8 @@ class Query(TemplatesItemBase):
                 template_json['refresh'] = 1
             if 'datasource' in data:
                 template_json['datasource'] = data['datasource']
+            if 'sort' in data:
+                template_json['sort'] = data['sort']
             self._copy_data(template_json, data)
             queries.append(template_json)
         else:
