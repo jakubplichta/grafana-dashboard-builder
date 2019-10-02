@@ -30,7 +30,7 @@ class DefinitionParser(object):
         registry = ComponentRegistry()
         for path in paths:
             with open(path, 'r') as fp:
-                for component in self._iter_over_all(yaml.load_all(fp)):
+                for component in self._iter_over_all(yaml.load_all(fp, Loader=yaml.FullLoader)):
                     registry.add(component)
         return registry[Project]
 
