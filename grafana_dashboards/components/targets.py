@@ -44,7 +44,7 @@ class TargetsItemBase(JsonGenerator):
 
 
 class GraphiteTarget(TargetsItemBase):
-
+    _copy_fields = {'datasource'}
     def gen_json_from_data(self, data, context):
         template_json = super(GraphiteTarget, self).gen_json_from_data(data, context)
         if isinstance(data, basestring):
@@ -55,7 +55,7 @@ class GraphiteTarget(TargetsItemBase):
 
 
 class PrometheusTarget(TargetsItemBase):
-    _copy_fields = {'format', 'hide', 'intervalFactor', 'legendFormat', 'step', 'instant', 'interval'}
+    _copy_fields = {'format', 'hide', 'intervalFactor', 'legendFormat', 'step', 'instant', 'interval', 'datasource'}
 
     def gen_json_from_data(self, data, context):
         template_json = super(PrometheusTarget, self).gen_json_from_data(data, context)
@@ -64,7 +64,7 @@ class PrometheusTarget(TargetsItemBase):
 
 
 class InfluxdbTarget(TargetsItemBase):
-    _copy_fields = {'alias'}
+    _copy_fields = {'alias', 'datasource'}
 
     def gen_json_from_data(self, data, context):
         template_json = super(InfluxdbTarget, self).gen_json_from_data(data, context)
@@ -75,7 +75,7 @@ class InfluxdbTarget(TargetsItemBase):
 
 
 class ElasticTarget(TargetsItemBase):
-    _copy_fields = {'bucketAggs', 'hide', 'metrics', 'refId', 'timeField'}
+    _copy_fields = {'bucketAggs', 'hide', 'metrics', 'refId', 'timeField', 'datasource'}
 
     def gen_json_from_data(self, data, context):
         template_json = super(ElasticTarget, self).gen_json_from_data(data, context)
