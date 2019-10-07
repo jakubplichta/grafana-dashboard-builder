@@ -162,6 +162,26 @@
           options:
             - first
             - last
+    - custom-template:
+        name: service
+        options: 
+          - service1
+          - service2
+          - service3
+          - service4
+        includeAll: true
+        multi: true
+        current: All
+    - custom-template:
+        name: service-w-all
+        options: 
+          - service1
+          - service2
+          - service3
+          - service4
+        includeAll: false
+        multi: true
+        current: service2
 
 - name: 'some dashboard'
   dashboard:

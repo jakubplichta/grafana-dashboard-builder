@@ -50,6 +50,8 @@ class Query(TemplatesItemBase):
                 template_json['refresh'] = 1
             if 'datasource' in data:
                 template_json['datasource'] = data['datasource']
+            if 'sort' in data:
+                template_json['sort'] = data['sort']
             self._copy_data(template_json, data)
             queries.append(template_json)
         else:
@@ -110,15 +112,26 @@ class EnumeratedTemplateBase(TemplatesItemBase):
             'query': ','.join([str(options) for options in data['options']]),
             'refresh': self._refresh
         })
+
+        for key in ['regex', 'multi', 'includeAll', 'hide', 'allFormat', 'allValue']:
+            if key in data:
+                template_json[key] = data[key]
+
         if 'current' in data:
-            current = data['current']
             template_json['current'] = {
-                'text': current,
-                'value': current
+                'text': data['current'],
+                'value': '$__all' if data['current'] == 'All' else data['current']
             }
+        for key in ['regex', 'multi', 'includeAll', 'hide', 'allFormat', 'allValue']:
+            if key in data:
+                template_json[key] = data[key]
+                
         if 'options' in data:
-            template_json['options'] = [{'text': option, 'value': option} for option in
-                                        (data['options'])]
+            template_json['options'] = [{'text': option, 'value': option} for option 
+                                        in (data['options'])]
+        if 'includeAll' in data and data['includeAll'] == True:
+            all_option = {'selected': True, 'text': 'All', 'value': '$__all'}
+            template_json.setdefault('options', []).insert(0,all_option)
         return template_json
 
 
