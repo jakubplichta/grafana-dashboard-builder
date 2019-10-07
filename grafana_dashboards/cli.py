@@ -69,6 +69,8 @@ def main():
                         help='List of external component plugins to load')
     parser.add_argument('--exporter', nargs='+', type=str, default=set(), dest='exporters',
                         help='List of dashboard exporters')
+    parser.add_argument('--message', required=False, type=str,
+                       help='Set a commit message for the Grafana version history')    
 
     args = parser.parse_args()
 
@@ -90,6 +92,8 @@ def main():
         logging.warn("Using deprecated option '-o/--out'")
         exporters.add('file')
         config.get_config('file').update(output_folder=args.out)
+    if args.message:
+        config.get_config('grafana').update(commit_message=args.message)
 
     dashboard_exporters = _initialize_exporters(exporters, [FileExporter, ElasticSearchExporter, GrafanaExporter],
                                                 config)
