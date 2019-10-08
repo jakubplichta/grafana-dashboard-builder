@@ -16,6 +16,7 @@
       - '{component}-connections'
       - '{component}-{env}-{nodes}-system-details'
       - 'some dashboard'
+      - 'mixed dashboard'
       - docker-statsd
 
 - default-dashboard: &default-dashboard
@@ -206,6 +207,49 @@
                       params:
                         - cluster: eu
                         - node: 'www01'
+
+- name: 'mixed dashboard'
+  dashboard:
+    title: mixed dashboard
+    rows:
+    - row:
+        panels:
+        - graph:
+            span: 6
+            title: "Mixed example"
+            datasource: -- Mixed --
+            yaxes:
+            - yaxis:
+                label: Milicores
+            - yaxis:
+            targets:
+            - prometheus-target:
+                expr: 'sum(rate(container_cpu_usage_seconds_total{{namespace="$namespace", pod_name=~"$pod", container_name=~".+"}}[$interval])) by (container_name) * 1000'
+                legendFormat: Usage {{{{container_name}}}}
+                datasource: default
+            - prometheus-target:
+                expr: "sum(kube_pod_container_resource_limits_cpu_cores{{namespace=\"$namespace\", pod=~\"$pod\"}}) by (container) * 1000"
+                legendFormat: Limit {{{{container}}}}
+                datasource: Prometheus Datasource
+            - elastic-target:
+                query: '(status: "succeeded")'
+                bucketAggs:
+                - field: finishedAt
+                  type: date_histogram
+                  id: "2"
+                  settings:
+                    interval: 'auto'
+                    min_doc_count: 1
+                    trimEdges: 0
+                hide: false
+                metrics: 
+                - field: "select metric"
+                  id: "1"
+                  type: count                
+                refId: "A"
+                timeField: finishedAt
+                datasource: Elastic Datasource
+
 
 - name: 'another-template'
   templates:
