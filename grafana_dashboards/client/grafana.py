@@ -29,6 +29,7 @@ logger = logging.getLogger(__name__)
 class GrafanaExporter(DashboardExporter):
     def __init__(self, **kwargs):
         super(GrafanaExporter, self).__init__()
+        self._commit_message = kwargs.get('commit_message', "")
         self._host = os.getenv('GRAFANA_HOST', kwargs.get('host'))
         password = os.getenv('GRAFANA_PASSWORD', kwargs.get('password'))
         username = os.getenv('GRAFANA_USERNAME', kwargs.get('username'))
@@ -44,7 +45,8 @@ class GrafanaExporter(DashboardExporter):
 
     def process_dashboard(self, project_name, dashboard_name, dashboard_data):
         super(GrafanaExporter, self).process_dashboard(project_name, dashboard_name, dashboard_data)
-        body = {'overwrite': True, 'dashboard': dashboard_data}
+
+        body = {'overwrite': True, 'dashboard': dashboard_data, 'message': self._commit_message}
 
         if 'folderId' in dashboard_data:
             body.update({'folderId': dashboard_data['folderId']})

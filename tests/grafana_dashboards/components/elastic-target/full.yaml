@@ -15,3 +15,4 @@ elastic-target:
     type: count                
   refId: "A"
   timeField: finishedAt
+  datasource: default

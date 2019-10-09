@@ -7,3 +7,4 @@ prometheus-target:
   intervalFactor: 10
   legendFormat: 'Usage'
   step: 60
+  datasource: default
