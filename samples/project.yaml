@@ -11,6 +11,7 @@
           nodes: [node1, node2]
       - production:
           nodes: node3
+    #c: !include bar.yaml
     dashboards:
       - overview
       - '{component}-connections'
