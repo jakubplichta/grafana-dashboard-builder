@@ -1,2 +1,4 @@
-- 3.6
-- [1, 2, 3]
+- testing:
+    nodes: [node1, node2]
+- production:
+    nodes: node3

@@ -100,7 +100,7 @@ def main():
                                                 config)
 
     context = config.get_config('context')
-    context.update(yaml.load(args.context, Loader=yaml.FullLoader))
+    context.update(yaml.load(args.context, Loader=yaml.GDBLoader))
 
     projects = DefinitionParser().load_projects(paths)
     project_processor = ProjectProcessor(dashboard_exporters)
