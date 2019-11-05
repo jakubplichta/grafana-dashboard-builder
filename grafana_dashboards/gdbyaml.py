@@ -48,10 +48,5 @@ class GDBLoader(yaml.Loader, metaclass=GDBLoaderMeta):
                 return ''.join(f.readlines())
 
 
-# Set MyLoader as default.
-load = functools.partial(yaml.load, Loader=GDBLoader)
-
-if __name__ == '__main__':
-    with open('foo.yaml', 'r') as f:
-        data = load(f)
-    print(data)
+# Set GDBLoader as default.
+#load = functools.partial(yaml.load, Loader=GDBLoader)
