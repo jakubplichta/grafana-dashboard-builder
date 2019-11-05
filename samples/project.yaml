@@ -6,7 +6,7 @@
     component:
       - frontend
       - backend
-    env: !include bar.yaml
+    env: !include env.yaml
     dashboards:
       - overview
       - '{component}-{env}-{nodes}-system-details'
