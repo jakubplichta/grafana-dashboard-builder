@@ -258,3 +258,9 @@ context:
   region: eu
   default-datacenter: cze
 ```
+
+## Run tox test suite
+
+```
+tox .
+```
