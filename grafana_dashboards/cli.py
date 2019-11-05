@@ -22,7 +22,6 @@ import logging
 import os
 
 from grafana_dashboards import gdbyaml as yaml
-#import yaml
 
 from grafana_dashboards.client.elastic_search import ElasticSearchExporter
 from grafana_dashboards.client.grafana import GrafanaExporter

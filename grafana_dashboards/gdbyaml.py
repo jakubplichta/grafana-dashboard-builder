@@ -1,5 +1,4 @@
 import yaml
-from yaml import *
 import logging
 import os.path
 import functools
