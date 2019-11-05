@@ -1,4 +1,5 @@
 import yaml
+from yaml import load, load_all
 import logging
 import os.path
 import functools
