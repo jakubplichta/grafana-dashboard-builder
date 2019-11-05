@@ -46,7 +46,4 @@ class GDBLoader(yaml.Loader, metaclass=GDBLoaderMeta):
                 return yaml.load(f, GDBLoader)
             else:
                 return ''.join(f.readlines())
-
-
-# Set GDBLoader as default.
-#load = functools.partial(yaml.load, Loader=GDBLoader)
+                
