@@ -40,4 +40,6 @@ single-stat:
     thresholdMarkers: false
     thresholdLabels: true
   description: description
+  colorPostfix: true
+  valueName: value-name
 
