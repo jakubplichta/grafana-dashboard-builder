@@ -2,7 +2,7 @@
   "span": 3,
   "title": "test title",
   "type": "singlestat",
-  "valueName": "current",
+  "valueName": "value-name",
   "nullPointMode": "connected",
   "targets": ["mocked <class 'grafana_dashboards.components.targets.Targets'>"],
   "links": [
@@ -47,5 +47,6 @@
     "thresholdMarkers": false,
     "thresholdLabels": true
   },
-  "description": "description"
+  "description": "description",
+  "colorPostfix": true
 }
