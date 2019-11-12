@@ -51,5 +51,8 @@ class GrafanaExporter(DashboardExporter):
         if 'folderId' in dashboard_data:
             body.update({'folderId': dashboard_data['folderId']})
 
+        if 'uid' in dashboard_data:
+            body.update({'uid': dashboard_data['uid']})
+
         logger.info("Uploading dashboard '%s' to %s", dashboard_name, self._host)
         self._connection.make_request('/api/dashboards/db', body)
