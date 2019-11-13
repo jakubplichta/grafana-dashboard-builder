@@ -20,6 +20,7 @@
 
 - name: overview
   dashboard:
+    uid: 'uid{dashboard-prefix}'
     title: '{dashboard-prefix} Overview'
     tags:
       - tag1
