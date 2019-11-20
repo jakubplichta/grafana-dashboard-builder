@@ -1,0 +1,17 @@
+elastic-target:
+  query: "(status: 'succeeded')"
+  bucketAggs:
+  - field: finishedAt
+    type: date_histogram
+    id: "2"
+    settings:
+      interval: 'auto'
+      min_doc_count: 1
+      trimEdges: 0
+  hide: false
+  metrics: 
+  - field: "select metric"
+    id: "1"
+    type: count                
+  refId: "A"
+  timeField: finishedAt

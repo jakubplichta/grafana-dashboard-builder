@@ -106,7 +106,7 @@ class SingleStat(PanelsItemBase):
 
     _copy_fields = {'prefix', 'postfix', 'nullText', 'format', 'thresholds', 'colorValue', 'colorBackground',
                     'colors', 'prefixFontSize', 'valueFontSize', 'postfixFontSize', 'maxDataPoints', 'datasource',
-                    'repeat', 'repeatDirection', 'decimals', 'minSpan', 'description'}
+                    'repeat', 'repeatDirection', 'decimals', 'minSpan', 'description', 'colorPostfix'}
 
     def gen_json_from_data(self, data, context):
         panel_json = super(SingleStat, self).gen_json_from_data(data, context)
