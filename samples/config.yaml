@@ -3,7 +3,7 @@ elastic-search:
   password: my_password
   username: my_username
 grafana:
-  host: http://localhost:8380
+  host: http://localhost:3000
   username: admin
   password: admin
 file:
