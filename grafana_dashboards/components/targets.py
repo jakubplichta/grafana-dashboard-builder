@@ -75,7 +75,7 @@ class InfluxdbTarget(TargetsItemBase):
 
 
 class ElasticTarget(TargetsItemBase):
-    _copy_fields = {'bucketAggs', 'hide', 'metrics', 'refId', 'timeField', 'datasource'}
+    _copy_fields = {'bucketAggs', 'hide', 'metrics', 'refId', 'timeField', 'datasource', 'alias'}
 
     def gen_json_from_data(self, data, context):
         template_json = super(ElasticTarget, self).gen_json_from_data(data, context)

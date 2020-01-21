@@ -1,0 +1,27 @@
+{
+  "query": "(status: 'succeeded')",
+  "alias": "Alias",
+  "bucketAggs": [
+    {
+      "field": "finishedAt",
+      "id": "2",
+      "settings": {
+        "interval": "auto",
+        "min_doc_count": 1,
+        "trimEdges": 0
+      },
+      "type": "date_histogram"
+    }
+  ],
+  "hide": false,
+  "metrics": [
+    {
+      "field": "select metric",
+      "id": "1",
+      "type": "count"
+    }
+  ],
+  "refId": "A",
+  "timeField": "finishedAt",
+  "datasource": "default"
+}
