@@ -1,0 +1,28 @@
+{
+  "options": {
+    "graphMode": "area",
+    "colorMode": "value",
+    "justifyMode": "auto",
+    "fieldOptions": {
+      "values": false,
+      "calcs": [
+        "mean"
+      ],
+      "defaults": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": []
+        },
+        "mappings": []
+      },
+      "overrides": []
+    },
+    "orientation": "auto"
+  },
+  "timeFrom": null,
+  "timeShift": null,
+  "title": null,
+  "type": "stat",
+  "span": 12,
+  "targets": []
+}

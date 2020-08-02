@@ -1,0 +1,49 @@
+{
+  "options": {
+    "showThresholdMarkers": true,
+    "showThresholdLabels": false,
+    "fieldOptions": {
+      "values": false,
+      "calcs": [
+        "last"
+      ],
+      "defaults": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        },
+        "mappings": [
+          {
+            "text": "UP",
+            "value": "1"
+          },
+          {
+            "text": "DOWN",
+            "value": "0"
+          }
+        ],
+        "max": 4,
+        "min": 0,
+        "title": "Availability",
+        "unit": "short"
+      },
+      "overrides": []
+    },
+    "orientation": "auto"
+  },
+  "timeFrom": null,
+  "timeShift": null,
+  "title": "Gauge",
+  "type": "gauge",
+  "span": 12,
+  "targets": []
+}

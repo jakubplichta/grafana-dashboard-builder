@@ -1,0 +1,23 @@
+stat:
+  options:
+    colorMode: 'background'
+    fieldOptions:
+      calcs: [ 'last' ]
+      defaults:
+        thresholds:
+          mode: absolute
+          steps:
+            - color: green
+              value:
+            - color: red
+              value: 80
+        mappings:
+          - text: UP
+            value: '1'
+          - text: DOWN
+            value: '0'
+        max: 4
+        min: 0
+        title: 'Test'
+        unit: short
+  title: 'Stat'

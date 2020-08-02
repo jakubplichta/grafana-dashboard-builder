@@ -1,0 +1,27 @@
+{
+  "options": {
+    "showThresholdMarkers": false,
+    "showThresholdLabels": false,
+    "fieldOptions": {
+      "values": false,
+      "calcs": [
+        "mean"
+      ],
+      "defaults": {
+        "thresholds": {
+          "mode": "absolute",
+          "steps": []
+        },
+        "mappings": []
+      },
+      "overrides": []
+    },
+    "orientation": "auto"
+  },
+  "timeFrom": null,
+  "timeShift": null,
+  "title": null,
+  "type": "gauge",
+  "span": 12,
+  "targets": []
+}

@@ -203,3 +203,66 @@ class Dashlist(PanelsItemBase):
             'starred': data.get('starred') or ('query' not in data and 'tags' not in data)
         })
         return panel_json
+
+
+class Gauge(PanelsItemBase):
+    _copy_fields = {'datasource', 'pluginVersion'}
+
+    def gen_json_from_data(self, data, context):
+        panel_json = super(Gauge, self).gen_json_from_data(data, context)
+        panel_json.update({
+            'type': 'gauge',
+            'title': data.get('title', None),
+            'span': data.get('span', 12),
+            'timeFrom': data.get('timeFrom', None),
+            'timeShift': data.get('timeShift', None)
+        })
+        panel_json['targets'] = self.registry.create_component(Targets, data).gen_json() if 'targets' in data else []
+        options_data = self.data.get('options', {}) or {}
+        field_options_data = options_data.get('fieldOptions', {}) or {}
+        field_options = {
+            'values': field_options_data.get('values', False),
+            'calcs': field_options_data.get('calcs', ['mean']),
+            'defaults': field_options_data.get('defaults',
+                                               {'mappings': [], 'thresholds': {'mode': 'absolute', 'steps': []}}),
+            'overrides': field_options_data.get('overrides', [])
+        }
+        panel_json['options'] = {
+            'showThresholdMarkers': options_data.get('showThresholdMarkers', False),
+            'showThresholdLabels': options_data.get('showThresholdLabels', False),
+            'orientation': options_data.get('orientation', 'auto'),
+            'fieldOptions': field_options
+        }
+        return panel_json
+
+
+class Stat(PanelsItemBase):
+    _copy_fields = {'datasource', 'pluginVersion'}
+
+    def gen_json_from_data(self, data, context):
+        panel_json = super(Stat, self).gen_json_from_data(data, context)
+        panel_json.update({
+            'type': 'stat',
+            'title': data.get('title', None),
+            'span': data.get('span', 12),
+            'timeFrom': data.get('timeFrom', None),
+            'timeShift': data.get('timeShift', None)
+        })
+        panel_json['targets'] = self.registry.create_component(Targets, data).gen_json() if 'targets' in data else []
+        options_data = self.data.get('options', {}) or {}
+        field_options_data = options_data.get('fieldOptions', {}) or {}
+        field_options = {
+            'values': field_options_data.get('values', False),
+            'calcs': field_options_data.get('calcs', ['mean']),
+            'defaults': field_options_data.get('defaults',
+                                               {'mappings': [], 'thresholds': {'mode': 'absolute', 'steps': []}}),
+            'overrides': field_options_data.get('overrides', [])
+        }
+        panel_json['options'] = {
+            'graphMode': options_data.get('graphMode', 'area'),
+            'colorMode': options_data.get('colorMode', 'value'),
+            'justifyMode': options_data.get('justifyMode', 'auto'),
+            'orientation': options_data.get('orientation', 'auto'),
+            'fieldOptions': field_options
+        }
+        return panel_json
