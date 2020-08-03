@@ -82,7 +82,7 @@ params = {
     'keywords': 'grafana yaml graphite prometheus influxdb',
     'cmdclass': {'test': Tox},
     'tests_require': ['tox', 'mock'],
-    'install_requires': ['PyYAML', 'argparse', 'requests-kerberos', 'requests'],
+    'install_requires': ['PyYAML>=5.3', 'argparse', 'requests-kerberos', 'requests'],
     'python_requires': '>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*',
     'entry_points': {
         'console_scripts': [
