@@ -73,7 +73,9 @@ class Graph(PanelsItemBase):
                 'avg': self.data['legend'].get('avg', False),
                 'alignAsTable': self.data['legend'].get('alignAsTable', False),
                 'rightSide': self.data['legend'].get('rightSide', False),
-                'hideEmpty': self.data['legend'].get('hideEmpty', False)
+                'hideEmpty': self.data['legend'].get('hideEmpty', False),
+                'hideZero': self.data['legend'].get('hideZero', False),
+                'sideWidth': self.data['legend'].get('sideWidth', None)
             }
         if 'tooltip' in self.data:
             panel_json['tooltip'] = {
@@ -263,6 +265,38 @@ class Stat(PanelsItemBase):
             'colorMode': options_data.get('colorMode', 'value'),
             'justifyMode': options_data.get('justifyMode', 'auto'),
             'orientation': options_data.get('orientation', 'auto'),
+            'fieldOptions': field_options
+        }
+        return panel_json
+
+
+class BarGauge(PanelsItemBase):
+    _copy_fields = {'datasource'}
+
+    def gen_json_from_data(self, data, context):
+        panel_json = super(BarGauge, self).gen_json_from_data(data, context)
+
+        panel_json.update({
+            'type': 'bargauge',
+            'title': data.get('title', None),
+            'span': data.get('span', 12),
+            'timeFrom': data.get('timeFrom', None),
+            'timeShift': data.get('timeShift', None)
+        })
+        panel_json['targets'] = self.registry.create_component(Targets, data).gen_json() if 'targets' in data else []
+        options_data = self.data.get('options', {}) or {}
+        field_options_data = options_data.get('fieldOptions', {}) or {}
+        field_options = {
+            'values': field_options_data.get('values', False),
+            'calcs': field_options_data.get('calcs', ['last']),
+            'defaults': field_options_data.get('defaults', None),
+            'mappings': field_options_data.get('mappings', []),
+            'thresholds': field_options_data.get('thresholds', []),
+            'override': field_options_data.get('override', None)
+        }
+        panel_json['options'] = {
+            'orientation': options_data.get('orientation', 'auto'),
+            'displayMode': options_data.get('displayMode', 'lcd'),
             'fieldOptions': field_options
         }
         return panel_json

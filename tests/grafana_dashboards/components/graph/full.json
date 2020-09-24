@@ -49,7 +49,9 @@
     "values": true,
     "alignAsTable": true,
     "rightSide": true,
-    "hideEmpty": true
+    "hideEmpty": true,
+    "hideZero": true,
+    "sideWidth": 400
   },
   "tooltip": {
     "value_type": "cumulative",
