@@ -1,0 +1,54 @@
+{
+  "options": {
+    "displayMode": "gradient",
+    "fieldOptions": {
+      "calcs": [
+        "mean"
+      ],
+      "defaults": {
+        "decimals": 0,
+        "max": 200,
+        "min": 0,
+        "title": "",
+        "unit": "ms"
+      },
+      "override": null,
+      "mappings": [
+        {
+          "from": "",
+          "id": 1,
+          "operator": "",
+          "text": "N/A",
+          "to": "",
+          "type": 1,
+          "value": "0"
+        }
+      ],
+      "thresholds": [
+        {
+          "color": "green",
+          "index": 0,
+          "value": null
+        },
+        {
+          "color": "#EAB839",
+          "index": 1,
+          "value": 50
+        },
+        {
+          "color": "red",
+          "index": 2,
+          "value": 100
+        }
+      ],
+      "values": true
+    },
+    "orientation": "horizontal"
+  },
+  "timeFrom": null,
+  "timeShift": null,
+  "title": "Bargauge",
+  "type": "bargauge",
+  "span": 12,
+  "targets": []
+}

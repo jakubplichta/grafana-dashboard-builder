@@ -1,0 +1,22 @@
+{
+  "options": {
+    "fieldOptions": {
+      "values": false,
+      "calcs": [
+        "last"
+      ],
+      "defaults": null,
+      "thresholds": [],
+      "mappings": [],
+      "override": null
+    },
+    "orientation": "auto",
+    "displayMode": "lcd"
+  },
+  "timeFrom": null,
+  "timeShift": null,
+  "title": null,
+  "type": "bargauge",
+  "span": 12,
+  "targets": []
+}

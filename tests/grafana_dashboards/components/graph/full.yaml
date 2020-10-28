@@ -51,6 +51,8 @@ graph:
     alignAsTable: true
     rightSide: true
     hideEmpty: true
+    hideZero: true
+    sideWidth: 400
   tooltip:
     value_type: cumulative
     shared: true
