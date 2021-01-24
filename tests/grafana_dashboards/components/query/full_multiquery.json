@@ -2,7 +2,7 @@
   {
     "name": "var1",
     "query": "part1.*x*",
-    "refresh": true,
+    "refresh": 1,
     "refresh_on_load": true,
     "type": "query",
     "current": {
@@ -24,7 +24,7 @@
   {
     "name": "var2",
     "query": "part1.$var1.part2.*",
-    "refresh": false,
+    "refresh": 0,
     "refresh_on_load": false,
     "type": "query",
     "multi": true,
@@ -36,7 +36,7 @@
   {
     "name": "var3",
     "query": "part1.$var1.part2.$var2.*",
-    "refresh": false,
+    "refresh": 0,
     "refresh_on_load": false,
     "type": "query"
   }
