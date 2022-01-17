@@ -249,9 +249,25 @@ class Stat(PanelsItemBase):
             'title': data.get('title', None),
             'span': data.get('span', 12),
             'timeFrom': data.get('timeFrom', None),
-            'timeShift': data.get('timeShift', None)
+            'timeShift': data.get('timeShift', None),
+            'maxDataPoints': data.get('maxDataPoints', None)
         })
         panel_json['targets'] = self.registry.create_component(Targets, data).gen_json() if 'targets' in data else []
+
+        config_data = self.data.get('fieldConfig', {}) or {}
+        defaults_data = config_data.get('defaults', {}) or {}
+        defaults = {
+            'color': defaults_data.get('color', {'mode': 'thresholds'}),
+            'mappings': defaults_data.get('mappings', []),
+            'thresholds': defaults_data.get('thresholds', {'mode': 'absolute', 'steps': []}),
+            'unit': defaults_data.get('unit', 'percent')
+        }
+        overrides = config_data.get('overrides', [])
+        panel_json['fieldConfig'] = {
+            'defaults': defaults,
+            'overrides': overrides
+        }
+
         options_data = self.data.get('options', {}) or {}
         field_options_data = options_data.get('fieldOptions', {}) or {}
         field_options = {
@@ -261,12 +277,19 @@ class Stat(PanelsItemBase):
                                                {'mappings': [], 'thresholds': {'mode': 'absolute', 'steps': []}}),
             'overrides': field_options_data.get('overrides', [])
         }
+        reduce_options_data = options_data.get('reduceOptions', {}) or {}
+        reduce_options = {
+            'calcs': reduce_options_data.get('calcs', ['mean']),
+            'fields': reduce_options_data.get('fields', ''),
+            'values': reduce_options_data.get('values', False)
+        }
         panel_json['options'] = {
             'graphMode': options_data.get('graphMode', 'area'),
             'colorMode': options_data.get('colorMode', 'value'),
             'justifyMode': options_data.get('justifyMode', 'auto'),
             'orientation': options_data.get('orientation', 'auto'),
-            'fieldOptions': field_options
+            'fieldOptions': field_options,
+            'reduceOptions': reduce_options
         }
         return panel_json
 
