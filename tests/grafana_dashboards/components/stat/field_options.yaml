@@ -1,4 +1,24 @@
 stat:
+  fieldConfig:
+    defaults:
+      color:
+        mode: thresholds
+      mappings:
+      - options:
+          match: 'null'
+          result:
+            color: green
+            text: 0%
+        type: special
+      thresholds:
+        mode: absolute
+        steps:
+          - color: green
+            value:
+          - color: red
+            value: 80
+      unit: percent
+    overrides: []
   options:
     colorMode: 'background'
     fieldOptions:
@@ -20,4 +40,9 @@ stat:
         min: 0
         title: 'Test'
         unit: short
+    reduceOptions:
+      calcs:
+      - mean
+      fields: ''
+      values: false
   title: 'Stat'
