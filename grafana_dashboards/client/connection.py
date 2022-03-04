@@ -69,7 +69,7 @@ class BasicAuthConnection(BaseConnection):
     def __init__(self, username, password, host, debug=0):
         logger.debug('Creating new connection with username=%s host=%s', username, host)
 
-        base64string = base64.encodestring(('%s:%s' % (username, password)).encode('utf-8')).replace(b'\n', b'')
+        base64string = base64.encodebytes(('%s:%s' % (username, password)).encode('utf-8')).replace(b'\n', b'')
 
         super(BasicAuthConnection, self).__init__(host, b'Basic ' + base64string, debug)
 
