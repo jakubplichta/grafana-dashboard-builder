@@ -1,6 +1,6 @@
 # grafana-dashboard-builder
 
-[![PyPI version](https://badge.fury.io/py/grafana-dashboard-builder.svg)](http://badge.fury.io/py/grafana-dashboard-builder) [![Build Status](https://travis-ci.org/jakubplichta/grafana-dashboard-builder.svg?branch=master)](https://travis-ci.org/jakubplichta/grafana-dashboard-builder) [![Coverage Status](https://coveralls.io/repos/jakubplichta/grafana-dashboard-builder/badge.svg?branch=master)](https://coveralls.io/r/jakubplichta/grafana-dashboard-builder?branch=master)
+[![PyPI version](https://badge.fury.io/py/grafana-dashboard-builder.svg)](http://badge.fury.io/py/grafana-dashboard-builder) [![Build Status](https://github.com/jakubplichta/grafana-dashboard-builder/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/jakubplichta/grafana-dashboard-builder/actions/workflows/build.yml?query=branch%3Amaster) [![Coverage Status](https://coveralls.io/repos/jakubplichta/grafana-dashboard-builder/badge.svg?branch=master)](https://coveralls.io/r/jakubplichta/grafana-dashboard-builder?branch=master)
 
 ## Introduction
 
