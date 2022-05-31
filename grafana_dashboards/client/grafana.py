@@ -17,7 +17,10 @@ from __future__ import unicode_literals
 import logging
 import os
 
-from grafana_dashboards.client.connection import KerberosConnection, BearerAuthConnection, BasicAuthConnection
+from grafana_dashboards.client.connection import (KerberosConnection,
+                                                  BearerAuthConnection,
+                                                  BasicAuthConnection,
+                                                  SSLAuthConnection)
 from grafana_dashboards.exporter import DashboardExporter
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
@@ -34,11 +37,22 @@ class GrafanaExporter(DashboardExporter):
         username = os.getenv('GRAFANA_USERNAME', kwargs.get('username'))
         auth_token = os.getenv('GRAFANA_TOKEN', kwargs.get('token'))
         use_kerberos = os.getenv('GRAFANA_USE_KERBEROS', kwargs.get('use_kerberos'))
+        client_crt = os.getenv('GRAFANA_SSL_CLIENT_CRT', kwargs.get('ssl_client_crt'))
 
         if use_kerberos:
             self._connection = KerberosConnection(self._host)
         elif auth_token:
             self._connection = BearerAuthConnection(auth_token, self._host)
+        elif client_crt:
+            client_key = os.getenv('GRAFANA_SSL_CLIENT_KEY', kwargs.get('ssl_client_key'))
+            derived_key_path = os.path.splitext(client_crt)[0] + '.key'
+            # pull the separate key also if not given explicitly and derived filename exists
+            if client_key or (not client_key and os.path.exists(derived_key_path)):
+                cert_bundle = (client_crt, client_key if client_key else derived_key_path)
+            # otherwise assume bundled PEM
+            else:
+                cert_bundle = client_crt
+            self._connection = SSLAuthConnection(self._host, cert_bundle)
         else:
             self._connection = BasicAuthConnection(username, password, self._host)
 

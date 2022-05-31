@@ -45,3 +45,16 @@ def test_grafana_with_kerberos():
     # noinspection PyProtectedMember
     exporter._connection.make_request.assert_called_once_with('/api/dashboards/db',
                                                               body)
+
+
+def test_grafana_with_sslauth():
+    exporter = GrafanaExporter(host='host', ssl_client_crt='/file/fake')
+    exporter._connection = MagicMock()
+
+    dashboard_data = {'title': 'title', 'tags': []}
+    exporter.process_dashboard('project_name', 'dashboard_name', dashboard_data)
+
+    body = {'overwrite': True, 'dashboard': dashboard_data}
+    # noinspection PyProtectedMember
+    exporter._connection.make_request.assert_called_once_with('/api/dashboards/db',
+                                                              body)
