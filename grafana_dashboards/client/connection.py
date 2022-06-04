@@ -108,3 +108,14 @@ class KerberosConnection(object):
     def make_request(self, uri, body=None):
         response = requests.post('{0}{1}'.format(self._host, uri), json=body, auth=HTTPKerberosAuth(), verify=False)
         return response.json()
+
+
+class SSLAuthConnection(object):
+    def __init__(self, host, cert_bundle, debug=0):
+        logger.debug('Using SSL client cert from "%s" with host=%s', cert_bundle, host)
+        self._host = host
+        self._cert = cert_bundle
+
+    def make_request(self, uri, body=None):
+        response = requests.post('{0}{1}'.format(self._host, uri), json=body, cert=self._cert)
+        return response.json()

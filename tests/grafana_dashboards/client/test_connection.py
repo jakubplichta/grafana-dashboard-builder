@@ -20,7 +20,10 @@ except ImportError:
 from mock import MagicMock, patch
 from requests_kerberos import HTTPKerberosAuth
 
-from grafana_dashboards.client.connection import KerberosConnection, BasicAuthConnection, BearerAuthConnection
+from grafana_dashboards.client.connection import (KerberosConnection,
+                                                  BearerAuthConnection,
+                                                  BasicAuthConnection,
+                                                  SSLAuthConnection)
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
@@ -98,3 +101,14 @@ def test_connection_with_kerberos(post):
     capture = Capture()
     post.assert_called_with('https://host/uri', auth=capture, json={"it's": 'alive'}, verify=False)
     assert isinstance(capture.value, HTTPKerberosAuth)
+
+
+@patch('requests.post')
+def test_connection_with_sslauth(post):
+    connection = SSLAuthConnection('https://host', ('/fake/cert'))
+
+    post().json.return_value = {'hello': 'world'}
+
+    assert connection.make_request('/uri', {'it\'s': 'alive'}) == {'hello': 'world'}
+
+    post.assert_called_with('https://host/uri', json={"it's": 'alive'}, cert='/fake/cert')
