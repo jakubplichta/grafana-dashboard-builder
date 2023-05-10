@@ -55,7 +55,8 @@
   },
   "tooltip": {
     "value_type": "cumulative",
-    "shared": true
+    "shared": true,
+    "sort": 0
   },
   "seriesOverrides": [
     {

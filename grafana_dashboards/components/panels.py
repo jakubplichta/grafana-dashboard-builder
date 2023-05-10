@@ -81,6 +81,7 @@ class Graph(PanelsItemBase):
             panel_json['tooltip'] = {
                 'value_type': self.data['tooltip'].get('value_type', 'individual'),
                 'shared': self.data['tooltip'].get('shared', False),
+                'sort': self.data['tooltip'].get('sort', 0),
             }
         if 'seriesOverrides' in self.data:
             overrides = []
