@@ -21,5 +21,6 @@
     }
   ],
   "refId": "A",
-  "timeField": "finishedAt"
+  "timeField": "finishedAt",
+  "datasource": "default"
 }

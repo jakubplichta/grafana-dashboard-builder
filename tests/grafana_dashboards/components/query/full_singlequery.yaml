@@ -12,3 +12,4 @@ query:
   allValue: test*
   multi: true
   hide: 2
+  sort: 1

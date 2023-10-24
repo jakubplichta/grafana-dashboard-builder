@@ -14,7 +14,7 @@
 # limitations under the License.
 from __future__ import unicode_literals
 
-import yaml
+from grafana_dashboards import gdbyaml as yaml
 
 from grafana_dashboards.components.base import ComponentRegistry
 from grafana_dashboards.components.projects import Project
@@ -30,7 +30,7 @@ class DefinitionParser(object):
         registry = ComponentRegistry()
         for path in paths:
             with open(path, 'r') as fp:
-                for component in self._iter_over_all(yaml.load_all(fp, Loader=yaml.FullLoader)):
+                for component in self._iter_over_all(yaml.load_all(fp, Loader=yaml.GDBLoader)):
                     registry.add(component)
         return registry[Project]
 

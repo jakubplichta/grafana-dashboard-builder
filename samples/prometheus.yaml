@@ -24,10 +24,12 @@
         datasource: $datasource
         name: namespace
         query: label_values(kube_namespace_labels, namespace)
+        sort: 0
     - query:
         datasource: $datasource
         name: pod
         query: label_values(kube_pod_labels{namespace="$namespace"},pod)
+        sort: 1
     - interval-template:
         name: interval
         current: auto

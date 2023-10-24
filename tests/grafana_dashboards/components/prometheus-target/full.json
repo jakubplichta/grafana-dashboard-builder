@@ -6,5 +6,6 @@
   "interval": "5d",
   "intervalFactor": 10,
   "legendFormat": "Usage",
-  "step": 60
+  "step": 60,
+  "datasource": "default"
 }
