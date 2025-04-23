@@ -17,7 +17,6 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import argparse
-import imp
 import logging
 import os
 
@@ -25,7 +24,7 @@ import yaml
 
 from grafana_dashboards.client.elastic_search import ElasticSearchExporter
 from grafana_dashboards.client.grafana import GrafanaExporter
-from grafana_dashboards.common import get_component_type
+from grafana_dashboards.common import get_component_type, load_source
 from grafana_dashboards.config import Config
 from grafana_dashboards.exporter import ProjectProcessor, FileExporter
 from grafana_dashboards.parser import DefinitionParser
@@ -75,7 +74,7 @@ def main():
     if args.plugins:
         for plugin in args.plugins:
             try:
-                imp.load_source('grafana_dashboards.components.$loaded', plugin)
+                load_source('grafana_dashboards.components.$loaded', plugin)
             except Exception as e:
                 print('Cannot load plugin %s: %s' % (plugin, str(e)))
 
