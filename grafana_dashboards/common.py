@@ -35,6 +35,8 @@ def get_component_type(clazz):
 
 
 if sys.version_info >= (3, 12):
+    # Replacement to imp.load_source suggested on the python 3.12 changelog:
+    # https://docs.python.org/3/whatsnew/3.12.html#imp
     def load_source(modname, filename):
         loader = importlib.machinery.SourceFileLoader(modname, filename)
         spec = importlib.util.spec_from_file_location(modname, filename, loader=loader)
