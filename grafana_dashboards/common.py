@@ -45,4 +45,4 @@ if sys.version_info >= (3, 12):
         loader.exec_module(module)
         return module
 else:
-    from imp import load_source
+    from imp import load_source # noqa
