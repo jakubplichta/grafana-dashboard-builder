@@ -14,7 +14,10 @@
 # limitations under the License.
 from __future__ import unicode_literals
 
+import importlib.machinery
+import importlib.util
 import re
+import sys
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
@@ -29,3 +32,17 @@ def get_component_type(clazz):
     :type clazz: type
     """
     return _all_cap_re.sub(r'\1-\2', _first_cap_re.sub(r'\1-\2', clazz.__name__)).lower()
+
+
+if sys.version_info >= (3, 12):
+    # Replacement to imp.load_source suggested on the python 3.12 changelog:
+    # https://docs.python.org/3/whatsnew/3.12.html#imp
+    def load_source(modname, filename):
+        loader = importlib.machinery.SourceFileLoader(modname, filename)
+        spec = importlib.util.spec_from_file_location(modname, filename, loader=loader)
+        module = importlib.util.module_from_spec(spec)
+
+        loader.exec_module(module)
+        return module
+else:
+    from imp import load_source
