@@ -20,17 +20,19 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: "3.x"
+        python-version-file: ".python-version"
 
-    - name: Install pypa/build
-      run: >-
-        python3 -m
-        pip install
-        build
-        --user
+    - name: Install uv
+      uses: astral-sh/setup-uv@v6
 
     - name: Build a binary wheel and a source tarball
-      run: python3 -m build
+      run: uv build
+
+    - name: Smoke test (wheel)
+      run: uv run --isolated --no-project --with dist/*.whl tests/smoke_test.py
+
+    - name: Smoke test (source distribution)
+      run: uv run --isolated --no-project --with dist/*.tar.gz tests/smoke_test.py
 
     - name: Store the distribution packages
       uses: actions/upload-artifact@v4
