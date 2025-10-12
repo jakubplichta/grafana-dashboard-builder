@@ -1,0 +1,57 @@
+[project]
+name = "grafana-dashboard-builder"
+version = "0.10.0a1"
+description = "Generate Grafana dashboards with YAML"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "argparse",
+    "requests",
+    "requests-kerberos",
+    "PyYAML>=5.3",
+]
+keywords = ["grafana yaml graphite prometheus influxdb"]
+authors = [
+    {name = "Jakub Plichta", email = "jakub.plichta@gmail.com"},
+]
+classifiers = [
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: System Administrators",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Utilities",
+]
+license-files = ["LICENSE"]
+
+[project.urls]
+Homepage = "https://github.com/jakubplichta/grafana-dashboard-builder"
+
+[project.scripts]
+grafana-dashboard-builder = "grafana_dashboards.cli:main"
+
+[dependency-groups]
+dev = [
+    "mock>=5.2.0",
+    "pytest>=8.4.2",
+    "pytest-cov>=7.0.0",
+]
+
+[build-system]
+requires = ["setuptools>=78.1.0", "wheel>=0.45.1"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = [
+    "grafana_dashboards",
+    "grafana_dashboards.client",
+    "grafana_dashboards.components"
+]
