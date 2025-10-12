@@ -1,6 +1,6 @@
 [project]
 name = "grafana-dashboard-builder"
-version = "0.10.0a2"
+version = "0.10.0a3"
 description = "Generate Grafana dashboards with YAML"
 readme = "README.md"
 requires-python = ">=3.9"

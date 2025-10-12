@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright 2015-2019 grafana-dashboard-builder contributors
+# Copyright 2015-2025 grafana-dashboard-builder contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,13 +20,14 @@ import argparse
 import logging
 import os
 
-from grafana_dashboards import gdbyaml as yaml
+import yaml
 
 from grafana_dashboards.client.elastic_search import ElasticSearchExporter
 from grafana_dashboards.client.grafana import GrafanaExporter
 from grafana_dashboards.common import get_component_type, load_source
 from grafana_dashboards.config import Config
 from grafana_dashboards.exporter import ProjectProcessor, FileExporter
+from grafana_dashboards.gdbyaml import GDBLoader
 from grafana_dashboards.parser import DefinitionParser
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
@@ -69,7 +70,7 @@ def main():
     parser.add_argument('--exporter', nargs='+', type=str, default=set(), dest='exporters',
                         help='List of dashboard exporters')
     parser.add_argument('--message', required=False, type=str,
-                       help='Set a commit message for the Grafana version history')    
+                        help='Set a commit message for the Grafana version history')
 
     args = parser.parse_args()
 
@@ -98,7 +99,7 @@ def main():
                                                 config)
 
     context = config.get_config('context')
-    context.update(yaml.load(args.context, Loader=yaml.GDBLoader))
+    context.update(yaml.load(args.context, Loader=GDBLoader))
 
     projects = DefinitionParser().load_projects(paths)
     project_processor = ProjectProcessor(dashboard_exporters)

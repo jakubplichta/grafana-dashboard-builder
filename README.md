@@ -22,7 +22,7 @@ pip install grafana-dashboard-builder
 ```
 or
 ```
-python setup.py install
+uv run pip install -e .
 ```
 
 An alternative to installing it into the global site-packages is to add it to [your user local directory](https://docs.python.org/3/install/index.html#alternate-installation-the-user-scheme) (usually ~/.local).

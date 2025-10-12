@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2015-2019 grafana-dashboard-builder contributors
+# Copyright 2015-2025 grafana-dashboard-builder contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ def test_grafana_with_sslauth():
     dashboard_data = {'title': 'title', 'tags': []}
     exporter.process_dashboard('project_name', 'dashboard_name', dashboard_data)
 
-    body = {'overwrite': True, 'dashboard': dashboard_data}
+    body = {'overwrite': True, 'dashboard': dashboard_data, 'message': ''}
     # noinspection PyProtectedMember
     exporter._connection.make_request.assert_called_once_with('/api/dashboards/db',
                                                               body)

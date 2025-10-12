@@ -9,7 +9,10 @@
     env: !include env.yaml
     dashboards:
       - overview
+      - '{component}-connections'
       - '{component}-{env}-{nodes}-system-details'
+      - 'some dashboard'
+      - docker-statsd
 
 - default-dashboard: &default-dashboard
     time_options: [1h, 6h, 12h, 24h, 2d, 7d, 14d, 30d]
@@ -157,7 +160,7 @@
             - last
     - custom-template:
         name: service
-        options: 
+        options:
           - service1
           - service2
           - service3
@@ -167,7 +170,7 @@
         current: All
     - custom-template:
         name: service-w-all
-        options: 
+        options:
           - service1
           - service2
           - service3
@@ -235,10 +238,10 @@
                     min_doc_count: 1
                     trimEdges: 0
                 hide: false
-                metrics: 
+                metrics:
                 - field: "select metric"
                   id: "1"
-                  type: count                
+                  type: count
                 refId: "A"
                 timeField: finishedAt
                 datasource: Elastic Datasource
