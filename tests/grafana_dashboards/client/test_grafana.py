@@ -54,7 +54,7 @@ def test_grafana_with_sslauth():
     dashboard_data = {'title': 'title', 'tags': []}
     exporter.process_dashboard('project_name', 'dashboard_name', dashboard_data)
 
-    body = {'overwrite': True, 'dashboard': dashboard_data}
+    body = {'overwrite': True, 'dashboard': dashboard_data, 'message': ''}
     # noinspection PyProtectedMember
     exporter._connection.make_request.assert_called_once_with('/api/dashboards/db',
                                                               body)
