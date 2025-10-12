@@ -50,6 +50,7 @@ dev = [
     "pytest-cov>=7.0.0",
     "flake8>=7.0.0",
     "flake8-pyproject>=1.2.3",
+    "ruff>=0.14.0",
 ]
 
 [build-system]
@@ -81,3 +82,50 @@ commands = [["flake8", "grafana_dashboards", "tests"]]
 max-line-length = 160
 show-source = true
 exclude = [".tox", "dist", "build", "*.egg", "venv", ".venv"]
+
+[tool.ruff]
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+]
+line-length = 160
+
+[tool.ruff.lint]
+#select = ["E", "F", "UP", "B", "SIM", "I"]
+select = ["E", "F"]
+ignore = []
+preview = true
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.format]
+indent-style = "space"
+quote-style = "single"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+docstring-code-format = true
+docstring-code-line-length = "dynamic"
