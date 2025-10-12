@@ -33,10 +33,10 @@ jobs:
       run: uv build
 
     - name: Smoke test (wheel)
-      run: uv run --isolated --no-project --with dist/*.whl tests/smoke_test.py
+      run: uv run --isolated --no-project --with dist/*.whl tests/grafana_dashboards/smoke_test.py
 
     - name: Smoke test (source distribution)
-      run: uv run --isolated --no-project --with dist/*.tar.gz tests/smoke_test.py
+      run: uv run --isolated --no-project --with dist/*.tar.gz tests/grafana_dashboards/smoke_test.py
 
     - name: Store the distribution packages
       uses: actions/upload-artifact@v4
