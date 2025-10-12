@@ -20,7 +20,7 @@ __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
 
 class TestBase(ComponentBase):
-    pass
+    __test__ = False
 
 
 def test_registry_unregistered_component():

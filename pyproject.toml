@@ -48,6 +48,8 @@ dev = [
     "mock>=5.2.0",
     "pytest>=8.4.2",
     "pytest-cov>=7.0.0",
+    "flake8>=7.0.0",
+    "flake8-pyproject>=1.2.3",
 ]
 
 [build-system]
@@ -60,3 +62,22 @@ packages = [
     "grafana_dashboards.client",
     "grafana_dashboards.components"
 ]
+
+[tool.tox]
+requires = ["tox>=4.31.0"]
+env_list = ["pep8", "py3.9", "py3.10", "py3.11", "py3.12", "py3.13", "py3.14"]
+
+[tool.tox.env_run_base]
+description = "Run test under {base_python}"
+runner = "uv-venv-lock-runner"
+dependency_groups = ["dev"]
+commands = [["pytest", "--cov=grafana_dashboards"]]
+
+[tool.tox.env.pep8]
+description = "Run code style checks"
+commands = [["flake8", "grafana_dashboards", "tests"]]
+
+[tool.flake8]
+max-line-length = 160
+show-source = true
+exclude = [".tox", "dist", "build", "*.egg", "venv", ".venv"]
