@@ -21,13 +21,13 @@ from grafana_dashboards.components import templates
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 __all__ = [
-    'annotations',
+    'annotations',  # noqa: F822
     'base',
     'dashboards',
-    'links',
+    'links',  # noqa: F822
     'panels',
     'projects',
     'rows',
-    'targets',
+    'targets',  # noqa: F822
     'templates'
 ]

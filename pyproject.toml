@@ -48,6 +48,7 @@ dev = [
     "mock>=5.2.0",
     "pytest>=8.4.2",
     "pytest-cov>=7.0.0",
+    "ruff>=0.14.0",
 ]
 
 [build-system]
@@ -60,3 +61,64 @@ packages = [
     "grafana_dashboards.client",
     "grafana_dashboards.components"
 ]
+
+[tool.tox]
+requires = ["tox>=4.31.0"]
+env_list = ["ruff", "py3.9", "py3.10", "py3.11", "py3.12", "py3.13", "py3.14"]
+
+[tool.tox.env_run_base]
+description = "Run test under {base_python}"
+runner = "uv-venv-lock-runner"
+dependency_groups = ["dev"]
+commands = [["pytest", "--cov=grafana_dashboards"]]
+
+[tool.tox.env.ruff]
+description = "Run code style checks"
+commands = [["ruff", "check"]]
+
+[tool.ruff]
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+]
+line-length = 160
+
+[tool.ruff.lint]
+#select = ["E", "F", "UP", "B", "SIM", "I"]
+select = ["E", "F"]
+ignore = []
+preview = true
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.format]
+indent-style = "space"
+quote-style = "single"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+docstring-code-format = true
+docstring-code-line-length = "dynamic"

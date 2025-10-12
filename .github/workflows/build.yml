@@ -18,24 +18,30 @@ jobs:
         python-version: ['3.9', '3.10', '3.11', '3.12', '3.13', '3.14']
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v5
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v6
       with:
         python-version: ${{ matrix.python-version }}
 
     - name: Install dependencies
-      run: |
-        sudo apt-get install -y libkrb5-dev
-        python -m pip install --upgrade pip
-        python -m pip install tox tox-gh-actions coveralls
+      run: sudo apt-get install -y libkrb5-dev
 
-    - name: Test with tox
-      run: tox
+    - name: Install uv
+      uses: astral-sh/setup-uv@v6
+
+    - name: Install the project
+      run: uv sync --locked --all-extras --dev
+
+    - name: Install coveralls
+      run: uv pip install coveralls
+
+    - name: Test
+      run: uv run pytest --cov=grafana_dashboards
 
     - name: Coveralls
-      run: coveralls --service=github
+      run: uv run coveralls --service=github
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         COVERALLS_PARALLEL: true

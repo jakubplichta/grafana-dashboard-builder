@@ -1,0 +1,21 @@
+name: Lint Python Code
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, synchronize, edited, reopened]
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v5
+
+    - name: ruff-action
+      uses: astral-sh/ruff-action@v3.5.1
