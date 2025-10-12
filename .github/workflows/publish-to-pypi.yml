@@ -22,9 +22,11 @@ jobs:
       with:
         python-version-file: ".python-version"
 
-    - name: Install dependencies
-      run: |
-        sudo apt-get install -y libkrb5-dev
+    - name: Cache APT Packages
+      uses: awalsh128/cache-apt-pkgs-action@v1.5.3
+      with:
+        packages: libkrb5-dev
+        version: 1.0
 
     - name: Install uv
       uses: astral-sh/setup-uv@v7
