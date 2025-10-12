@@ -20,13 +20,14 @@ import argparse
 import logging
 import os
 
-from grafana_dashboards import gdbyaml as yaml
+import yaml
 
 from grafana_dashboards.client.elastic_search import ElasticSearchExporter
 from grafana_dashboards.client.grafana import GrafanaExporter
 from grafana_dashboards.common import get_component_type, load_source
 from grafana_dashboards.config import Config
 from grafana_dashboards.exporter import ProjectProcessor, FileExporter
+from grafana_dashboards.gdbyaml import GDBLoader
 from grafana_dashboards.parser import DefinitionParser
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
@@ -98,7 +99,7 @@ def main():
                                                 config)
 
     context = config.get_config('context')
-    context.update(yaml.load(args.context, Loader=yaml.GDBLoader))
+    context.update(yaml.load(args.context, Loader=GDBLoader))
 
     projects = DefinitionParser().load_projects(paths)
     project_processor = ProjectProcessor(dashboard_exporters)
