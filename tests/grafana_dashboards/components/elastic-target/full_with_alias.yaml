@@ -1,5 +1,6 @@
 elastic-target:
   query: "(status: 'succeeded')"
+  alias: "Alias"
   bucketAggs:
   - field: finishedAt
     type: date_histogram

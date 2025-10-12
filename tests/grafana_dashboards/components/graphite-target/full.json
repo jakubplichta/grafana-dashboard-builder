@@ -1,3 +1,4 @@
 {
-  "target": "t1"
+  "target": "t1",
+  "datasource": "default"
 }

@@ -1,5 +1,6 @@
 {
   "query": "(status: 'succeeded')",
+  "alias": "Alias",
   "bucketAggs": [
     {
       "field": "finishedAt",
