@@ -10,3 +10,5 @@ dashlist:
   heading: true
   limit: 20
   description: description
+  repeat: node
+  transparent: true

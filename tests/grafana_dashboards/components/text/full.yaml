@@ -7,3 +7,5 @@ text:
     multiline
     text
   description: description
+  repeat: node
+  transparent: true

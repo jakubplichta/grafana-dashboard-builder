@@ -31,24 +31,26 @@ class Panels(JsonListGenerator):
 class PanelsItemBase(JsonGenerator):
     _default_span = None
 
-    def copy_basic_fields(self, source, dest):
-        for field in {'description', 'transparent', 'repeat'}:
-            if field in source:
-                dest[field] = source[field]
-
-        dest['span'] = source.get('span', self._default_span)
-        dest['title'] = source.get('title', None)
+    def __init__(self, data, registry):
+        super(PanelsItemBase, self).__init__(data, registry)
+        self._register_copy_fields({
+            'description', 'transparent', 'repeat', ('span', self._default_span), ('title', None)
+        })
 
 
 class Graph(PanelsItemBase):
     _default_span = 12
-    _copy_fields = {'stack', 'fill', 'aliasColors', 'leftYAxisLabel', 'bars', 'lines', 'linewidth', 'y_formats',
-                    'x-axis', 'y-axis', 'points', 'pointradius', 'percentage', 'steppedLine', 'repeat',
-                    'repeatDirection', 'decimals', 'minSpan', 'datasource', 'description'}
+
+    def __init__(self, data, registry):
+        super(Graph, self).__init__(data, registry)
+        self._register_copy_fields({
+            'stack', 'fill', 'aliasColors', 'leftYAxisLabel', 'bars', 'lines', 'linewidth', 'y_formats',
+            'x-axis', 'y-axis', 'points', 'pointradius', 'percentage', 'steppedLine',
+            'repeatDirection', 'decimals', 'minSpan', 'datasource'
+        })
 
     def gen_json_from_data(self, data, context):
         panel_json = super(Graph, self).gen_json_from_data(data, context)
-        self.copy_basic_fields(data, panel_json)
         panel_json.update({
             'type': 'graph',
         })
@@ -113,18 +115,16 @@ class Graph(PanelsItemBase):
 
 
 class SingleStat(PanelsItemBase):
-
-    _copy_fields = {'prefix', 'postfix', 'nullText', 'format', 'thresholds', 'colorValue', 'colorBackground',
-                    'colors', 'prefixFontSize', 'valueFontSize', 'postfixFontSize', 'maxDataPoints', 'datasource',
-                    'repeat', 'repeatDirection', 'decimals', 'minSpan', 'description', 'colorPostfix'}
-    # noinspection PySetFunctionToLiteral
-    _copy_fields = set(['prefix', 'postfix', 'nullText', 'format', 'thresholds', 'colorValue', 'colorBackground',
-                        'colors', 'prefixFontSize', 'valueFontSize', 'postfixFontSize', 'maxDataPoints', 'datasource',
-                        'decimals', 'minSpan'])
+    def __init__(self, data, registry):
+        super(SingleStat, self).__init__(data, registry)
+        self._register_copy_fields({
+            'prefix', 'postfix', 'nullText', 'format', 'thresholds', 'colorValue', 'colorBackground',
+            'colors', 'prefixFontSize', 'valueFontSize', 'postfixFontSize', 'maxDataPoints', 'datasource',
+            'repeatDirection', 'decimals', 'minSpan', 'colorPostfix'
+        })
 
     def gen_json_from_data(self, data, context):
         panel_json = super(SingleStat, self).gen_json_from_data(data, context)
-        self.copy_basic_fields(data, panel_json)
         panel_json.update({
             'type': 'singlestat',
             'nullPointMode': data.get('nullPointMode', 'null'),
@@ -161,12 +161,14 @@ class SingleStat(PanelsItemBase):
 
 
 class Table(PanelsItemBase):
-    # noinspection PySetFunctionToLiteral
-    _copy_fields = {'fontSize', 'pageSize', 'showHeader', 'scroll', 'datasource', 'description'}
+    def __init__(self, data, registry):
+        super(Table, self).__init__(data, registry)
+        self._register_copy_fields({
+            'fontSize', 'pageSize', 'showHeader', 'scroll', 'datasource'
+        })
 
     def gen_json_from_data(self, data, context):
         panel_json = super(Table, self).gen_json_from_data(data, context)
-        self.copy_basic_fields(data, panel_json)
         panel_json.update({
             'type': 'table',
             'targets': [{'target': v} for v in data.get('targets', [])],
@@ -188,11 +190,9 @@ class Table(PanelsItemBase):
 
 
 class Text(PanelsItemBase):
-    _copy_fields = {'description'}
 
     def gen_json_from_data(self, data, context):
         panel_json = super(Text, self).gen_json_from_data(data, context)
-        self.copy_basic_fields(data, panel_json)
         panel_json.update({
             'type': 'text',
             'mode': data.get('mode', 'text'),
@@ -202,12 +202,16 @@ class Text(PanelsItemBase):
 
 
 class Dashlist(PanelsItemBase):
-    _copy_fields = {'headings', 'limit', 'recent', 'tags', 'query', 'description'}
     _default_span = 12
+
+    def __init__(self, data, registry):
+        super(Dashlist, self).__init__(data, registry)
+        self._register_copy_fields({
+            'headings', 'limit', 'recent', 'tags', 'query'
+        })
 
     def gen_json_from_data(self, data, context):
         panel_json = super(Dashlist, self).gen_json_from_data(data, context)
-        self.copy_basic_fields(data, panel_json)
         panel_json.update({
             'type': 'dashlist',
             'search': 'query' in data or 'tags' in data,
@@ -217,14 +221,18 @@ class Dashlist(PanelsItemBase):
 
 
 class Gauge(PanelsItemBase):
-    _copy_fields = {'datasource', 'pluginVersion'}
+    _default_span = 12
+
+    def __init__(self, data, registry):
+        super(Gauge, self).__init__(data, registry)
+        self._register_copy_fields({
+            'datasource', 'pluginVersion'
+        })
 
     def gen_json_from_data(self, data, context):
         panel_json = super(Gauge, self).gen_json_from_data(data, context)
         panel_json.update({
             'type': 'gauge',
-            'title': data.get('title', None),
-            'span': data.get('span', 12),
             'timeFrom': data.get('timeFrom', None),
             'timeShift': data.get('timeShift', None)
         })
@@ -248,14 +256,18 @@ class Gauge(PanelsItemBase):
 
 
 class Stat(PanelsItemBase):
-    _copy_fields = {'datasource', 'pluginVersion'}
+    _default_span = 12
+
+    def __init__(self, data, registry):
+        super(Stat, self).__init__(data, registry)
+        self._register_copy_fields({
+            'datasource', 'pluginVersion'
+        })
 
     def gen_json_from_data(self, data, context):
         panel_json = super(Stat, self).gen_json_from_data(data, context)
         panel_json.update({
             'type': 'stat',
-            'title': data.get('title', None),
-            'span': data.get('span', 12),
             'timeFrom': data.get('timeFrom', None),
             'timeShift': data.get('timeShift', None),
             'maxDataPoints': data.get('maxDataPoints', None)
@@ -303,15 +315,17 @@ class Stat(PanelsItemBase):
 
 
 class BarGauge(PanelsItemBase):
-    _copy_fields = {'datasource'}
+    _default_span = 12
+
+    def __init__(self, data, registry):
+        super(BarGauge, self).__init__(data, registry)
+        self._register_copy_fields({'datasource'})
 
     def gen_json_from_data(self, data, context):
         panel_json = super(BarGauge, self).gen_json_from_data(data, context)
 
         panel_json.update({
             'type': 'bargauge',
-            'title': data.get('title', None),
-            'span': data.get('span', 12),
             'timeFrom': data.get('timeFrom', None),
             'timeShift': data.get('timeShift', None)
         })

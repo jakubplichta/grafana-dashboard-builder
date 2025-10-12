@@ -134,7 +134,10 @@ class ComponentBase(object):
 
 class JsonGenerator(ComponentBase):
 
-    _copy_fields = set()
+    __copy_fields = set()
+
+    def _register_copy_fields(self, copy_fields):
+        self.__copy_fields = self.__copy_fields.union(copy_fields)
 
     def gen_json(self, context=Context()):
         return self.gen_json_from_data(context.expand_placeholders(self.data), context)
@@ -147,8 +150,12 @@ class JsonGenerator(ComponentBase):
         else:
             logger.debug("Processing anonymous component '%s'", component_type)
         json = {}
-        for field in self._copy_fields:
-            if field in data:
+        for field in self.__copy_fields:
+            if isinstance(field, tuple):
+                field_key = field[0]
+                field_default = field[1]
+                json[field_key] = data.get(field_key, field_default)
+            elif field in data:
                 json[field] = data[field]
         return json
 

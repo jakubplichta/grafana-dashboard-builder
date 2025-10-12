@@ -21,3 +21,6 @@ gauge:
         title: 'Availability'
         unit: short
   title: 'Gauge'
+  transparent: true
+  repeat: node
+  span: 3

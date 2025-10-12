@@ -8,5 +8,7 @@
   "starred": true,
   "recent": true,
   "limit": 20,
-  "description": "description"
+  "description": "description",
+  "transparent": true,
+  "repeat": "node"
 }

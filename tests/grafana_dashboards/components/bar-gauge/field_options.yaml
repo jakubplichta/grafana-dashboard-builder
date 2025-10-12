@@ -33,3 +33,6 @@ bar-gauge:
   timeFrom:
   timeShift:
   title: Bargauge
+  transparent: true
+  repeat: node
+  span: 3

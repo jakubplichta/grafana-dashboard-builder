@@ -42,4 +42,4 @@ single-stat:
   description: description
   colorPostfix: true
   valueName: value-name
-
+  transparent: true

@@ -4,5 +4,7 @@
   "mode": "text",
   "content": "this is\nmultiline\ntext\n",
   "type": "text",
-  "description": "description"
+  "description": "description",
+  "repeat": "node",
+  "transparent": true
 }

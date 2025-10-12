@@ -46,3 +46,6 @@ stat:
       fields: ''
       values: false
   title: 'Stat'
+  transparent: true
+  repeat: node
+  span: 3

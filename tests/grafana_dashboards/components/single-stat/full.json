@@ -48,5 +48,6 @@
     "thresholdLabels": true
   },
   "description": "description",
-  "colorPostfix": true
+  "colorPostfix": true,
+  "transparent": true
 }

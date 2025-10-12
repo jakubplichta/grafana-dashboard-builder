@@ -29,7 +29,9 @@ class AnnotationsItemBase(JsonGenerator):
 
 
 class Annotation(AnnotationsItemBase):
-    _copy_fields = {'datasource'}
+    def __init__(self, data, registry):
+        super(Annotation, self).__init__(data, registry)
+        self._register_copy_fields({'datasource'})
 
     def gen_json_from_data(self, data, context):
         template_json = super(Annotation, self).gen_json_from_data(data, context)
