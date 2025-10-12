@@ -73,5 +73,6 @@
   "repeat": "node",
   "repeatDirection": "v",
   "datasource": "datasource",
-  "description": "description"
+  "description": "description",
+  "transparent": true
 }

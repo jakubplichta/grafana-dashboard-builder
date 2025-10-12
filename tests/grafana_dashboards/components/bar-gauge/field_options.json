@@ -49,6 +49,8 @@
   "timeShift": null,
   "title": "Bargauge",
   "type": "bargauge",
-  "span": 12,
-  "targets": []
+  "span": 3,
+  "targets": [],
+  "transparent": true,
+  "repeat": "node"
 }

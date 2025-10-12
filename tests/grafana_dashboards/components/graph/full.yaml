@@ -67,3 +67,4 @@ graph:
   repeatDirection: v
   datasource: datasource
   description: description
+  transparent: true

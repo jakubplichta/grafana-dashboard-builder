@@ -44,6 +44,8 @@
   "timeShift": null,
   "title": "Gauge",
   "type": "gauge",
-  "span": 12,
-  "targets": []
+  "span": 3,
+  "targets": [],
+  "transparent": true,
+  "repeat": "node"
 }

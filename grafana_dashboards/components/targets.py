@@ -40,12 +40,12 @@ class Targets(JsonListGenerator):
 
 
 class TargetsItemBase(JsonGenerator):
-    pass
+    def __init__(self, data, registry):
+        super(TargetsItemBase, self).__init__(data, registry)
+        self._register_copy_fields({'datasource'})
 
 
 class GraphiteTarget(TargetsItemBase):
-    _copy_fields = {'datasource'}
-
     def gen_json_from_data(self, data, context):
         template_json = super(GraphiteTarget, self).gen_json_from_data(data, context)
         if isinstance(data, basestring):
@@ -56,7 +56,9 @@ class GraphiteTarget(TargetsItemBase):
 
 
 class PrometheusTarget(TargetsItemBase):
-    _copy_fields = {'format', 'hide', 'intervalFactor', 'legendFormat', 'step', 'instant', 'interval', 'datasource'}
+    def __init__(self, data, registry):
+        super(PrometheusTarget, self).__init__(data, registry)
+        self._register_copy_fields({'format', 'hide', 'intervalFactor', 'legendFormat', 'step', 'instant', 'interval'})
 
     def gen_json_from_data(self, data, context):
         template_json = super(PrometheusTarget, self).gen_json_from_data(data, context)
@@ -65,7 +67,9 @@ class PrometheusTarget(TargetsItemBase):
 
 
 class InfluxdbTarget(TargetsItemBase):
-    _copy_fields = {'alias', 'datasource'}
+    def __init__(self, data, registry):
+        super(InfluxdbTarget, self).__init__(data, registry)
+        self._register_copy_fields({'alias'})
 
     def gen_json_from_data(self, data, context):
         template_json = super(InfluxdbTarget, self).gen_json_from_data(data, context)
@@ -76,7 +80,9 @@ class InfluxdbTarget(TargetsItemBase):
 
 
 class ElasticTarget(TargetsItemBase):
-    _copy_fields = {'bucketAggs', 'hide', 'metrics', 'refId', 'timeField', 'datasource', 'alias'}
+    def __init__(self, data, registry):
+        super(ElasticTarget, self).__init__(data, registry)
+        self._register_copy_fields({'bucketAggs', 'hide', 'metrics', 'refId', 'timeField', 'alias'})
 
     def gen_json_from_data(self, data, context):
         template_json = super(ElasticTarget, self).gen_json_from_data(data, context)

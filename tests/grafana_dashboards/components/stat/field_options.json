@@ -86,7 +86,9 @@
   "timeShift": null,
   "title": "Stat",
   "type": "stat",
-  "span": 12,
+  "span": 3,
   "maxDataPoints": null,
-  "targets": []
+  "targets": [],
+  "transparent": true,
+  "repeat": "node"
 }

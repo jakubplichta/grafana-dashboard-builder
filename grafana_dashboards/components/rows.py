@@ -31,8 +31,9 @@ class RowsItemBase(JsonGenerator):
 
 
 class Row(RowsItemBase):
-
-    _copy_fields = {'repeat'}
+    def __init__(self, data, registry):
+        super(Row, self).__init__(data, registry)
+        self._register_copy_fields({'repeat'})
 
     def gen_json_from_data(self, data, context):
         row_json = super(Row, self).gen_json_from_data(data, context)
