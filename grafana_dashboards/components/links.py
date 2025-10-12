@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2015-2025 grafana-dashboard-builder contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,21 +11,14 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from __future__ import unicode_literals
-
 from grafana_dashboards.components.base import JsonListGenerator, JsonGenerator
-
-try:
-    basestring
-except NameError:
-    basestring = str
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
 
 class Links(JsonListGenerator):
     def __init__(self, data, registry):
-        super(Links, self).__init__(data, registry, LinksItemBase)
+        super().__init__(data, registry, LinksItemBase)
 
 
 class LinksItemBase(JsonGenerator):
@@ -35,7 +27,7 @@ class LinksItemBase(JsonGenerator):
 
 class DashboardLink(LinksItemBase):
     def gen_json_from_data(self, data, context):
-        link_json = super(DashboardLink, self).gen_json_from_data(data, context)
+        link_json = super().gen_json_from_data(data, context)
         link_json.update({
             'type': 'dashboard',
             'name': 'Drilldown dashboard',
@@ -45,18 +37,18 @@ class DashboardLink(LinksItemBase):
         if 'params' in data and isinstance(data.get('params'), list):
             params = []
             for param in data.get('params'):
-                if isinstance(param, basestring):
+                if isinstance(param, str):
                     params.append((param, '$' + param))
                 else:
                     for key, value in param.items():
                         params.append((key, value))
-            link_json['params'] = '&'.join(map(lambda pair: 'var-%s=%s' % (pair[0], pair[1]), params))
+            link_json['params'] = '&'.join(map(lambda pair: f'var-{pair[0]}={pair[1]}', params))
         return link_json
 
 
 class AbsoluteLink(LinksItemBase):
     def gen_json_from_data(self, data, context):
-        link_json = super(AbsoluteLink, self).gen_json_from_data(data, context)
+        link_json = super().gen_json_from_data(data, context)
         link_json.update({
             'type': 'absolute',
             'name': 'Drilldown dashboard',

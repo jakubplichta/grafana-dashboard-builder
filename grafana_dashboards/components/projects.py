@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2015-2025 grafana-dashboard-builder contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,8 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from __future__ import unicode_literals
-
 from grafana_dashboards.components.base import ComponentBase, get_placeholders
 from grafana_dashboards.components.dashboards import Dashboard
 from grafana_dashboards.context import Context
@@ -23,7 +20,7 @@ __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
 class Project(ComponentBase):
     def __init__(self, data, registry):
-        super(Project, self).__init__(data, registry)
+        super().__init__(data, registry)
         self._placeholders = [placeholder for dashboard in self._get_dashboard_names()
                               for placeholder in get_placeholders(dashboard)]
 

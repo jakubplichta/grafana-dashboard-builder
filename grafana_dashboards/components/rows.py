@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2015-2025 grafana-dashboard-builder contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,8 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from __future__ import unicode_literals
-
 from grafana_dashboards.common import get_component_type
 from grafana_dashboards.components.base import JsonListGenerator, JsonGenerator
 from grafana_dashboards.components.panels import Panels
@@ -23,7 +20,7 @@ __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
 class Rows(JsonListGenerator):
     def __init__(self, data, registry):
-        super(Rows, self).__init__(data, registry, RowsItemBase)
+        super().__init__(data, registry, RowsItemBase)
 
 
 class RowsItemBase(JsonGenerator):
@@ -32,11 +29,11 @@ class RowsItemBase(JsonGenerator):
 
 class Row(RowsItemBase):
     def __init__(self, data, registry):
-        super(Row, self).__init__(data, registry)
+        super().__init__(data, registry)
         self._register_copy_fields({'repeat'})
 
     def gen_json_from_data(self, data, context):
-        row_json = super(Row, self).gen_json_from_data(data, context)
+        row_json = super().gen_json_from_data(data, context)
         row_json.update({
             'title': data.get('title', ''),
             'height': data.get('height', '250px'),

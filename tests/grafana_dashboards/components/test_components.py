@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2015-2025 grafana-dashboard-builder contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,11 +11,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from __future__ import unicode_literals
-
 import inspect
 import json
-import os
+from pathlib import Path
 
 import mock as mock
 import yaml
@@ -34,23 +31,23 @@ def pytest_generate_tests(metafunc):
     ids = []
     for (component, test, config, output) in load_test_fixtures():
         fixtures.append((component, config, output))
-        ids.append('%s;%s' % (grafana_dashboards.common.get_component_type(component), test))
+        ids.append(f'{grafana_dashboards.common.get_component_type(component)};{test}')
     metafunc.parametrize('component,config,expected', fixtures, ids=ids)
 
 
 def load_test_fixtures():
     for component in base.get_generators():  # NOQA
         component_type = grafana_dashboards.common.get_component_type(component)
-        dirname = os.path.join(os.path.dirname(os.path.abspath(__file__)), component_type)
-        if not os.path.isdir(dirname):
+        dirname = Path(__file__).resolve().parent / component_type
+        if not dirname.is_dir():
             continue
-        for f in os.listdir(dirname):
-            if not f.endswith('.yaml'):
+        for f in dirname.iterdir():
+            if f.suffix != '.yaml':
                 continue
-            filename = f[:-5]
-            with open(os.path.join(dirname, '%s.yaml' % filename), 'r') as fp:
+            filename = f.stem
+            with open(dirname / f'{filename}.yaml', 'r') as fp:
                 config = yaml.load(fp, Loader=yaml.FullLoader)
-            with open(os.path.join(dirname, '%s.json' % filename), 'r') as fp:
+            with open(dirname / f'{filename}.json', 'r') as fp:
                 output = json.load(fp)
             yield component, filename, config, output
 
@@ -69,10 +66,10 @@ def test_component(component, config, expected):
 
         def get_component(component_type, name):
             if name == 'not-mocked':
-                raise UnregisteredComponentError("No component '%s' with name '%s' found!" % (component_type, name))
+                raise UnregisteredComponentError(f"No component '{component_type}' with name '{name}' found!")
 
             gen = mock.Mock()
-            gen.gen_json = mock.Mock(return_value=['mocked ' + str(component_type) + ' for name ' + name])
+            gen.gen_json = mock.Mock(return_value=[f'mocked {str(component_type)} for name {name}'])
             return gen
 
         registry.get_component = mock.Mock(side_effect=get_component)

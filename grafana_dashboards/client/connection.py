@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2015-2025 grafana-dashboard-builder contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,26 +11,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from __future__ import unicode_literals
-
 import base64
 import json
 import logging
-
-try:
-    from cookielib import CookieJar
-except ImportError:
-    from http.cookiejar import CookieJar
-try:
-    from urllib2 import build_opener, HTTPHandler, HTTPSHandler, HTTPCookieProcessor, HTTPDefaultErrorHandler, \
-        Request, BaseHandler
-except ImportError:
-    from urllib.request import build_opener, HTTPHandler, HTTPSHandler, HTTPCookieProcessor, HTTPDefaultErrorHandler, \
-        Request, BaseHandler
-try:
-    from urlparse import urlparse
-except ImportError:
-    from urllib.parse import urlparse
+from http.cookiejar import CookieJar
+from urllib.parse import urlparse
+from urllib.request import build_opener, HTTPHandler, HTTPSHandler, HTTPCookieProcessor, HTTPDefaultErrorHandler, \
+    Request, BaseHandler
 
 import requests
 from requests_kerberos import HTTPKerberosAuth
@@ -58,7 +44,7 @@ class BaseConnection(object):
                                     HTTPDefaultErrorHandler())
 
     def make_request(self, uri, body=None):
-        request = Request('{0}{1}'.format(self._host, uri),
+        request = Request(f'{self._host}{uri}',
                           json.dumps(body).encode('utf-8') if body else None,
                           headers=self._headers)
         response_body = self._opener.open(request).read()
@@ -69,16 +55,16 @@ class BasicAuthConnection(BaseConnection):
     def __init__(self, username, password, host, debug=0):
         logger.debug('Creating new connection with username=%s host=%s', username, host)
 
-        base64string = base64.encodebytes(('%s:%s' % (username, password)).encode('utf-8')).replace(b'\n', b'')
+        base64string = base64.encodebytes(f'{username}:{password}'.encode('utf-8')).replace(b'\n', b'')
 
-        super(BasicAuthConnection, self).__init__(host, b'Basic ' + base64string, debug)
+        super().__init__(host, b'Basic ' + base64string, debug)
 
 
 class BearerAuthConnection(BaseConnection):
     def __init__(self, token, host, debug=0):
         logger.debug('Creating new connection with token=%s host=%s', token[:5], host)
 
-        super(BearerAuthConnection, self).__init__(host, 'Bearer %s' % token.strip(), debug)
+        super().__init__(host, f'Bearer {token.strip()}', debug)
 
 
 class LoggingHandler(BaseHandler):
@@ -106,7 +92,7 @@ class KerberosConnection(object):
         self._host = host
 
     def make_request(self, uri, body=None):
-        response = requests.post('{0}{1}'.format(self._host, uri), json=body, auth=HTTPKerberosAuth(), verify=False)
+        response = requests.post(f'{self._host}{uri}', json=body, auth=HTTPKerberosAuth(), verify=False)
         return response.json()
 
 
@@ -117,5 +103,5 @@ class SSLAuthConnection(object):
         self._cert = cert_bundle
 
     def make_request(self, uri, body=None):
-        response = requests.post('{0}{1}'.format(self._host, uri), json=body, cert=self._cert)
+        response = requests.post(f'{self._host}{uri}', json=body, cert=self._cert)
         return response.json()

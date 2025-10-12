@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #  Copyright 2021 grafana-dashboard-builder contributors
 #
 #     Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +23,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from __future__ import unicode_literals
 
 from grafana_dashboards.components.base import JsonListGenerator, JsonGenerator
 
@@ -33,7 +31,7 @@ __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
 class Templates(JsonListGenerator):
     def __init__(self, data, registry):
-        super(Templates, self).__init__(data, registry, TemplatesItemBase)
+        super().__init__(data, registry, TemplatesItemBase)
 
 
 class TemplatesItemBase(JsonGenerator):
@@ -43,7 +41,7 @@ class TemplatesItemBase(JsonGenerator):
 class Query(TemplatesItemBase):
 
     def gen_json_from_data(self, data, context):
-        super(Query, self).gen_json_from_data(data, context)
+        super().gen_json_from_data(data, context)
         processed_parts = []
         queries = []
         if not data.get('query'):
@@ -110,12 +108,12 @@ class Query(TemplatesItemBase):
 class EnumeratedTemplateBase(TemplatesItemBase):
 
     def __init__(self, data, registry, template_type, refresh):
-        super(EnumeratedTemplateBase, self).__init__(data, registry)
+        super().__init__(data, registry)
         self._template_type = template_type
         self._refresh = refresh
 
     def gen_json_from_data(self, data, context):
-        template_json = super(EnumeratedTemplateBase, self).gen_json_from_data(data, context)
+        template_json = super().gen_json_from_data(data, context)
         template_json.update({
             'type': self._template_type,
             'refresh_on_load': False,
@@ -149,15 +147,15 @@ class EnumeratedTemplateBase(TemplatesItemBase):
 
 class CustomTemplate(EnumeratedTemplateBase):
     def __init__(self, data, registry):
-        super(CustomTemplate, self).__init__(data, registry, 'custom', 0)
+        super().__init__(data, registry, 'custom', 0)
 
 
 class IntervalTemplate(EnumeratedTemplateBase):
     def __init__(self, data, registry):
-        super(IntervalTemplate, self).__init__(data, registry, 'interval', 2)
+        super().__init__(data, registry, 'interval', 2)
 
     def gen_json_from_data(self, data, context):
-        template_json = super(IntervalTemplate, self).gen_json_from_data(data, context)
+        template_json = super().gen_json_from_data(data, context)
         if 'auto' in data:
             template_json['auto'] = True
             template_json['auto_count'] = (data['auto'] or {}).get('count', 30)
@@ -173,7 +171,7 @@ class IntervalTemplate(EnumeratedTemplateBase):
 
 class DatasourceTemplate(TemplatesItemBase):
     def gen_json_from_data(self, data, context):
-        template_json = super(DatasourceTemplate, self).gen_json_from_data(data, context)
+        template_json = super().gen_json_from_data(data, context)
         template_json.update({
             'type': 'datasource',
             'name': data.get('name', 'datasource'),

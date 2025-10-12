@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2015-2025 grafana-dashboard-builder contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,19 +11,12 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from __future__ import unicode_literals
-
 import logging
 import string
 
 from grafana_dashboards import errors
 from grafana_dashboards.common import get_component_type
 from grafana_dashboards.context import Context
-
-try:
-    basestring
-except NameError:
-    basestring = str
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
@@ -53,7 +45,7 @@ def get_placeholders(component_name):
 
 class ComponentRegistry(object):
     def __init__(self):
-        super(ComponentRegistry, self).__init__()
+        super().__init__()
         self._types = {}
         self._components = {}
         for clazz in _get_subclasses(ComponentBase):
@@ -62,10 +54,10 @@ class ComponentRegistry(object):
             self._components[clazz] = {}
 
     def _class_for_type(self, component_type):
-        if isinstance(component_type, basestring):
+        if isinstance(component_type, str):
             component_type = self._types.get(component_type)
         if self._components.get(component_type) is None:
-            raise errors.UnregisteredComponentError("No component of type '%s' found!" % component_type)
+            raise errors.UnregisteredComponentError(f"No component of type '{component_type}' found!")
         return component_type
 
     def add(self, component):
@@ -75,8 +67,8 @@ class ComponentRegistry(object):
         """
         if len(component) > 2:
             raise errors.WrongComponentAttributeCountError(
-                'Component must have exactly 2 attributes - name and component type with data.'
-                'This contains %s attributes' % len(component.keys()))
+                f'Component must have exactly 2 attributes - name and component type with data.'
+                f'This contains {len(component.keys())} attributes')
         component_name = component.get('name')
         if component_name is None:
             logger.info("Component '%s' does not have 'name' attribute, skipping", component.keys())
@@ -96,7 +88,7 @@ class ComponentRegistry(object):
         components = self._get_component(clazz)
         if component_name in components:
             raise errors.DuplicateKeyError(
-                "Key '%s' is already defined for component %s" % (component_name, component_type))
+                f"Key '{component_name}' is already defined for component {component_type}")
         components[component_name] = self.create_component(clazz, component)
 
     def __getitem__(self, item):
@@ -105,7 +97,7 @@ class ComponentRegistry(object):
     def _get_component(self, item):
         component = self._components.get(item)
         if component is None:
-            raise errors.UnregisteredComponentError("No component of type '%s' found!" % item)
+            raise errors.UnregisteredComponentError(f"No component of type '{item}' found!")
         return component
 
     def create_component(self, component_type, data):
@@ -114,7 +106,7 @@ class ComponentRegistry(object):
     def get_component(self, component_type, name):
         component = self._get_component(component_type).get(name)
         if component is None:
-            raise errors.UnregisteredComponentError("No component '%s' with name '%s' found!" % (component_type, name))
+            raise errors.UnregisteredComponentError(f"No component '{component_type}' with name '{name}' found!")
         return component
 
 
@@ -124,7 +116,7 @@ class ComponentBase(object):
 
         :type registry: ComponentRegistry
         """
-        super(ComponentBase, self).__init__()
+        super().__init__()
         self.data = data[get_component_type(type(self))]
         if self.data is None:
             self.data = {}
@@ -162,18 +154,18 @@ class JsonGenerator(ComponentBase):
 
 class JsonListGenerator(JsonGenerator):
     def __init__(self, data, registry, item_base_class):
-        super(JsonListGenerator, self).__init__(data, registry)
+        super().__init__(data, registry)
         self.component_item_types = [get_component_type(clazz) for clazz in _get_subclasses(item_base_class)]
 
     def gen_json_from_data(self, data, context):
-        super(JsonListGenerator, self).gen_json_from_data(data, context)
+        super().gen_json_from_data(data, context)
         result_list = []
         for items in data:
             self.gen_item_json(items, result_list)
         return result_list
 
     def gen_item_json(self, items, result_list):
-        if isinstance(items, basestring):
+        if isinstance(items, str):
             # this is component without context
             result_list += self.registry.get_component(type(self), items).gen_json()
         else:

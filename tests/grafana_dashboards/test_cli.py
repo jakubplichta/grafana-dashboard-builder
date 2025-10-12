@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2015-2025 grafana-dashboard-builder contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,9 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from __future__ import unicode_literals
-
-import os
+from pathlib import Path
 
 from mock import patch
 
@@ -27,13 +24,13 @@ __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 class DummyExporter(object):
 
     def __init__(self, prop, **kwargs):
-        super(DummyExporter, self).__init__()
+        super().__init__()
         self.prop = prop
         self.kwargs = kwargs
 
 
 def test_initialize_exporters():
-    config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.yaml')
+    config_file = Path(__file__).resolve().parent / 'config.yaml'
     config = Config(config_file)
     # noinspection PyProtectedMember
     exporters = cli._initialize_exporters('dummy', [DummyExporter], config)
@@ -46,10 +43,10 @@ def test_initialize_exporters():
 
 # noinspection PyUnusedLocal
 @patch('os.walk', return_value=[('/path', ['dir1', 'dir2'], ['file1', 'file2'])])
-@patch('os.path.isdir', return_value=True)
+@patch('pathlib.Path.is_dir', return_value=True)
 def test_process_paths(isdir, walk):
     # noinspection PyProtectedMember
     paths = cli._process_paths(['/path'])
 
     # noinspection PySetFunctionToLiteral
-    assert paths == set(['/path/file1', '/path/file2'])
+    assert paths == {'/path/file1', '/path/file2'}

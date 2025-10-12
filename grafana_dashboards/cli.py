@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 2015-2025 grafana-dashboard-builder contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,12 +12,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from __future__ import print_function
-from __future__ import unicode_literals
-
 import argparse
 import logging
 import os
+from pathlib import Path
 
 import yaml
 
@@ -34,20 +31,20 @@ __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
 
 def _initialize_exporters(exporter_names, exporter_types, config):
-    exporters = dict([(get_component_type(exporter), exporter) for exporter in exporter_types])
-    exporters = dict([(name[:-9], exporter) for name, exporter in exporters.items() if name[:-9] in exporter_names])
+    exporters = {get_component_type(exporter): exporter for exporter in exporter_types}
+    exporters = {name[:-9]: exporter for name, exporter in exporters.items() if name[:-9] in exporter_names}
     return [exporter(**config.get_config(name)) for (name, exporter) in exporters.items()]
 
 
 def _process_paths(paths):
     definition_files = set()
-    for paths in paths:
-        if os.path.isdir(paths):
-            for root, dirs, filenames in os.walk(paths):
-                s = set([os.path.join(root, filename) for filename in filenames])
+    for path in paths:
+        if Path(path).is_dir():
+            for root, dirs, filenames in os.walk(path):
+                s = {str(Path(root) / filename) for filename in filenames}
                 definition_files = definition_files.union(s)
         else:
-            definition_files.add(paths)
+            definition_files.add(path)
     return definition_files
 
 
@@ -79,7 +76,7 @@ def main():
             try:
                 load_source('grafana_dashboards.components.$loaded', plugin)
             except Exception as e:
-                print('Cannot load plugin %s: %s' % (plugin, str(e)))
+                print(f'Cannot load plugin {plugin}: {str(e)}')
 
     if args.project:
         logging.warn("Using deprecated option '--project'")

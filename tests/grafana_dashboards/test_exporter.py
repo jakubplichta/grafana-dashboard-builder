@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2015-2025 grafana-dashboard-builder contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,8 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from __future__ import unicode_literals
-
 import pytest
 from mock import patch, MagicMock
 
@@ -44,9 +41,9 @@ def test_project_processor():
 
 @patch('grafana_dashboards.exporter.open', create=True)
 @patch('json.dump')
-@patch('os.makedirs', return_value=True)
-@patch('os.path.isdir', return_value=True)
-@patch('os.path.exists', return_value=True)
+@patch('pathlib.Path.mkdir', return_value=True)
+@patch('pathlib.Path.is_dir', return_value=True)
+@patch('pathlib.Path.exists', return_value=True)
 def test_file_exporter(patch_exists, path_isdir, makedirs, json_dump, mock_file):
     exporter = FileExporter('output_folder')
 
@@ -57,9 +54,9 @@ def test_file_exporter(patch_exists, path_isdir, makedirs, json_dump, mock_file)
                                       separators=(',', ': '))
 
 
-@patch('os.makedirs', side_effect=[True, OSError('testing')])
-@patch('os.path.isdir', return_value=True)
-@patch('os.path.exists', return_value=False)
+@patch('pathlib.Path.mkdir', side_effect=[True, OSError('testing')])
+@patch('pathlib.Path.is_dir', return_value=True)
+@patch('pathlib.Path.exists', return_value=False)
 def test_file_exporter_path_not_exist(patch_exists, path_isdir, makedirs):
     exporter = FileExporter('output_folder')
 
@@ -69,9 +66,9 @@ def test_file_exporter_path_not_exist(patch_exists, path_isdir, makedirs):
     assert 'testing' in str(e.value)
 
 
-@patch('os.makedirs', return_value=True)
-@patch('os.path.isdir', return_value=False)
-@patch('os.path.exists', return_value=False)
+@patch('pathlib.Path.mkdir', return_value=True)
+@patch('pathlib.Path.is_dir', return_value=False)
+@patch('pathlib.Path.exists', return_value=False)
 def test_file_exporter_output_not_dir(patch_exists, path_isdir, makedirs):
     with pytest.raises(Exception) as e:
         FileExporter('output_folder')
