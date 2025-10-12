@@ -1,9 +1,7 @@
-import yaml
-from yaml import load, load_all
 import logging
 import os.path
-import functools
 
+import yaml
 
 log = logging.getLogger(__name__)
 
@@ -46,4 +44,3 @@ class GDBLoader(yaml.Loader, metaclass=GDBLoaderMeta):
                 return yaml.load(f, GDBLoader)
             else:
                 return ''.join(f.readlines())
-                

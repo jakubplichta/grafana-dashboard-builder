@@ -45,6 +45,7 @@ class TargetsItemBase(JsonGenerator):
 
 class GraphiteTarget(TargetsItemBase):
     _copy_fields = {'datasource'}
+
     def gen_json_from_data(self, data, context):
         template_json = super(GraphiteTarget, self).gen_json_from_data(data, context)
         if isinstance(data, basestring):

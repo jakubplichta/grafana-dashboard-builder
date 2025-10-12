@@ -69,7 +69,7 @@ def main():
     parser.add_argument('--exporter', nargs='+', type=str, default=set(), dest='exporters',
                         help='List of dashboard exporters')
     parser.add_argument('--message', required=False, type=str,
-                       help='Set a commit message for the Grafana version history')    
+                        help='Set a commit message for the Grafana version history')
 
     args = parser.parse_args()
 
