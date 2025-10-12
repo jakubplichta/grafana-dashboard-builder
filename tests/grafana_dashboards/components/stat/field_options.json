@@ -1,4 +1,38 @@
 {
+  "fieldConfig": {
+    "defaults": {
+      "color": {
+        "mode": "thresholds"
+      },
+      "mappings": [
+        {
+          "options": {
+            "match": "null",
+            "result": {
+              "color": "green",
+              "text": "0%"
+            }
+          },
+          "type": "special"
+        }
+      ],
+      "thresholds": {
+        "mode": "absolute",
+        "steps": [
+          {
+            "color": "green",
+            "value": null
+          },
+          {
+            "color": "red",
+            "value": 80
+          }
+        ]
+      },
+      "unit": "percent"
+    },
+    "overrides": []
+  },
   "options": {
     "graphMode": "area",
     "colorMode": "background",
@@ -39,12 +73,20 @@
       },
       "overrides": []
     },
-    "orientation": "auto"
+    "orientation": "auto",
+    "reduceOptions": {
+      "calcs": [
+        "mean"
+      ],
+      "fields": "",
+      "values": false
+    }
   },
   "timeFrom": null,
   "timeShift": null,
   "title": "Stat",
   "type": "stat",
   "span": 12,
+  "maxDataPoints": null,
   "targets": []
 }
