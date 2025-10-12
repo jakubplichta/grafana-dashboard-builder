@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2015-2025 grafana-dashboard-builder contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,9 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from __future__ import unicode_literals
-
-import os
+from pathlib import Path
 
 from grafana_dashboards.config import Config
 
@@ -22,7 +19,7 @@ __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
 
 def test_existent_config_file():
-    config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.yaml')
+    config_file = Path(__file__).resolve().parent / 'config.yaml'
     config = Config(config_file)
 
     assert config.get_config('context') == {'component': 'frontend'}
@@ -30,7 +27,7 @@ def test_existent_config_file():
 
 
 def test_nonexistent_config_file():
-    config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'no_file.yaml')
+    config_file = Path(__file__).resolve().parent / 'no_file.yaml'
     config = Config(config_file)
 
     assert config.get_config('context') == {}

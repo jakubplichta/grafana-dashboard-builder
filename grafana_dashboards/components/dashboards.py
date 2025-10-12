@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2015-2025 grafana-dashboard-builder contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,8 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from __future__ import unicode_literals
-
 from grafana_dashboards.common import get_component_type
 from grafana_dashboards.components.annotations import Annotations
 from grafana_dashboards.components.base import JsonGenerator
@@ -26,11 +23,11 @@ __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 class Dashboard(JsonGenerator):
 
     def __init__(self, data, registry):
-        super(Dashboard, self).__init__(data, registry)
+        super().__init__(data, registry)
         self._register_copy_fields({'sharedCrosshair'})
 
     def gen_json_from_data(self, data, context):
-        json_data = super(Dashboard, self).gen_json_from_data(data, context)
+        json_data = super().gen_json_from_data(data, context)
         nav = {
             'type': 'timepicker'
         }

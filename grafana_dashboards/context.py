@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2015-2025 grafana-dashboard-builder contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,16 +11,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from __future__ import unicode_literals
-
 import itertools
 import re
 import string
-
-try:
-    basestring
-except NameError:
-    basestring = str
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
@@ -31,7 +23,7 @@ class Context(object):
     _pattern = re.compile('{.*}')
 
     def __init__(self, context=None):
-        super(Context, self).__init__()
+        super().__init__()
         if not context:
             self._context = None
         else:
@@ -45,23 +37,23 @@ class Context(object):
         if not self._context:
             return to_expand
 
-        if isinstance(to_expand, basestring):
+        if isinstance(to_expand, str):
             (result, to_expand) = self._expand(to_expand)
             while result != to_expand:
                 (result, to_expand) = self._expand(result)
-            if isinstance(result, basestring):
+            if isinstance(result, str):
                 return string.Formatter().vformat(result, (), self._context)
             else:
                 return result
         elif isinstance(to_expand, list):
             return [self.expand_placeholders(value) for value in to_expand]
         elif isinstance(to_expand, dict):
-            return dict([(key, self.expand_placeholders(value)) for (key, value) in to_expand.items()])
+            return {key: self.expand_placeholders(value) for (key, value) in to_expand.items()}
         else:
             return to_expand
 
     def _expand(self, to_expand):
-        if not isinstance(to_expand, basestring):
+        if not isinstance(to_expand, str):
             return to_expand, to_expand
         elif self._pattern.match(to_expand) and to_expand[1:-1] in self._context:
             return self._context[to_expand[1:-1]], to_expand
@@ -84,7 +76,7 @@ class DictDefaultingToPlaceholder(dict):
 
 class ContextExpander(object):
     def __init__(self, keys_to_expand=None):
-        super(ContextExpander, self).__init__()
+        super().__init__()
         self._keys_to_expand = keys_to_expand if keys_to_expand else []
 
     def create_context(self, key, value, parent=None):

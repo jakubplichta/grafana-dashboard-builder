@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2015-2025 grafana-dashboard-builder contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,8 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from __future__ import unicode_literals
-
 import json
 import logging
 import os
@@ -29,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 class ElasticSearchExporter(DashboardExporter):
     def __init__(self, **kwargs):
-        super(ElasticSearchExporter, self).__init__()
+        super().__init__()
         self._host = os.getenv('ES_HOST', kwargs.get('host'))
         password = os.getenv('ES_PASSWORD', kwargs.get('password'))
         username = os.getenv('ES_USERNAME', kwargs.get('username'))
@@ -41,8 +38,8 @@ class ElasticSearchExporter(DashboardExporter):
             self._connection = BasicAuthConnection(username, password, self._host)
 
     def process_dashboard(self, project_name, dashboard_name, dashboard_data):
-        super(ElasticSearchExporter, self).process_dashboard(project_name, dashboard_name, dashboard_data)
+        super().process_dashboard(project_name, dashboard_name, dashboard_data)
         body = {'user': 'guest', 'group': 'guest', 'title': dashboard_data['title'], 'tags': dashboard_data['tags'],
                 'dashboard': json.dumps(dashboard_data)}
         logger.info("Uploading dashboard '%s' to %s", dashboard_name, self._host)
-        self._connection.make_request('/es/grafana-dash/dashboard/{0}'.format(dashboard_name), body)
+        self._connection.make_request(f'/es/grafana-dash/dashboard/{dashboard_name}', body)

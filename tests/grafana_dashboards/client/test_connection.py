@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2015-2025 grafana-dashboard-builder contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,11 +11,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from __future__ import unicode_literals
-try:
-    from urllib2 import Request
-except ImportError:
-    from urllib.request import Request
+from urllib.request import Request
+
 from mock import MagicMock, patch
 from requests_kerberos import HTTPKerberosAuth
 

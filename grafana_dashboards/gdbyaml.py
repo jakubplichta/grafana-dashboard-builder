@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2015-2025 grafana-dashboard-builder contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import logging
-import os.path
+from pathlib import Path
 
 import yaml
 
@@ -39,19 +38,17 @@ class GDBLoader(yaml.Loader, metaclass=GDBLoaderMeta):
         """Initialise Loader."""
 
         try:
-            self._root = os.path.split(stream.name)[0]
+            self._root = Path(stream.name).parent
         except AttributeError:
-            self._root = os.path.curdir
+            self._root = Path('.')
 
         super().__init__(stream)
 
     def construct_include(self, node):
         """Include file referenced at node."""
 
-        filename = os.path.abspath(os.path.join(
-            self._root, self.construct_scalar(node)
-        ))
-        extension = os.path.splitext(filename)[1].lstrip('.')
+        filename = (self._root / self.construct_scalar(node)).absolute()
+        extension = filename.suffix.lstrip('.')
 
         with open(filename, 'r') as f:
             if extension in ('yaml', 'yml'):

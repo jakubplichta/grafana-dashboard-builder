@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2015-2025 grafana-dashboard-builder contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,8 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from __future__ import unicode_literals
-
 from grafana_dashboards.common import get_component_type
 from grafana_dashboards.components.axes import Yaxes
 from grafana_dashboards.components.base import JsonListGenerator, JsonGenerator
@@ -25,14 +22,14 @@ __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
 class Panels(JsonListGenerator):
     def __init__(self, data, registry):
-        super(Panels, self).__init__(data, registry, PanelsItemBase)
+        super().__init__(data, registry, PanelsItemBase)
 
 
 class PanelsItemBase(JsonGenerator):
     _default_span = None
 
     def __init__(self, data, registry):
-        super(PanelsItemBase, self).__init__(data, registry)
+        super().__init__(data, registry)
         self._register_copy_fields({
             'description', 'transparent', 'repeat', ('span', self._default_span), ('title', None)
         })
@@ -42,7 +39,7 @@ class Graph(PanelsItemBase):
     _default_span = 12
 
     def __init__(self, data, registry):
-        super(Graph, self).__init__(data, registry)
+        super().__init__(data, registry)
         self._register_copy_fields({
             'stack', 'fill', 'aliasColors', 'leftYAxisLabel', 'bars', 'lines', 'linewidth', 'y_formats',
             'x-axis', 'y-axis', 'points', 'pointradius', 'percentage', 'steppedLine',
@@ -50,7 +47,7 @@ class Graph(PanelsItemBase):
         })
 
     def gen_json_from_data(self, data, context):
-        panel_json = super(Graph, self).gen_json_from_data(data, context)
+        panel_json = super().gen_json_from_data(data, context)
         panel_json.update({
             'type': 'graph',
         })
@@ -116,7 +113,7 @@ class Graph(PanelsItemBase):
 
 class SingleStat(PanelsItemBase):
     def __init__(self, data, registry):
-        super(SingleStat, self).__init__(data, registry)
+        super().__init__(data, registry)
         self._register_copy_fields({
             'prefix', 'postfix', 'nullText', 'format', 'thresholds', 'colorValue', 'colorBackground',
             'colors', 'prefixFontSize', 'valueFontSize', 'postfixFontSize', 'maxDataPoints', 'datasource',
@@ -124,7 +121,7 @@ class SingleStat(PanelsItemBase):
         })
 
     def gen_json_from_data(self, data, context):
-        panel_json = super(SingleStat, self).gen_json_from_data(data, context)
+        panel_json = super().gen_json_from_data(data, context)
         panel_json.update({
             'type': 'singlestat',
             'nullPointMode': data.get('nullPointMode', 'null'),
@@ -162,13 +159,13 @@ class SingleStat(PanelsItemBase):
 
 class Table(PanelsItemBase):
     def __init__(self, data, registry):
-        super(Table, self).__init__(data, registry)
+        super().__init__(data, registry)
         self._register_copy_fields({
             'fontSize', 'pageSize', 'showHeader', 'scroll', 'datasource'
         })
 
     def gen_json_from_data(self, data, context):
-        panel_json = super(Table, self).gen_json_from_data(data, context)
+        panel_json = super().gen_json_from_data(data, context)
         panel_json.update({
             'type': 'table',
             'targets': [{'target': v} for v in data.get('targets', [])],
@@ -192,7 +189,7 @@ class Table(PanelsItemBase):
 class Text(PanelsItemBase):
 
     def gen_json_from_data(self, data, context):
-        panel_json = super(Text, self).gen_json_from_data(data, context)
+        panel_json = super().gen_json_from_data(data, context)
         panel_json.update({
             'type': 'text',
             'mode': data.get('mode', 'text'),
@@ -205,13 +202,13 @@ class Dashlist(PanelsItemBase):
     _default_span = 12
 
     def __init__(self, data, registry):
-        super(Dashlist, self).__init__(data, registry)
+        super().__init__(data, registry)
         self._register_copy_fields({
             'headings', 'limit', 'recent', 'tags', 'query'
         })
 
     def gen_json_from_data(self, data, context):
-        panel_json = super(Dashlist, self).gen_json_from_data(data, context)
+        panel_json = super().gen_json_from_data(data, context)
         panel_json.update({
             'type': 'dashlist',
             'search': 'query' in data or 'tags' in data,
@@ -224,13 +221,13 @@ class Gauge(PanelsItemBase):
     _default_span = 12
 
     def __init__(self, data, registry):
-        super(Gauge, self).__init__(data, registry)
+        super().__init__(data, registry)
         self._register_copy_fields({
             'datasource', 'pluginVersion'
         })
 
     def gen_json_from_data(self, data, context):
-        panel_json = super(Gauge, self).gen_json_from_data(data, context)
+        panel_json = super().gen_json_from_data(data, context)
         panel_json.update({
             'type': 'gauge',
             'timeFrom': data.get('timeFrom', None),
@@ -259,13 +256,13 @@ class Stat(PanelsItemBase):
     _default_span = 12
 
     def __init__(self, data, registry):
-        super(Stat, self).__init__(data, registry)
+        super().__init__(data, registry)
         self._register_copy_fields({
             'datasource', 'pluginVersion'
         })
 
     def gen_json_from_data(self, data, context):
-        panel_json = super(Stat, self).gen_json_from_data(data, context)
+        panel_json = super().gen_json_from_data(data, context)
         panel_json.update({
             'type': 'stat',
             'timeFrom': data.get('timeFrom', None),
@@ -318,11 +315,11 @@ class BarGauge(PanelsItemBase):
     _default_span = 12
 
     def __init__(self, data, registry):
-        super(BarGauge, self).__init__(data, registry)
+        super().__init__(data, registry)
         self._register_copy_fields({'datasource'})
 
     def gen_json_from_data(self, data, context):
-        panel_json = super(BarGauge, self).gen_json_from_data(data, context)
+        panel_json = super().gen_json_from_data(data, context)
 
         panel_json.update({
             'type': 'bargauge',

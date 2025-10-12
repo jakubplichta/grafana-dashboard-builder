@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2015-2025 grafana-dashboard-builder contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,9 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from __future__ import unicode_literals
-
-import os
+from pathlib import Path
 
 import grafana_dashboards.cli as cli
 from grafana_dashboards.config import Config
@@ -23,12 +20,12 @@ from grafana_dashboards.config import Config
 class DummyExporter(object):
 
     def __init__(self, prop, **kwargs):
-        super(DummyExporter, self).__init__()
+        super().__init__()
         self.prop = prop
         self.kwargs = kwargs
 
 
-config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.yaml')
+config_file = Path(__file__).resolve().parent / 'config.yaml'
 config = Config(config_file)
 # noinspection PyProtectedMember
 exporters = cli._initialize_exporters('dummy', [DummyExporter], config)
