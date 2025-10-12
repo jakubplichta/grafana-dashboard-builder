@@ -30,13 +30,18 @@ classifiers = [
     "Programming Language :: Python :: 3.14",
     "Topic :: Utilities",
 ]
-license-files = ["LICENSE"]
+license-files = [
+    "LICENSE",
+    "NOTICE",
+    "AUTHORS",
+]
 
 [project.urls]
 Homepage = "https://github.com/jakubplichta/grafana-dashboard-builder"
 
 [project.scripts]
 grafana-dashboard-builder = "grafana_dashboards.cli:main"
+"grafana_dashboard_builder.py" = "grafana_dashboards.cli:main"
 
 [dependency-groups]
 dev = [
