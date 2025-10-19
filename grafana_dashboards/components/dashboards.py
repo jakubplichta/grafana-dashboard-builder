@@ -11,24 +11,28 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from typing import Any
+
 from grafana_dashboards.common import get_component_type
 from grafana_dashboards.components.annotations import Annotations
-from grafana_dashboards.components.base import JsonGenerator
+from grafana_dashboards.components.base import ComponentRegistry, ObjectJsonGenerator
 from grafana_dashboards.components.rows import Rows
 from grafana_dashboards.components.templates import Templates
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
+from grafana_dashboards.context import Context
 
-class Dashboard(JsonGenerator):
 
-    def __init__(self, data, registry):
+class Dashboard(ObjectJsonGenerator):
+
+    def __init__(self, data: dict[str, Any], registry: ComponentRegistry) -> None:
         super().__init__(data, registry)
         self._register_copy_fields({'sharedCrosshair'})
 
-    def gen_json_from_data(self, data, context):
+    def gen_json_from_data(self, data: dict[str, Any], context: Context) -> dict[str, Any]:
         json_data = super().gen_json_from_data(data, context)
-        nav = {
+        nav: dict[str, Any] = {
             'type': 'timepicker'
         }
         json_data.update({

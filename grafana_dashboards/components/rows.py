@@ -11,28 +11,32 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from typing import Any
+
 from grafana_dashboards.common import get_component_type
-from grafana_dashboards.components.base import JsonListGenerator, JsonGenerator
+from grafana_dashboards.components.base import ComponentRegistry, JsonListGenerator, ObjectJsonGenerator
 from grafana_dashboards.components.panels import Panels
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
+from grafana_dashboards.context import Context
+
 
 class Rows(JsonListGenerator):
-    def __init__(self, data, registry):
-        super().__init__(data, registry, RowsItemBase)
+    def __init__(self, data: Any, registry: ComponentRegistry) -> None:
+        super().__init__(data, registry, [RowsItemBase])
 
 
-class RowsItemBase(JsonGenerator):
+class RowsItemBase(ObjectJsonGenerator):
     pass
 
 
 class Row(RowsItemBase):
-    def __init__(self, data, registry):
+    def __init__(self, data: dict[str, Any], registry: ComponentRegistry) -> None:
         super().__init__(data, registry)
         self._register_copy_fields({'repeat'})
 
-    def gen_json_from_data(self, data, context):
+    def gen_json_from_data(self, data: dict[str, Any], context: Context) -> dict[str, Any]:
         row_json = super().gen_json_from_data(data, context)
         row_json.update({
             'title': data.get('title', ''),

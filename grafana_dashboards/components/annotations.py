@@ -11,26 +11,30 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from grafana_dashboards.components.base import JsonListGenerator, JsonGenerator
+from typing import Any
+
+from grafana_dashboards.components.base import ComponentRegistry, JsonListGenerator, ObjectJsonGenerator
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
+from grafana_dashboards.context import Context
+
 
 class Annotations(JsonListGenerator):
-    def __init__(self, data, registry):
-        super().__init__(data, registry, AnnotationsItemBase)
+    def __init__(self, data: Any, registry: ComponentRegistry) -> None:
+        super().__init__(data, registry, [AnnotationsItemBase])
 
 
-class AnnotationsItemBase(JsonGenerator):
+class AnnotationsItemBase(ObjectJsonGenerator):
     pass
 
 
 class Annotation(AnnotationsItemBase):
-    def __init__(self, data, registry):
+    def __init__(self, data: Any, registry: ComponentRegistry) -> None:
         super().__init__(data, registry)
         self._register_copy_fields({'datasource'})
 
-    def gen_json_from_data(self, data, context):
+    def gen_json_from_data(self, data: dict[str, Any], context: Context) -> dict[str, Any]:
         template_json = super().gen_json_from_data(data, context)
         template_json['name'] = data['name']
         template_json['expr'] = data['expr']

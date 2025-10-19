@@ -9,6 +9,7 @@ dependencies = [
     "requests",
     "requests-kerberos",
     "PyYAML>=5.3",
+    "typing-extensions>=4.15.0",
 ]
 keywords = ["grafana yaml graphite prometheus influxdb"]
 authors = [
@@ -46,9 +47,12 @@ grafana-dashboard-builder = "grafana_dashboards.cli:main"
 [dependency-groups]
 dev = [
     "mock>=5.2.0",
+    "mypy>=1.18.2",
     "pytest>=8.4.2",
     "pytest-cov>=7.0.0",
     "ruff>=0.14.0",
+    "types-pyyaml>=6.0.12.20250915",
+    "types-requests>=2.32.4.20250913",
 ]
 
 [build-system]
@@ -62,9 +66,48 @@ packages = [
     "grafana_dashboards.components"
 ]
 
+[tool.mypy]
+exclude = "tests"
+# Start off with these
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+
+# Getting this passing should be easy
+strict_equality = true
+
+# Strongly recommend enabling this one as soon as you can
+check_untyped_defs = true
+
+# These shouldn't be too much additional work, but may be tricky to
+# get passing if you use a lot of untyped libraries
+disallow_subclassing_any = true
+disallow_untyped_decorators = true
+disallow_any_generics = true
+
+# These next few are various gradations of forcing use of type annotations
+disallow_untyped_calls = true
+disallow_incomplete_defs = true
+disallow_untyped_defs = true
+
+# This one isn't too hard to get passing, but return on investment is lower
+no_implicit_reexport = true
+
+# This one can be tricky to get passing if you use a lot of untyped libraries
+#warn_return_any = true
+
+# This one is a catch-all flag for the rest of strict checks that are technically
+# correct but may not be practical
+extra_checks = true
+
+[[tool.mypy.overrides]]
+module = ["requests_kerberos.*", "grafana_dashboards.gdbyaml"]
+ignore_missing_imports = true
+ignore_errors = true
+
 [tool.tox]
 requires = ["tox>=4.31.0"]
-env_list = ["ruff", "py3.9", "py3.10", "py3.11", "py3.12", "py3.13", "py3.14"]
+env_list = ["ruff", "mypy", "py3.9", "py3.10", "py3.11", "py3.12", "py3.13", "py3.14"]
 
 [tool.tox.env_run_base]
 description = "Run test under {base_python}"
@@ -75,6 +118,10 @@ commands = [["pytest", "--cov=grafana_dashboards"]]
 [tool.tox.env.ruff]
 description = "Run code style checks"
 commands = [["ruff", "check"]]
+
+[tool.tox.env.mypy]
+description = "Run code type checks"
+commands = [["mypy", "grafana_dashboards"]]
 
 [tool.ruff]
 exclude = [
@@ -109,7 +156,7 @@ line-length = 160
 
 [tool.ruff.lint]
 #select = ["E", "F", "UP", "B", "SIM", "I"]
-select = ["E", "F"]
+select = ["E", "F", "UP", "B"]
 ignore = []
 preview = true
 fixable = ["ALL"]

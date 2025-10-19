@@ -11,18 +11,23 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from __future__ import annotations
+
+from typing import Any
+
 from grafana_dashboards.common import get_component_type
-from grafana_dashboards.components.base import JsonListGenerator, JsonGenerator
+from grafana_dashboards.components.base import ComponentRegistry, JsonListGenerator, ObjectJsonGenerator
+from grafana_dashboards.context import Context
 from grafana_dashboards.errors import UnregisteredComponentError
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
 
 class Targets(JsonListGenerator):
-    def __init__(self, data, registry):
-        super().__init__(data, registry, TargetsItemBase)
+    def __init__(self, data: dict[str, Any], registry: ComponentRegistry) -> None:
+        super().__init__(data, registry, [TargetsItemBase])
 
-    def gen_item_json(self, items, result_list):
+    def gen_item_json(self, items: str | dict[str, Any], result_list: list[Any]) -> None:
         try:
             super().gen_item_json(items, result_list)
         except UnregisteredComponentError:
@@ -31,14 +36,14 @@ class Targets(JsonListGenerator):
             )
 
 
-class TargetsItemBase(JsonGenerator):
-    def __init__(self, data, registry):
+class TargetsItemBase(ObjectJsonGenerator):
+    def __init__(self, data: dict[str, Any], registry: ComponentRegistry) -> None:
         super().__init__(data, registry)
         self._register_copy_fields({'datasource'})
 
 
 class GraphiteTarget(TargetsItemBase):
-    def gen_json_from_data(self, data, context):
+    def gen_json_from_data(self, data: dict[str, Any], context: Context) -> dict[str, Any]:
         template_json = super().gen_json_from_data(data, context)
         if isinstance(data, str):
             template_json['target'] = data
@@ -48,22 +53,22 @@ class GraphiteTarget(TargetsItemBase):
 
 
 class PrometheusTarget(TargetsItemBase):
-    def __init__(self, data, registry):
+    def __init__(self, data: dict[str, Any], registry: ComponentRegistry) -> None:
         super().__init__(data, registry)
         self._register_copy_fields({'format', 'hide', 'intervalFactor', 'legendFormat', 'step', 'instant', 'interval'})
 
-    def gen_json_from_data(self, data, context):
+    def gen_json_from_data(self, data: dict[str, Any], context: Context) -> dict[str, Any]:
         template_json = super().gen_json_from_data(data, context)
         template_json['expr'] = data['expr']
         return template_json
 
 
 class InfluxdbTarget(TargetsItemBase):
-    def __init__(self, data, registry):
+    def __init__(self, data: dict[str, Any], registry: ComponentRegistry) -> None:
         super().__init__(data, registry)
         self._register_copy_fields({'alias'})
 
-    def gen_json_from_data(self, data, context):
+    def gen_json_from_data(self, data: dict[str, Any], context: Context) -> dict[str, Any]:
         template_json = super().gen_json_from_data(data, context)
         template_json['query'] = data['query']
         template_json['dsType'] = 'influxdb'
@@ -72,11 +77,11 @@ class InfluxdbTarget(TargetsItemBase):
 
 
 class ElasticTarget(TargetsItemBase):
-    def __init__(self, data, registry):
+    def __init__(self, data: dict[str, Any], registry: ComponentRegistry) -> None:
         super().__init__(data, registry)
         self._register_copy_fields({'bucketAggs', 'hide', 'metrics', 'refId', 'timeField', 'alias'})
 
-    def gen_json_from_data(self, data, context):
+    def gen_json_from_data(self, data: dict[str, Any], context: Context) -> dict[str, Any]:
         template_json = super().gen_json_from_data(data, context)
         template_json['query'] = data['query']
         return template_json

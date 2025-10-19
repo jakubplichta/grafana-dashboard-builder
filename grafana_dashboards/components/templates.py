@@ -23,27 +23,30 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from typing import Any
 
-from grafana_dashboards.components.base import JsonListGenerator, JsonGenerator
+from grafana_dashboards.components.base import ComponentRegistry, JsonListGenerator, ObjectJsonGenerator
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
+from grafana_dashboards.context import Context
+
 
 class Templates(JsonListGenerator):
-    def __init__(self, data, registry):
-        super().__init__(data, registry, TemplatesItemBase)
+    def __init__(self, data: dict[str, Any], registry: ComponentRegistry) -> None:
+        super().__init__(data, registry, [TemplatesItemBase])
 
 
-class TemplatesItemBase(JsonGenerator):
+class TemplatesItemBase(ObjectJsonGenerator):
     pass
 
 
 class Query(TemplatesItemBase):
 
-    def gen_json_from_data(self, data, context):
+    def gen_json_from_data(self, data: dict[str, Any], context: Context) -> list[str]:
         super().gen_json_from_data(data, context)
-        processed_parts = []
-        queries = []
+        processed_parts: list[str] = []
+        queries: list[Any] = []
         if not data.get('query'):
             return queries
         if 'name' in data:
@@ -90,7 +93,7 @@ class Query(TemplatesItemBase):
         return queries
 
     @staticmethod
-    def _copy_data(target, source):
+    def _copy_data(target: dict[str, Any], source: dict[str, Any]) -> None:
         if 'current' in source:
             current = source['current']
             target['current'] = {
@@ -107,12 +110,12 @@ class Query(TemplatesItemBase):
 
 class EnumeratedTemplateBase(TemplatesItemBase):
 
-    def __init__(self, data, registry, template_type, refresh):
+    def __init__(self, data: dict[str, Any], registry: ComponentRegistry, template_type: str, refresh: int) -> None:
         super().__init__(data, registry)
         self._template_type = template_type
         self._refresh = refresh
 
-    def gen_json_from_data(self, data, context):
+    def gen_json_from_data(self, data: dict[str, Any], context: Context) -> dict[str, Any]:
         template_json = super().gen_json_from_data(data, context)
         template_json.update({
             'type': self._template_type,
@@ -146,15 +149,15 @@ class EnumeratedTemplateBase(TemplatesItemBase):
 
 
 class CustomTemplate(EnumeratedTemplateBase):
-    def __init__(self, data, registry):
+    def __init__(self, data: dict[str, Any], registry: ComponentRegistry) -> None:
         super().__init__(data, registry, 'custom', 0)
 
 
 class IntervalTemplate(EnumeratedTemplateBase):
-    def __init__(self, data, registry):
+    def __init__(self, data: dict[str, Any], registry: ComponentRegistry) -> None:
         super().__init__(data, registry, 'interval', 2)
 
-    def gen_json_from_data(self, data, context):
+    def gen_json_from_data(self, data: dict[str, Any], context: Context) -> dict[str, Any]:
         template_json = super().gen_json_from_data(data, context)
         if 'auto' in data:
             template_json['auto'] = True
@@ -170,7 +173,7 @@ class IntervalTemplate(EnumeratedTemplateBase):
 
 
 class DatasourceTemplate(TemplatesItemBase):
-    def gen_json_from_data(self, data, context):
+    def gen_json_from_data(self, data: dict[str, Any], context: Context) -> dict[str, Any]:
         template_json = super().gen_json_from_data(data, context)
         template_json.update({
             'type': 'datasource',

@@ -11,7 +11,12 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from grafana_dashboards.components.base import ComponentBase, get_placeholders
+from __future__ import annotations
+
+from collections.abc import Generator
+from typing import Any
+
+from grafana_dashboards.components.base import ComponentBase, ComponentRegistry, get_placeholders
 from grafana_dashboards.components.dashboards import Dashboard
 from grafana_dashboards.context import Context
 
@@ -19,19 +24,19 @@ __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
 
 class Project(ComponentBase):
-    def __init__(self, data, registry):
+    def __init__(self, data: dict[str, Any], registry: ComponentRegistry) -> None:
         super().__init__(data, registry)
         self._placeholders = [placeholder for dashboard in self._get_dashboard_names()
                               for placeholder in get_placeholders(dashboard)]
 
-    def _get_dashboard_names(self):
+    def _get_dashboard_names(self) -> list[str]:
         return self.data.get('dashboards', [])
 
-    def get_dashboards(self):
+    def get_dashboards(self) -> list[Dashboard]:
         return [self.registry.get_component(Dashboard, dashboard_name) for dashboard_name in
                 self._get_dashboard_names()]
 
-    def get_contexts(self, context=None):
+    def get_contexts(self, context: dict[str, Any] | None = None) -> Generator[Context, Any, None]:
         if context is None:
             context = {}
         data = self.data.copy()

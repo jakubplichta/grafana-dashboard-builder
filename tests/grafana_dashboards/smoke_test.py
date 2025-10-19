@@ -17,7 +17,7 @@ import grafana_dashboards.cli as cli
 from grafana_dashboards.config import Config
 
 
-class DummyExporter(object):
+class DummyExporter:
 
     def __init__(self, prop, **kwargs):
         super().__init__()

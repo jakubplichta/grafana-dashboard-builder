@@ -11,33 +11,39 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from grafana_dashboards.components.base import JsonListGenerator, JsonGenerator
+from __future__ import annotations
+
+from typing import Any
+
+from grafana_dashboards.components.base import ComponentRegistry, JsonListGenerator, ObjectJsonGenerator
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
+from grafana_dashboards.context import Context
+
 
 class Yaxes(JsonListGenerator):
-    def __init__(self, data, registry):
-        super().__init__(data, registry, YaxesItemBase)
+    def __init__(self, data: dict[str, Any], registry: ComponentRegistry) -> None:
+        super().__init__(data, registry, [YaxesItemBase])
 
-    def gen_json_from_data(self, data, context):
+    def gen_json_from_data(self, data: list[Any], context: Context) -> list[Any]:
         if len(data) == 1:
             data.append(data[0])
         return super().gen_json_from_data(data, context)
 
-    def gen_item_json(self, items, result_list):
+    def gen_item_json(self, items: str | dict[str, Any], result_list: list[Any]) -> None:
         if isinstance(items, dict) and len(items) > 1:
             result_list.append(items)
         else:
             super().gen_item_json(items, result_list)
 
 
-class YaxesItemBase(JsonGenerator):
+class YaxesItemBase(ObjectJsonGenerator):
     pass
 
 
 class Yaxis(YaxesItemBase):
-    def gen_json_from_data(self, data, context):
+    def gen_json_from_data(self, data: dict[str, Any], context: Context) -> dict[str, Any]:
         yaxis_json = super().gen_json_from_data(data, context)
         yaxis_json.update({
             'format': data.get('format', 'short'),
