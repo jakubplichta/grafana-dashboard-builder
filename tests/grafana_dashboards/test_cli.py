@@ -12,8 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 from pathlib import Path
-
-from mock import patch
+from unittest.mock import patch
 
 from grafana_dashboards import cli
 from grafana_dashboards.config import Config
@@ -21,7 +20,7 @@ from grafana_dashboards.config import Config
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
 
-class DummyExporter(object):
+class DummyExporter:
 
     def __init__(self, prop, **kwargs):
         super().__init__()

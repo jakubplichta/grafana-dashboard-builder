@@ -14,7 +14,7 @@
 import pytest
 
 from grafana_dashboards import errors
-from grafana_dashboards.components.base import ComponentRegistry, ComponentBase
+from grafana_dashboards.components.base import ComponentBase, ComponentRegistry
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 

@@ -11,39 +11,37 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from __future__ import annotations
+
 import errno
 import json
 import logging
+from collections.abc import Iterable
+from pathlib import Path
+from typing import Any
+
+from grafana_dashboards.components.projects import Project
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
-
-from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
 
-class DashboardExporter(object):
+class DashboardExporter:
+    def __init__(self, **kwargs: dict[str, Any]):
+        pass
 
-    def process_dashboard(self, project_name, dashboard_name, dashboard_data):
+    def process_dashboard(self, project_name: str, dashboard_name: str, dashboard_data: dict[str, str]) -> None:
         pass
 
 
-class ProjectProcessor(object):
+class ProjectProcessor:
 
-    def __init__(self, dashboard_processors):
-        """
-
-        :type dashboard_processors: list[grafana_dashboards.builder.DashboardExporter]
-        """
+    def __init__(self, dashboard_processors: list[DashboardExporter]) -> None:
         super().__init__()
         self._dashboard_processors = dashboard_processors
 
-    def process_projects(self, projects, parent_context=None):
-        """
-
-        :type projects: list[grafana_dashboards.components.projects.Project]
-        :type parent_context: dict
-        """
+    def process_projects(self, projects: Iterable[Project], parent_context: dict[str, Any] | None = None) -> None:
         for project in projects:
             logger.info("Processing project '%s'", project.name)
             for context in project.get_contexts(parent_context):
@@ -56,7 +54,7 @@ class ProjectProcessor(object):
 
 class FileExporter(DashboardExporter):
 
-    def __init__(self, output_folder):
+    def __init__(self, output_folder: str) -> None:
         super().__init__()
         self._output_folder = output_folder
         path = Path(self._output_folder)
@@ -65,7 +63,7 @@ class FileExporter(DashboardExporter):
         if not path.is_dir():
             raise Exception(f"'{self._output_folder}' must be a directory")
 
-    def process_dashboard(self, project_name, dashboard_name, dashboard_data):
+    def process_dashboard(self, project_name: str, dashboard_name: str, dashboard_data: dict[str, str]) -> None:
         super().process_dashboard(project_name, dashboard_name, dashboard_data)
         dirname = Path(self._output_folder) / project_name
         try:

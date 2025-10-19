@@ -14,8 +14,8 @@
 import inspect
 import json
 from pathlib import Path
+from unittest import mock as mock
 
-import mock as mock
 import yaml
 
 import grafana_dashboards.common
@@ -45,9 +45,9 @@ def load_test_fixtures():
             if f.suffix != '.yaml':
                 continue
             filename = f.stem
-            with open(dirname / f'{filename}.yaml', 'r') as fp:
+            with open(dirname / f'{filename}.yaml') as fp:
                 config = yaml.load(fp, Loader=yaml.FullLoader)
-            with open(dirname / f'{filename}.json', 'r') as fp:
+            with open(dirname / f'{filename}.json') as fp:
                 output = json.load(fp)
             yield component, filename, config, output
 

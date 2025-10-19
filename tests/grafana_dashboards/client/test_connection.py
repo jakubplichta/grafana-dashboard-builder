@@ -11,20 +11,17 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from unittest.mock import MagicMock, patch
 from urllib.request import Request
 
-from mock import MagicMock, patch
 from requests_kerberos import HTTPKerberosAuth
 
-from grafana_dashboards.client.connection import (KerberosConnection,
-                                                  BearerAuthConnection,
-                                                  BasicAuthConnection,
-                                                  SSLAuthConnection)
+from grafana_dashboards.client.connection import BasicAuthConnection, BearerAuthConnection, KerberosConnection, SSLAuthConnection
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
 
-class Capture(object):
+class Capture:
     """
     Class for use in method call verification that captures call argument that can be tested later on.
     """
@@ -51,7 +48,7 @@ def test_connection():
                       headers={
                           'Content-type': 'application/json',
                           'Accept': 'application/json',
-                          'Authorization': b'Basic dXNlcm5hbWU6cGFzc3dvcmQ='
+                          'Authorization': 'Basic dXNlcm5hbWU6cGFzc3dvcmQ='
                       })
     capture = Capture()
     # noinspection PyProtectedMember

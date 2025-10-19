@@ -11,11 +11,20 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from __future__ import annotations
+
 import json
 import logging
 import os
+from typing import TypedDict, cast
+try:
+    # Try the standard library import (Python 3.11+)
+    from typing import Unpack
+except ImportError:
+    # Fallback for older versions (Python < 3.11)
+    from typing_extensions import Unpack
 
-from grafana_dashboards.client.connection import BasicAuthConnection, KerberosConnection
+from grafana_dashboards.client.connection import BasicAuthConnection, ConnectionInterface, KerberosConnection
 from grafana_dashboards.exporter import DashboardExporter
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
@@ -24,12 +33,21 @@ __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 logger = logging.getLogger(__name__)
 
 
+class ElasticSearchExporterParams(TypedDict, total=False):
+    host: str
+    username: str
+    password: str
+    use_kerberos: bool | str
+
+
 class ElasticSearchExporter(DashboardExporter):
-    def __init__(self, **kwargs):
+    _connection: ConnectionInterface
+
+    def __init__(self, **kwargs: Unpack[ElasticSearchExporterParams]) -> None:
         super().__init__()
-        self._host = os.getenv('ES_HOST', kwargs.get('host'))
-        password = os.getenv('ES_PASSWORD', kwargs.get('password'))
-        username = os.getenv('ES_USERNAME', kwargs.get('username'))
+        self._host = cast(str, os.getenv('ES_HOST', kwargs.get('host')))
+        password = cast(str, os.getenv('ES_PASSWORD', kwargs.get('password')))
+        username = cast(str, os.getenv('ES_USERNAME', kwargs.get('username')))
         use_kerberos = os.getenv('ES_USE_KERBEROS', kwargs.get('use_kerberos'))
 
         if use_kerberos:
@@ -37,7 +55,7 @@ class ElasticSearchExporter(DashboardExporter):
         else:
             self._connection = BasicAuthConnection(username, password, self._host)
 
-    def process_dashboard(self, project_name, dashboard_name, dashboard_data):
+    def process_dashboard(self, project_name: str, dashboard_name: str, dashboard_data: dict[str, str]) -> None:
         super().process_dashboard(project_name, dashboard_name, dashboard_data)
         body = {'user': 'guest', 'group': 'guest', 'title': dashboard_data['title'], 'tags': dashboard_data['tags'],
                 'dashboard': json.dumps(dashboard_data)}

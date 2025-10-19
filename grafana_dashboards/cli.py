@@ -15,6 +15,7 @@
 import argparse
 import logging
 import os
+from collections.abc import Iterable
 from pathlib import Path
 
 import yaml
@@ -23,24 +24,24 @@ from grafana_dashboards.client.elastic_search import ElasticSearchExporter
 from grafana_dashboards.client.grafana import GrafanaExporter
 from grafana_dashboards.common import get_component_type, load_source
 from grafana_dashboards.config import Config
-from grafana_dashboards.exporter import ProjectProcessor, FileExporter
+from grafana_dashboards.exporter import DashboardExporter, FileExporter, ProjectProcessor
 from grafana_dashboards.gdbyaml import GDBLoader
 from grafana_dashboards.parser import DefinitionParser
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
 
-def _initialize_exporters(exporter_names, exporter_types, config):
+def _initialize_exporters(exporter_names: Iterable[str], exporter_types: list[type[DashboardExporter]], config: Config) -> list[DashboardExporter]:
     exporters = {get_component_type(exporter): exporter for exporter in exporter_types}
     exporters = {name[:-9]: exporter for name, exporter in exporters.items() if name[:-9] in exporter_names}
     return [exporter(**config.get_config(name)) for (name, exporter) in exporters.items()]
 
 
-def _process_paths(paths):
-    definition_files = set()
+def _process_paths(paths: list[str]) -> set[str]:
+    definition_files: set[str] = set()
     for path in paths:
         if Path(path).is_dir():
-            for root, dirs, filenames in os.walk(path):
+            for root, _, filenames in os.walk(path):
                 s = {str(Path(root) / filename) for filename in filenames}
                 definition_files = definition_files.union(s)
         else:
@@ -48,7 +49,7 @@ def _process_paths(paths):
     return definition_files
 
 
-def main():
+def main() -> None:
     logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', level=logging.INFO)
     parser = argparse.ArgumentParser()
     parser.add_argument('-p', '--path', required=True, nargs='+', type=str,

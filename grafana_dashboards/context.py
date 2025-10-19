@@ -11,29 +11,29 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from __future__ import annotations
+
 import itertools
 import re
 import string
+from collections.abc import Container, Generator, Iterable, Mapping
+from typing import Any, cast
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
 
-class Context(object):
-
+class Context:
     _pattern = re.compile('{.*}')
+    _context: Mapping[str, str] | None
 
-    def __init__(self, context=None):
+    def __init__(self, context: Mapping[str, str] | None = None) -> None:
         super().__init__()
         if not context:
             self._context = None
         else:
             self._context = DictDefaultingToPlaceholder(context)
 
-    def expand_placeholders(self, to_expand):
-        """
-
-        :rtype : dict
-        """
+    def expand_placeholders(self, to_expand: Any) -> Any:
         if not self._context:
             return to_expand
 
@@ -52,38 +52,39 @@ class Context(object):
         else:
             return to_expand
 
-    def _expand(self, to_expand):
+    def _expand(self, to_expand: str | Any) -> tuple[str, str | Any]:
+        context = cast(Mapping[str, str], self._context)  # at this point context is always Mapping
         if not isinstance(to_expand, str):
             return to_expand, to_expand
-        elif self._pattern.match(to_expand) and to_expand[1:-1] in self._context:
-            return self._context[to_expand[1:-1]], to_expand
+        elif self._pattern.match(to_expand) and to_expand[1:-1] in context:
+            return context[to_expand[1:-1]], to_expand
         escaped = to_expand.replace('{{', '{{{{').replace('}}', '}}}}')
-        return string.Formatter().vformat(escaped, (), self._context), to_expand
+        return string.Formatter().vformat(escaped, (), context), to_expand
 
-    def __str__(self):
+    def __str__(self) -> str:
         return str(self._context)
 
     @staticmethod
-    def create_context(data, keys_to_expand=None):
+    def create_context(data: Any, keys_to_expand: Container[str] | None = None) -> Generator[Context, Any, None]:
         return (Context(Context(context).expand_placeholders(context))
                 for context in ContextExpander(keys_to_expand).create_context(None, data))
 
 
-class DictDefaultingToPlaceholder(dict):
-    def __missing__(self, key):
+class DictDefaultingToPlaceholder(dict[str, Any]):
+    def __missing__(self, key: str) -> str:
         return '{' + key + '}'
 
 
-class ContextExpander(object):
-    def __init__(self, keys_to_expand=None):
+class ContextExpander:
+    def __init__(self, keys_to_expand: Container[str] | None = None) -> None:
         super().__init__()
         self._keys_to_expand = keys_to_expand if keys_to_expand else []
 
-    def create_context(self, key, value, parent=None):
-        contexts = []
+    def create_context(self, key: object, value: object, parent: object = None) -> Generator[dict[Any, Any], Any, None]:
+        contexts: list[Iterable[dict[Any, Any]]] = []
         if isinstance(value, list):
             if key in self._keys_to_expand:
-                contexts.append((context for data in value for context in self.create_context(key, data, key)))
+                contexts.append(context for data in value for context in self.create_context(key, data, key))
             else:
                 contexts.append(itertools.repeat({key: value}, 1))
         elif isinstance(value, dict):

@@ -26,7 +26,7 @@ class GDBLoaderMeta(type):
 
         # register the include constructor on the class
         cls = super().__new__(metacls, __name__, __bases__, __dict__)
-        cls.add_constructor('!include', cls.construct_include)
+        cls.add_constructor('!include', cls.construct_include)  # type: ignore
 
         return cls
 
@@ -50,7 +50,7 @@ class GDBLoader(yaml.Loader, metaclass=GDBLoaderMeta):
         filename = (self._root / self.construct_scalar(node)).absolute()
         extension = filename.suffix.lstrip('.')
 
-        with open(filename, 'r') as f:
+        with open(filename) as f:
             if extension in ('yaml', 'yml'):
                 return yaml.load(f, GDBLoader)
             else:

@@ -11,13 +11,16 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from __future__ import annotations
+
+import abc
 import base64
 import json
 import logging
 from http.cookiejar import CookieJar
+from typing import Any
 from urllib.parse import urlparse
-from urllib.request import build_opener, HTTPHandler, HTTPSHandler, HTTPCookieProcessor, HTTPDefaultErrorHandler, \
-    Request, BaseHandler
+from urllib.request import BaseHandler, HTTPCookieProcessor, HTTPDefaultErrorHandler, HTTPHandler, HTTPSHandler, Request, build_opener
 
 import requests
 from requests_kerberos import HTTPKerberosAuth
@@ -27,13 +30,25 @@ __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 logger = logging.getLogger(__name__)
 
 
-class BaseConnection(object):
-    _headers = {
+class ConnectionInterface(metaclass=abc.ABCMeta):
+    @classmethod
+    def __subclasshook__(cls, subclass: type) -> bool:
+        return (hasattr(subclass, 'make_request') and
+                callable(subclass.make_request) or
+                NotImplemented)
+
+    @abc.abstractmethod
+    def make_request(self, uri: str, body: dict[str, Any] | None = None) -> dict[str, Any]:
+        raise NotImplementedError
+
+
+class BaseConnection(ConnectionInterface):
+    _headers: dict[str, str] = {
         'Content-type': 'application/json',
         'Accept': 'application/json'
     }
 
-    def __init__(self, host, auth_header, debug=0):
+    def __init__(self, host: str, auth_header: str, debug: int = 0) -> None:
         self._host = host
         self._headers['Authorization'] = auth_header
 
@@ -43,7 +58,7 @@ class BaseConnection(object):
                                     LoggingHandler(),
                                     HTTPDefaultErrorHandler())
 
-    def make_request(self, uri, body=None):
+    def make_request(self, uri: str, body: dict[str, Any] | None = None) -> dict[str, Any]:
         request = Request(f'{self._host}{uri}',
                           json.dumps(body).encode('utf-8') if body else None,
                           headers=self._headers)
@@ -52,33 +67,33 @@ class BaseConnection(object):
 
 
 class BasicAuthConnection(BaseConnection):
-    def __init__(self, username, password, host, debug=0):
+    def __init__(self, username: str, password: str, host: str, debug: int = 0) -> None:
         logger.debug('Creating new connection with username=%s host=%s', username, host)
 
-        base64string = base64.encodebytes(f'{username}:{password}'.encode('utf-8')).replace(b'\n', b'')
+        base64string = base64.encodebytes(f'{username}:{password}'.encode()).replace(b'\n', b'').decode('utf-8')
 
-        super().__init__(host, b'Basic ' + base64string, debug)
+        super().__init__(host, f'Basic {base64string}', debug)
 
 
 class BearerAuthConnection(BaseConnection):
-    def __init__(self, token, host, debug=0):
+    def __init__(self, token: str, host: str, debug: int = 0) -> None:
         logger.debug('Creating new connection with token=%s host=%s', token[:5], host)
 
         super().__init__(host, f'Bearer {token.strip()}', debug)
 
 
 class LoggingHandler(BaseHandler):
-    def __init__(self):
+    def __init__(self) -> None:
         pass
 
     # noinspection PyMethodMayBeStatic
-    def http_request(self, request):
+    def http_request(self, request: Request) -> Request:
         path = urlparse(request.get_full_url()).path
         logger.debug('Sending request: method=%s uri=%s', request.get_method(), path)
         return request
 
     # noinspection PyMethodMayBeStatic,PyUnusedLocal
-    def http_response(self, request, response):
+    def http_response(self, request: Request, response):  # type: ignore
         logger.debug('Response received: status=%s msg=%s', response.getcode(), response.msg)
         return response
 
@@ -86,22 +101,22 @@ class LoggingHandler(BaseHandler):
     https_response = http_response
 
 
-class KerberosConnection(object):
-    def __init__(self, host):
+class KerberosConnection(ConnectionInterface):
+    def __init__(self, host: str) -> None:
         logger.debug('Creating new kerberos connection with host=%s', host)
         self._host = host
 
-    def make_request(self, uri, body=None):
+    def make_request(self, uri: str, body: dict[str, Any] | None = None) -> dict[str, Any]:
         response = requests.post(f'{self._host}{uri}', json=body, auth=HTTPKerberosAuth(), verify=False)
         return response.json()
 
 
-class SSLAuthConnection(object):
-    def __init__(self, host, cert_bundle, debug=0):
+class SSLAuthConnection(ConnectionInterface):
+    def __init__(self, host: str, cert_bundle: str | tuple[str, str] | None, debug: int = 0):
         logger.debug('Using SSL client cert from "%s" with host=%s', cert_bundle, host)
         self._host = host
         self._cert = cert_bundle
 
-    def make_request(self, uri, body=None):
+    def make_request(self, uri: str, body: dict[str, Any] | None = None) -> dict[str, Any]:
         response = requests.post(f'{self._host}{uri}', json=body, cert=self._cert)
         return response.json()

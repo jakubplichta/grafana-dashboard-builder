@@ -11,24 +11,30 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from __future__ import annotations
+
+from typing import Any
+
 from grafana_dashboards.common import get_component_type
 from grafana_dashboards.components.axes import Yaxes
-from grafana_dashboards.components.base import JsonListGenerator, JsonGenerator
+from grafana_dashboards.components.base import ComponentRegistry, JsonGenerator, JsonListGenerator, ObjectJsonGenerator
 from grafana_dashboards.components.links import Links
 from grafana_dashboards.components.targets import Targets
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
+from grafana_dashboards.context import Context
+
 
 class Panels(JsonListGenerator):
-    def __init__(self, data, registry):
-        super().__init__(data, registry, PanelsItemBase)
+    def __init__(self, data: dict[str, Any], registry: ComponentRegistry) -> None:
+        super().__init__(data, registry, [PanelsItemBase])
 
 
-class PanelsItemBase(JsonGenerator):
-    _default_span = None
+class PanelsItemBase(ObjectJsonGenerator):
+    _default_span: int | None = None
 
-    def __init__(self, data, registry):
+    def __init__(self, data: dict[str, Any], registry: ComponentRegistry) -> None:
         super().__init__(data, registry)
         self._register_copy_fields({
             'description', 'transparent', 'repeat', ('span', self._default_span), ('title', None)
@@ -38,7 +44,7 @@ class PanelsItemBase(JsonGenerator):
 class Graph(PanelsItemBase):
     _default_span = 12
 
-    def __init__(self, data, registry):
+    def __init__(self, data: dict[str, Any], registry: ComponentRegistry) -> None:
         super().__init__(data, registry)
         self._register_copy_fields({
             'stack', 'fill', 'aliasColors', 'leftYAxisLabel', 'bars', 'lines', 'linewidth', 'y_formats',
@@ -46,7 +52,7 @@ class Graph(PanelsItemBase):
             'repeatDirection', 'decimals', 'minSpan', 'datasource'
         })
 
-    def gen_json_from_data(self, data, context):
+    def gen_json_from_data(self, data: dict[str, Any], context: Context) -> dict[str, Any]:
         panel_json = super().gen_json_from_data(data, context)
         panel_json.update({
             'type': 'graph',
@@ -106,13 +112,13 @@ class Graph(PanelsItemBase):
         self._create_component(panel_json, Yaxes, self.data)
         return panel_json
 
-    def _create_component(self, panel_json, clazz, data):
+    def _create_component(self, panel_json: dict[str, Any], clazz: type[JsonGenerator], data: dict[str, Any]) -> None:
         if get_component_type(clazz) in data:
             panel_json[get_component_type(clazz)] = self.registry.create_component(clazz, data).gen_json()
 
 
 class SingleStat(PanelsItemBase):
-    def __init__(self, data, registry):
+    def __init__(self, data: dict[str, Any], registry: ComponentRegistry) -> None:
         super().__init__(data, registry)
         self._register_copy_fields({
             'prefix', 'postfix', 'nullText', 'format', 'thresholds', 'colorValue', 'colorBackground',
@@ -120,7 +126,7 @@ class SingleStat(PanelsItemBase):
             'repeatDirection', 'decimals', 'minSpan', 'colorPostfix'
         })
 
-    def gen_json_from_data(self, data, context):
+    def gen_json_from_data(self, data: dict[str, Any], context: Context) -> dict[str, Any]:
         panel_json = super().gen_json_from_data(data, context)
         panel_json.update({
             'type': 'singlestat',
@@ -158,13 +164,13 @@ class SingleStat(PanelsItemBase):
 
 
 class Table(PanelsItemBase):
-    def __init__(self, data, registry):
+    def __init__(self, data: dict[str, Any], registry: ComponentRegistry) -> None:
         super().__init__(data, registry)
         self._register_copy_fields({
             'fontSize', 'pageSize', 'showHeader', 'scroll', 'datasource'
         })
 
-    def gen_json_from_data(self, data, context):
+    def gen_json_from_data(self, data: dict[str, Any], context: Context) -> dict[str, Any]:
         panel_json = super().gen_json_from_data(data, context)
         panel_json.update({
             'type': 'table',
@@ -188,7 +194,7 @@ class Table(PanelsItemBase):
 
 class Text(PanelsItemBase):
 
-    def gen_json_from_data(self, data, context):
+    def gen_json_from_data(self, data: dict[str, Any], context: Context) -> dict[str, Any]:
         panel_json = super().gen_json_from_data(data, context)
         panel_json.update({
             'type': 'text',
@@ -201,13 +207,13 @@ class Text(PanelsItemBase):
 class Dashlist(PanelsItemBase):
     _default_span = 12
 
-    def __init__(self, data, registry):
+    def __init__(self, data: dict[str, Any], registry: ComponentRegistry) -> None:
         super().__init__(data, registry)
         self._register_copy_fields({
             'headings', 'limit', 'recent', 'tags', 'query'
         })
 
-    def gen_json_from_data(self, data, context):
+    def gen_json_from_data(self, data: dict[str, Any], context: Context) -> dict[str, Any]:
         panel_json = super().gen_json_from_data(data, context)
         panel_json.update({
             'type': 'dashlist',
@@ -220,13 +226,13 @@ class Dashlist(PanelsItemBase):
 class Gauge(PanelsItemBase):
     _default_span = 12
 
-    def __init__(self, data, registry):
+    def __init__(self, data: dict[str, Any], registry: ComponentRegistry) -> None:
         super().__init__(data, registry)
         self._register_copy_fields({
             'datasource', 'pluginVersion'
         })
 
-    def gen_json_from_data(self, data, context):
+    def gen_json_from_data(self, data: dict[str, Any], context: Context) -> dict[str, Any]:
         panel_json = super().gen_json_from_data(data, context)
         panel_json.update({
             'type': 'gauge',
@@ -255,13 +261,13 @@ class Gauge(PanelsItemBase):
 class Stat(PanelsItemBase):
     _default_span = 12
 
-    def __init__(self, data, registry):
+    def __init__(self, data: dict[str, Any], registry: ComponentRegistry) -> None:
         super().__init__(data, registry)
         self._register_copy_fields({
             'datasource', 'pluginVersion'
         })
 
-    def gen_json_from_data(self, data, context):
+    def gen_json_from_data(self, data: dict[str, Any], context: Context) -> dict[str, Any]:
         panel_json = super().gen_json_from_data(data, context)
         panel_json.update({
             'type': 'stat',
@@ -314,11 +320,11 @@ class Stat(PanelsItemBase):
 class BarGauge(PanelsItemBase):
     _default_span = 12
 
-    def __init__(self, data, registry):
+    def __init__(self, data: dict[str, Any], registry: ComponentRegistry) -> None:
         super().__init__(data, registry)
         self._register_copy_fields({'datasource'})
 
-    def gen_json_from_data(self, data, context):
+    def gen_json_from_data(self, data: dict[str, Any], context: Context) -> dict[str, Any]:
         panel_json = super().gen_json_from_data(data, context)
 
         panel_json.update({

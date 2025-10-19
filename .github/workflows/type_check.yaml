@@ -1,5 +1,4 @@
-name: uv lock check
-
+name: Type Check
 on:
   push:
     branches:
@@ -11,20 +10,26 @@ on:
   workflow_dispatch:
 
 jobs:
-  uv-lock-check:
-    name: uv lock check
+  mypy:
+    name: Type Check
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v5
 
-      - name: "Set up Python"
+      - name: Set up Python
         uses: actions/setup-python@v6
         with:
           python-version-file: ".python-version"
 
+      - name: Cache APT Packages
+        uses: awalsh128/cache-apt-pkgs-action@v1.5.3
+        with:
+          packages: libkrb5-dev
+          version: 1.0
+
       - name: Install uv
         uses: astral-sh/setup-uv@v7
 
-      - name: Check uv lock
-        run: uv lock --check
+      - name: Run mypy
+        run: uv run mypy .

@@ -12,12 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from grafana_dashboards.components import base
-from grafana_dashboards.components import dashboards
-from grafana_dashboards.components import panels
-from grafana_dashboards.components import projects
-from grafana_dashboards.components import rows
-from grafana_dashboards.components import templates
+from grafana_dashboards.components import base, dashboards, panels, projects, rows, templates
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 __all__ = [

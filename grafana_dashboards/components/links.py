@@ -11,22 +11,26 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from grafana_dashboards.components.base import JsonListGenerator, JsonGenerator
+from typing import Any, cast
+
+from grafana_dashboards.components.base import ComponentRegistry, JsonListGenerator, ObjectJsonGenerator
 
 __author__ = 'Jakub Plichta <jakub.plichta@gmail.com>'
 
+from grafana_dashboards.context import Context
+
 
 class Links(JsonListGenerator):
-    def __init__(self, data, registry):
-        super().__init__(data, registry, LinksItemBase)
+    def __init__(self, data: dict[str, Any], registry: ComponentRegistry) -> None:
+        super().__init__(data, registry, [LinksItemBase])
 
 
-class LinksItemBase(JsonGenerator):
+class LinksItemBase(ObjectJsonGenerator):
     pass
 
 
 class DashboardLink(LinksItemBase):
-    def gen_json_from_data(self, data, context):
+    def gen_json_from_data(self, data: dict[str, Any], context: Context) -> dict[str, Any]:
         link_json = super().gen_json_from_data(data, context)
         link_json.update({
             'type': 'dashboard',
@@ -36,7 +40,7 @@ class DashboardLink(LinksItemBase):
         })
         if 'params' in data and isinstance(data.get('params'), list):
             params = []
-            for param in data.get('params'):
+            for param in cast(list[Any], data.get('params')):
                 if isinstance(param, str):
                     params.append((param, '$' + param))
                 else:
@@ -47,7 +51,7 @@ class DashboardLink(LinksItemBase):
 
 
 class AbsoluteLink(LinksItemBase):
-    def gen_json_from_data(self, data, context):
+    def gen_json_from_data(self, data: dict[str, Any], context: Context) -> dict[str, Any]:
         link_json = super().gen_json_from_data(data, context)
         link_json.update({
             'type': 'absolute',
