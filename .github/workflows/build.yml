@@ -26,7 +26,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Cache APT Packages
-      uses: awalsh128/cache-apt-pkgs-action@v1.5.3
+      uses: awalsh128/cache-apt-pkgs-action@v1.6.0
       with:
         packages: libkrb5-dev
         version: 1.0
