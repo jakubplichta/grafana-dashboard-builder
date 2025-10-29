@@ -41,7 +41,7 @@ jobs:
       run: uv run --isolated --no-project --with dist/*.tar.gz tests/grafana_dashboards/smoke_test.py
 
     - name: Store the distribution packages
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: python-package-distributions
         path: dist/
